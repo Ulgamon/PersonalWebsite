@@ -9,6 +9,8 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "personalwebsite.webclient",
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "personalwebsite.adminwebclient", "PersonalWebsite.AdminWebClient\personalwebsite.adminwebclient.esproj", "{68BFDF32-CE46-4EDC-94C0-84587A79D44B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonalWebsite.Test", "PersonalWebsite.Test\PersonalWebsite.Test.csproj", "{293D0000-98CD-49E4-A867-A6F1FA8A7AC8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{68BFDF32-CE46-4EDC-94C0-84587A79D44B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68BFDF32-CE46-4EDC-94C0-84587A79D44B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{68BFDF32-CE46-4EDC-94C0-84587A79D44B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{293D0000-98CD-49E4-A867-A6F1FA8A7AC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{293D0000-98CD-49E4-A867-A6F1FA8A7AC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{293D0000-98CD-49E4-A867-A6F1FA8A7AC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{293D0000-98CD-49E4-A867-A6F1FA8A7AC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
