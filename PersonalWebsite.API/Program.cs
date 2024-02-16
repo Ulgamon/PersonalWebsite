@@ -12,7 +12,7 @@ builder.Services.AddDbContext<PersonalWebsiteDevelopmentDbContext>(options =>
 );
 
 // Configure Identity Service
-builder.Services.AddIdentityCore<IdentityUser>()
+builder.Services.AddIdentityCore<ApplicationUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<PersonalWebsiteDevelopmentDbContext>();
 
@@ -37,7 +37,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

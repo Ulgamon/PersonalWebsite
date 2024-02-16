@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PersonalWebsite.API.Data;
 
-public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext
+public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext<ApplicationUser>
 {
     public PersonalWebsiteDevelopmentDbContext()
     {
@@ -21,10 +21,10 @@ public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Comment> Comments { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
         modelBuilder.Entity<BlogPost>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__BlogPost__3214EC075FEB897D");

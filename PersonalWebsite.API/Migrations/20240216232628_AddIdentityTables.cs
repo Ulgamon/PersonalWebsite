@@ -50,6 +50,7 @@ namespace PersonalWebsite.API.Migrations
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
+           
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
@@ -194,6 +195,7 @@ namespace PersonalWebsite.API.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
         }
 
         /// <inheritdoc />

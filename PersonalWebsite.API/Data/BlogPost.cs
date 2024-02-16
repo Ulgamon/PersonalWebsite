@@ -17,6 +17,10 @@ public partial class BlogPost
 
     public string Title { get; set; } = null!;
 
+    public string UserId { get; set; } = null!;
+
+    public ApplicationUser User { get; set; } = null!;
+
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
