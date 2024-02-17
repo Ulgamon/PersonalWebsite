@@ -19,9 +19,9 @@ public partial class Comment
 
     public DateTime CreatedDate { get; set; }
 
-    public virtual BlogPost? BlogPost { get; set; }
+    public BlogPost? BlogPost { get; set; }
 
-    public virtual Comment? CommentNavigation { get; set; }
+    public Comment? CommentNavigation { get; set; }
 
-    public virtual ICollection<Comment> InverseCommentNavigation { get; set; } = new List<Comment>();
+    public ICollection<Comment> InverseCommentNavigation { get; set; } = new List<Comment>();
 }

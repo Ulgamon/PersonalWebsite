@@ -16,23 +16,11 @@ public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext<App
     {
     }
 
-    public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+    public DbSet<BlogPost> BlogPosts { get; set; }
 
-    public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }
+    public DbSet<Category> Categories { get; set; }
 
-    public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
-
-    public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
-
-    public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
-
-    public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
-
-    public virtual DbSet<BlogPost> BlogPosts { get; set; }
-
-    public virtual DbSet<Category> Categories { get; set; }
-
-    public virtual DbSet<Comment> Comments { get; set; }
+    public DbSet<Comment> Comments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
