@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PersonalWebsite.API.Data;
+using PersonalWebsite.API.Models.BlogPosts;
 
 namespace PersonalWebsite.API.Controllers
 {
@@ -14,38 +16,69 @@ namespace PersonalWebsite.API.Controllers
     public class BlogPostsController : ControllerBase
     {
         private readonly PersonalWebsiteDevelopmentDbContext _context;
+        private readonly ILogger<BlogPostsController> _logger;
+        private readonly IMapper _mapper;
 
-        public BlogPostsController(PersonalWebsiteDevelopmentDbContext context)
+        public BlogPostsController(PersonalWebsiteDevelopmentDbContext context, ILogger<BlogPostsController> logger, IMapper mapper)
         {
             _context = context;
+            _logger = logger;
+            _mapper = mapper;
         }
 
         // GET: api/BlogPosts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BlogPost>>> GetBlogPosts()
+        public async Task<ActionResult<IEnumerable<ReturnBlogPostDto>>> GetBlogPosts()
         {
-            return await _context.BlogPosts.ToListAsync();
+            try
+            {
+                // rawBlogPosts uses LINQ to retrieve User Data about the post
+                // and the AutoMapper should map ApplicationUser to BlogPostUser
+                // so I don't have any data memory leaks
+                var rawBlogPosts = await _context.BlogPosts.Include(e => e.User).ToListAsync();
+                var blogPosts = _mapper.Map<ReturnBlogPostDto>(rawBlogPosts);
+
+                return Ok(blogPosts);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Blog Posts GET: {ex.Message}");
+                return StatusCode(500);
+            }
         }
 
         // GET: api/BlogPosts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<BlogPost>> GetBlogPost(int id)
+        public async Task<ActionResult<ReturnBlogPostDto>> GetBlogPost(int id)
         {
-            var blogPost = await _context.BlogPosts.FindAsync(id);
-
-            if (blogPost == null)
+            try
             {
-                return NotFound();
-            }
+                var blogPost = await _context.BlogPosts.FindAsync(id);
 
-            return blogPost;
+                if (blogPost == null)
+                {
+                    return NotFound();
+                }
+
+                var blogPostDto = _mapper.Map<ReturnBlogPostDto>(blogPost);
+
+                return Ok(blogPostDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error in HTTP GET Method BlogPost: {ex.Message}");
+                return StatusCode(500);
+            }
+           
         }
 
         // PUT: api/BlogPosts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBlogPost(int id, BlogPost blogPost)
+        public async Task<IActionResult> PutBlogPost(int id, UpdateBlogPostDto blogPostDto)
         {
+            BlogPost blogPost = _mapper.Map<BlogPost>(blogPostDto);
+
             if (id != blogPost.Id)
             {
                 return BadRequest();
@@ -59,7 +92,7 @@ namespace PersonalWebsite.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BlogPostExists(id))
+                if (!await BlogPostExists(id))
                 {
                     return NotFound();
                 }
@@ -75,8 +108,10 @@ namespace PersonalWebsite.API.Controllers
         // POST: api/BlogPosts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<BlogPost>> PostBlogPost(BlogPost blogPost)
+        public async Task<ActionResult<ReturnBlogPostDto>> PostBlogPost(CreateBlogPostDto blogPostDto)
         {
+            BlogPost blogPost = _mapper.Map<BlogPost>(blogPostDto);
+
             _context.BlogPosts.Add(blogPost);
             try
             {
@@ -84,7 +119,7 @@ namespace PersonalWebsite.API.Controllers
             }
             catch (DbUpdateException)
             {
-                if (BlogPostExists(blogPost.Id))
+                if (await BlogPostExists(blogPost.Id))
                 {
                     return Conflict();
                 }
@@ -94,7 +129,7 @@ namespace PersonalWebsite.API.Controllers
                 }
             }
 
-            return CreatedAtAction("GetBlogPost", new { id = blogPost.Id }, blogPost);
+            return CreatedAtAction(nameof(GetBlogPost), new { id = blogPost.Id }, blogPost);
         }
 
         // DELETE: api/BlogPosts/5
@@ -113,9 +148,9 @@ namespace PersonalWebsite.API.Controllers
             return NoContent();
         }
 
-        private bool BlogPostExists(int id)
+        private async Task<bool> BlogPostExists(int id)
         {
-            return _context.BlogPosts.Any(e => e.Id == id);
+            return await _context.BlogPosts.AnyAsync(e => e.Id == id);
         }
     }
 }
