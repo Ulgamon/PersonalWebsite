@@ -16,6 +16,18 @@ public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext<App
     {
     }
 
+    public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+
+    public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }
+
+    public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+
+    public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+
+    public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+
+    public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
+
     public virtual DbSet<BlogPost> BlogPosts { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
@@ -35,6 +47,12 @@ public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext<App
             entity.Property(e => e.ImgUrl).HasMaxLength(250);
             entity.Property(e => e.Title).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.UserId).HasMaxLength(450);
+
+            entity.HasOne(d => d.User).WithMany(p => p.BlogPosts)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_BlogPosts_To_AspNetUser");
         });
 
         modelBuilder.Entity<Category>(entity =>

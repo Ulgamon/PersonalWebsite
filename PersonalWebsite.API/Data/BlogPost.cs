@@ -23,5 +23,7 @@ public partial class BlogPost
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
+    public virtual AspNetUser User { get; set; } = null!;
+
     public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
 }
