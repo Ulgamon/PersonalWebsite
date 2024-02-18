@@ -20,6 +20,9 @@ namespace PersonalWebsite.API.Configurations
 
             // Category Model Mapping
             CreateMap<Category, ReturnCategoryDto>().ReverseMap();
+            CreateMap<Category, ReturnCategoriesDto>().ReverseMap();
+            CreateMap<Category, UpdateCategoryDto>().ReverseMap();
+            CreateMap<Category, CreateCategoryDto>().ReverseMap();
         }
     }
 }

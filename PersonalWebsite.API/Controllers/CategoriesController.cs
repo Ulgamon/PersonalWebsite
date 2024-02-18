@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,17 +15,29 @@ namespace PersonalWebsite.API.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly PersonalWebsiteDevelopmentDbContext _context;
+        private readonly ILogger<PersonalWebsiteDevelopmentDbContext> _logger;
+        private readonly IMapper _mapper;
 
-        public CategoriesController(PersonalWebsiteDevelopmentDbContext context)
+        public CategoriesController(PersonalWebsiteDevelopmentDbContext context, ILogger<PersonalWebsiteDevelopmentDbContext> logger, IMapper mapper)
         {
             _context = context;
+            _logger = logger;
+            _mapper = mapper;
         }
 
         // GET: api/Categories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
-        {
-            return await _context.Categories.ToListAsync();
+        {   try
+            {
+                var categories = await _context.Categories.ToListAsync();
+                return Ok(categories);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, $"Could not GET Categories: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // GET: api/Categories/5
