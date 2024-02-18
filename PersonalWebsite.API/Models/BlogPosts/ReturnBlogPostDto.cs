@@ -1,4 +1,5 @@
 ﻿using PersonalWebsite.API.Data;
+using PersonalWebsite.API.Models.Categories;
 
 namespace PersonalWebsite.API.Models.BlogPosts
 {
@@ -16,6 +17,6 @@ namespace PersonalWebsite.API.Models.BlogPosts
 
         public string Title { get; set; } = null!;
 
-        public ICollection<Category> Categories { get; set; } = new List<Category>();
+        public ICollection<ReturnCategoryDto> Categories { get; set; } = new List<ReturnCategoryDto>();
     }
 }

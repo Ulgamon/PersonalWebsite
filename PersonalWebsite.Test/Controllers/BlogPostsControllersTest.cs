@@ -8,6 +8,7 @@ using PersonalWebsite.API.Configurations;
 using PersonalWebsite.API.Controllers;
 using PersonalWebsite.API.Data;
 using PersonalWebsite.API.Models.BlogPosts;
+using PersonalWebsite.API.Models.Categories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +41,25 @@ namespace PersonalWebsite.Test.Controllers
 
                 await databaseContext.SaveChangesAsync();
 
-                // CREATE 10 BLOG POSTS
+                // CREATE 10 Categories
+                if (await databaseContext.Categories.CountAsync() <= 0)
+                {
+                    for (int i = 1; i <= 10; i++)
+                    {
+                        await databaseContext.Categories.AddAsync(
+                            new Category
+                            {
+                                Id = i,
+                                CategoryName = $"Category {i}",
+                                Description = $"Description {i}"
+                            }
+                        );
+                    }
+
+                    await databaseContext.SaveChangesAsync();
+                }
+
+                // CREATE 10 BLOG POSTS AND ADD Categories to them
                 if (await databaseContext.BlogPosts.CountAsync() <= 0)
                 {
                     for (int i = 1; i <= 10; i++)
@@ -52,14 +71,16 @@ namespace PersonalWebsite.Test.Controllers
                                 BlogMdText = $"# Hello World {i}",
                                 Title = $"Good BlogPost {i}",
                                 ImgUrl = $"http://localhost:1333/img{i}",
-                                UserId = "toja"
+                                UserId = "toja",
+                                Categories = new List<Category>
+                                {
+                                    await databaseContext.Categories.FindAsync(i),
+                                }
                             }
                         );
-
-                        await databaseContext.SaveChangesAsync();
                     }
+                    await databaseContext.SaveChangesAsync();
                 }
-
             }
             catch (Exception ex)
             {
@@ -85,6 +106,9 @@ namespace PersonalWebsite.Test.Controllers
             });
             _mapper = mapperConfig.CreateMapper();
         }
+
+
+        // Tests FOR SINGLE POST FETCHED BY ID
         [Fact]
         public async void BlogPostsController_Http_Get_BlogPost()
         {
@@ -102,7 +126,10 @@ namespace PersonalWebsite.Test.Controllers
             ReturnBlogPostDto model = Assert.IsType<ReturnBlogPostDto>(okObjectResult.Value);
             Assert.NotNull(model);
             Assert.True(model.Id == id);
-        }
+            Assert.IsType<List<ReturnCategoryDto>>(model.Categories);
+            Assert.True(model.Categories.Count == 1);
+            Assert.True(model.Categories.ElementAt(0).Id == id);
+        }    
 
         [Fact]
         public async void BlogPostsController_Http_Get_NonExistent_BlogPost()
@@ -119,7 +146,7 @@ namespace PersonalWebsite.Test.Controllers
             ReturnBlogPostDto? blogPost = response.Value;
 
             // Assert
-            Assert.Null(blogPost);
+            NotFoundObjectResult notFoundObjectResult = Assert.IsType<NotFoundObjectResult>(response.Result);
             //response.
         }
 
@@ -179,7 +206,7 @@ namespace PersonalWebsite.Test.Controllers
             PaginateBlogPostsDto model = Assert.IsType<PaginateBlogPostsDto>(okObjectResult.Value);
             Assert.NotNull(model);
             Assert.Single(model.blogPostsDtos);
-            Assert.Equal(10, model.blogPostsDtos.ElementAt(0).Id);
+            Assert.Equal(1, model.blogPostsDtos.ElementAt(0).Id);
             Assert.False(model.hasNext);
             Assert.True(model.hasPrev);
         }

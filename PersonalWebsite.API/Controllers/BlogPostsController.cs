@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PersonalWebsite.API.Data;
 using PersonalWebsite.API.Models.BlogPosts;
+using PersonalWebsite.API.Models.Categories;
 
 namespace PersonalWebsite.API.Controllers
 {
@@ -85,7 +86,10 @@ namespace PersonalWebsite.API.Controllers
         {
             try
             {
-                var blogPost = await _context.BlogPosts.Include(e => e.Categories).SingleAsync(e => e.Id == id);
+                var blogPost = await _context.BlogPosts
+                    // Automapper used for mapping Category Model to ReturnCategoryDto Model
+                    .Include(e => e.Categories)
+                    .SingleAsync(e => e.Id == id);
 
                 if (blogPost == null)
                 {

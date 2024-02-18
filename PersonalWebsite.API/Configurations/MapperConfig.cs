@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PersonalWebsite.API.Data;
 using PersonalWebsite.API.Models.BlogPosts;
+using PersonalWebsite.API.Models.Categories;
 using PersonalWebsite.API.Models.Users;
 
 namespace PersonalWebsite.API.Configurations
@@ -16,6 +17,9 @@ namespace PersonalWebsite.API.Configurations
             CreateMap<BlogPost, UpdateBlogPostDto>().ReverseMap();
             // User Model Mapping
             CreateMap<ApplicationUser, BlogPostUserDto>().ReverseMap();
+
+            // Category Model Mapping
+            CreateMap<Category, ReturnCategoryDto>().ReverseMap();
         }
     }
 }
