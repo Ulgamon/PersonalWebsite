@@ -1,4 +1,6 @@
-﻿namespace PersonalWebsite.API.Models.Categories
+﻿using PersonalWebsite.API.Models.BlogPosts;
+
+namespace PersonalWebsite.API.Models.Categories
 {
     public class ReturnCategoryDto
     {
@@ -8,6 +10,5 @@
 
         public string Description { get; set; } = null!;
 
-        public int NumberOfBlogPosts { get; set; }
     }
 }

@@ -10,6 +10,10 @@ namespace PersonalWebsite.API.Models.Categories
 
         public string Description { get; set; } = null!;
 
-        public ICollection<BlogPost> BlogPosts { get; set; } = new List<BlogPost>();
+        public int NumberOfBlogPosts { get; set; }
+
+        public bool HasPrev { get; set; }
+
+        public bool HasNext { get; set; }
     }
 }

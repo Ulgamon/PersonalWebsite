@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PersonalWebsite.API.Data;
+using PersonalWebsite.API.Models.Categories;
 
 namespace PersonalWebsite.API.Controllers
 {
@@ -15,10 +16,10 @@ namespace PersonalWebsite.API.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly PersonalWebsiteDevelopmentDbContext _context;
-        private readonly ILogger<PersonalWebsiteDevelopmentDbContext> _logger;
+        private readonly ILogger<CategoriesController> _logger;
         private readonly IMapper _mapper;
 
-        public CategoriesController(PersonalWebsiteDevelopmentDbContext context, ILogger<PersonalWebsiteDevelopmentDbContext> logger, IMapper mapper)
+        public CategoriesController(PersonalWebsiteDevelopmentDbContext context, ILogger<CategoriesController> logger, IMapper mapper)
         {
             _context = context;
             _logger = logger;
@@ -27,103 +28,106 @@ namespace PersonalWebsite.API.Controllers
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
-        {   try
-            {
-                var categories = await _context.Categories.ToListAsync();
-                return Ok(categories);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError(ex, $"Could not GET Categories: {ex.Message}");
-                return StatusCode(500, ex.Message);
-            }
-        }
-
-        // GET: api/Categories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetCategory(int id)
-        {
-            var category = await _context.Categories.FindAsync(id);
-
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return category;
-        }
-
-        // PUT: api/Categories/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory(int id, Category category)
-        {
-            if (id != category.Id)
+        public async Task<ActionResult<IList<ReturnCategoriesDto>>> GetCategories(int size = 5, int page = 1)
+        {   
+            // Will be used only for fetching couple of categories on page with number of blog posts that it has
+            if (size < 1 || page < 1)
             {
                 return BadRequest();
             }
 
-            _context.Entry(category).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                bool hasNext = true;
+                bool hasPrev = page > 1;
 
-            return NoContent();
+                int categoriesCount = await _context.BlogPosts.CountAsync();
+
+                // it is size * page because I need to check one page in advance
+                if (size * page > categoriesCount)
+                {
+                    hasNext = false;
+                }
+
+                // # To do
+                int howManyToSkip = size * (page - 1);
+
+                if (howManyToSkip >= categoriesCount)
+                    return BadRequest("Out of range page and/or size parameters.");
+
+                var categories = await _context.Categories
+                    .Include(e => e.BlogPosts)
+                    .Skip(howManyToSkip)
+                    .Take(size)
+                    .ToListAsync();
+
+                var categoriesDto = _mapper.Map<ReturnCategoriesDto>(categories);
+
+                return Ok(categoriesDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Blog Posts GET: {ex.Message}");
+                if (ex.GetBaseException() is DbUpdateException)
+                {
+                    return BadRequest();
+                }
+                return StatusCode(500);
+            }
+        }
+
+        // GET: api/Categories/5
+        // GET REQUEST THAT WILL RETURN BLOGPOST
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<ReturnCategoryDto>> GetCategory(int id)
+        //{
+        //    try
+        //    {
+        //        if (!await CategoryExists(id))
+        //        {
+        //            return BadRequest();
+        //        }
+        //        var category = _context.Categories
+        //            .Include(e => e.BlogPosts)
+        //            .SingleAsync(e => e.Id == id); ;
+
+        //        var categoryDto = _mapper.Map<ReturnCategoryDto>(category);
+
+        //        return Ok(categoryDto);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, $"Blog Posts GET: {ex.Message}");
+        //        if (ex.GetBaseException() is DbUpdateException)
+        //        {
+        //            return BadRequest();
+        //        }
+        //        return StatusCode(500);
+        //    }
+
+        //}
+
+        //PUT: api/Categories/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCategory(int id, UpdateCategoryDto categoryDto)
+        {
+            return Ok();
         }
 
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult> PostCategory(CreateCategoryDto categoryDto)
         {
-            _context.Categories.Add(category);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (await CategoryExists(category.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return Ok();
         }
 
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok();
         }
 
         private async Task<bool> CategoryExists(int id)
