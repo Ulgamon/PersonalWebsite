@@ -86,15 +86,14 @@ namespace PersonalWebsite.API.Controllers
         {
             try
             {
+                if (!await BlogPostExists(id))
+                {
+                    return NotFound();
+                }
                 var blogPost = await _context.BlogPosts
                     // Automapper used for mapping Category Model to ReturnCategoryDto Model
                     .Include(e => e.Categories)
                     .SingleAsync(e => e.Id == id);
-
-                if (blogPost == null)
-                {
-                    return NotFound();
-                }
 
                 ReturnBlogPostDto blogPostDto = _mapper.Map<ReturnBlogPostDto>(blogPost);
 
@@ -102,6 +101,10 @@ namespace PersonalWebsite.API.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.GetBaseException() is InvalidOperationException)
+                {
+                    return NotFound();
+                }
                 _logger.LogError(ex, $"Error in HTTP GET Method BlogPost: {ex.Message}");
                 return StatusCode(500);
             }
@@ -111,77 +114,85 @@ namespace PersonalWebsite.API.Controllers
         // PUT: api/BlogPosts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBlogPost(int id, UpdateBlogPostDto blogPostDto)
+        public async Task<ActionResult> PutBlogPost(int id, UpdateBlogPostDto blogPostDto)
         {
-            BlogPost blogPost = _mapper.Map<BlogPost>(blogPostDto);
-
-            if (id != blogPost.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(blogPost).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await BlogPostExists(id))
+                if (id != blogPostDto.Id)
                 {
-                    return NotFound();
+                    return BadRequest();
                 }
-                else
-                {
-                    throw;
-                }
-            }
 
-            return NoContent();
+                BlogPost? blogPost = await _context.BlogPosts.FindAsync(id);
+
+                if (blogPost != null)
+                {
+                    blogPost.BlogMdText = blogPostDto.BlogMdText;
+                    blogPost.ImgUrl = blogPostDto.ImgUrl;
+                    blogPost.Title = blogPostDto.Title;
+
+                    await _context.SaveChangesAsync();
+
+                    return NoContent();
+                }
+
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Cannot UPDATE Blog Post: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // POST: api/BlogPosts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ReturnBlogPostDto>> PostBlogPost(CreateBlogPostDto blogPostDto)
+        public async Task<ActionResult> PostBlogPost(CreateBlogPostDto blogPostDto)
         {
+
             BlogPost blogPost = _mapper.Map<BlogPost>(blogPostDto);
 
             _context.BlogPosts.Add(blogPost);
+
             try
             {
                 await _context.SaveChangesAsync();
+                return Created();
             }
-            catch (DbUpdateException)
+            catch (Exception ex)
             {
-                if (await BlogPostExists(blogPost.Id))
+                _logger.LogError(ex, $"Cannot POST Blog Post: {ex.Message}");
+                if (ex.GetBaseException() is DbUpdateException)
                 {
-                    return Conflict();
+                    return BadRequest(ex.Message);
                 }
-                else
-                {
-                    throw;
-                }
-            }
+                return StatusCode(500, ex.Message);
+            }            
 
-            return CreatedAtAction(nameof(GetBlogPost), new { id = blogPost.Id }, blogPost);
         }
 
         // DELETE: api/BlogPosts/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBlogPost(int id)
+        public async Task<ActionResult> DeleteBlogPost(int id)
         {
             var blogPost = await _context.BlogPosts.FindAsync(id);
             if (blogPost == null)
             {
                 return NotFound();
             }
+            try
+            {
+                _context.BlogPosts.Remove(blogPost);
+                await _context.SaveChangesAsync();
 
-            _context.BlogPosts.Remove(blogPost);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+                return NoContent();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, $"Cannot POST Blog Post: {ex.Message}");
+                return StatusCode(500, ex.Message);
+            }
         }
 
         private async Task<bool> BlogPostExists(int id)

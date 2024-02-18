@@ -110,7 +110,7 @@ namespace PersonalWebsite.Test.Controllers
 
         // Tests FOR SINGLE POST FETCHED BY ID
         [Fact]
-        public async void BlogPostsController_Http_Get_BlogPost()
+        public async void Http_Get_BlogPost()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -132,7 +132,7 @@ namespace PersonalWebsite.Test.Controllers
         }    
 
         [Fact]
-        public async void BlogPostsController_Http_Get_NonExistent_BlogPost()
+        public async void Http_Get_NonExistent_BlogPost()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -146,13 +146,13 @@ namespace PersonalWebsite.Test.Controllers
             ReturnBlogPostDto? blogPost = response.Value;
 
             // Assert
-            NotFoundObjectResult notFoundObjectResult = Assert.IsType<NotFoundObjectResult>(response.Result);
+            NotFoundResult notFoundResult = Assert.IsType<NotFoundResult>(response.Result);
             //response.
         }
 
         // TESTS FOR HTTP GET ROUTE "/api/BlogPosts" which can take parameters "page" and "size"
         [Fact]
-        public async void BlogPostsController_Http_Get_BlogPosts()
+        public async void Http_Get_BlogPosts()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -171,7 +171,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void BlogPostsController_Http_Get_BlogPosts_WithQueryParameter_ThirdPage()
+        public async void Http_Get_BlogPosts_WithQueryParameter_ThirdPage()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -185,14 +185,14 @@ namespace PersonalWebsite.Test.Controllers
             PaginateBlogPostsDto model = Assert.IsType<PaginateBlogPostsDto>(okObjectResult.Value);
             Assert.NotNull(model);
             Assert.Equal(3, model.blogPostsDtos.Count);
-            Assert.Equal(7, model.blogPostsDtos.ElementAt(0).Id);
-            Assert.Equal(8, model.blogPostsDtos.ElementAt(1).Id);
-            Assert.Equal(9, model.blogPostsDtos.ElementAt(2).Id);
+            Assert.Equal(4, model.blogPostsDtos.ElementAt(0).Id);
+            Assert.Equal(3, model.blogPostsDtos.ElementAt(1).Id);
+            Assert.Equal(2, model.blogPostsDtos.ElementAt(2).Id);
             Assert.True(model.hasNext);
             Assert.True(model.hasPrev);
         }
         [Fact]
-        public async void BlogPostsController_Http_Get_BlogPosts_WithQueryParameter_FourthPage()
+        public async void Http_Get_BlogPosts_WithQueryParameter_FourthPage()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -212,7 +212,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void BlogPostsController_Http_Get_BlogPosts_WithQueryParameter_FifthPage()
+        public async void Http_Get_BlogPosts_WithQueryParameter_FifthPage()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -228,7 +228,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void BlogPostsController_Http_Get_BlogPosts_WithQueryParameter_InvalidPageAndSize()
+        public async void Http_Get_BlogPosts_WithQueryParameter_InvalidPageAndSize()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -241,6 +241,131 @@ namespace PersonalWebsite.Test.Controllers
             BadRequestObjectResult errorObjectResult = Assert.IsType<BadRequestObjectResult>(response.Result);
             Assert.True("Invalid size and/or page params should be size >= 1 and page >= 1." == errorObjectResult.Value);
 
+        }
+
+        // TEST HTTP PUT REQUEST
+
+        [Fact]
+        public async void HttpPut_Update_Existing_BlogPost_Successfully()
+        {
+            // To do
+            // After Auth Controller Tests check for authorization and authentication
+            // Arrange
+            var context = await GetDatabaseContext();
+            BlogPostsController controller = new BlogPostsController(context, _logger, _mapper);
+
+            // Act
+            int id = 5;
+            UpdateBlogPostDto updateBlogPostDto = new UpdateBlogPostDto
+            {
+                Id = id,
+                Title = "UPDATED BLOG POST",
+                BlogMdText = "# UPDATED BLOG POST",
+                ImgUrl = "image"
+            };
+
+            ActionResult response = await controller.PutBlogPost(id, updateBlogPostDto);
+
+            // Assert
+            NoContentResult okObjectResult = Assert.IsType<NoContentResult>(response);
+            BlogPost? model = await context.BlogPosts.FindAsync(id);
+            Assert.NotNull(model);
+            Assert.IsType<BlogPost>(model);
+            Assert.True(updateBlogPostDto.Id == model.Id);
+            Assert.True(updateBlogPostDto.Title == model.Title);
+            Assert.True(updateBlogPostDto.BlogMdText == model.BlogMdText);
+            Assert.True(updateBlogPostDto.ImgUrl == model.ImgUrl);
+        }
+
+        [Fact]
+        public async void HttpPut_Update_NonExisting_BlogPost()
+        {
+            // To do
+            // After Auth Controller Tests check for authorization and authentication
+            // Arrange
+            var context = await GetDatabaseContext();
+            BlogPostsController controller = new BlogPostsController(context, _logger, _mapper);
+
+            // Act
+            int id = 50;
+            UpdateBlogPostDto updateBlogPostDto = new UpdateBlogPostDto
+            {
+                Id = id,
+                Title = "UPDATED BLOG POST",
+                BlogMdText = "# UPDATED BLOG POST",
+                ImgUrl = "image"
+            };
+
+            ActionResult response = await controller.PutBlogPost(id, updateBlogPostDto);
+
+            // Assert
+            BadRequestResult okResult = Assert.IsType<BadRequestResult>(response);
+            BlogPost? model = await context.BlogPosts.FindAsync(id);
+            Assert.Null(model);
+        }
+
+
+        // Test POST REQUEST
+        [Fact]
+        public async void Http_Create_BlogPost_With_Good_Params()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            BlogPostsController controller = new BlogPostsController(context, _logger, _mapper);
+
+            // Act
+            CreateBlogPostDto blogPostDto = new CreateBlogPostDto
+            {
+                Title = "Tojica mojica",
+                BlogMdText = "jeste bas je tako.",
+                ImgUrl = "image123"
+            };
+
+            int id = 11;
+
+            ActionResult response = await controller.PostBlogPost(blogPostDto);
+            BlogPost? rBlogPostDto = await context.BlogPosts.FindAsync(id);
+            ReturnBlogPostDto model = _mapper.Map<ReturnBlogPostDto>(rBlogPostDto);
+
+            // Assert
+            CreatedResult createdAtActionResult = Assert.IsType<CreatedResult>(response);
+            Assert.NotNull(model);
+            Assert.True(model.Title == blogPostDto.Title);
+            Assert.True(model.BlogMdText == blogPostDto.BlogMdText);
+            Assert.True(model.ImgUrl == blogPostDto.ImgUrl);
+        }
+
+        // TESTS FOR DELETE
+        [Fact]
+        public async void Http_Delete_Blog_Post_SuccessFully()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            BlogPostsController controller = new BlogPostsController(context, _logger, _mapper);
+            int id = 5;
+
+            // Act
+            ActionResult response = await controller.DeleteBlogPost(id);
+
+            BlogPost? model = await context.BlogPosts.FindAsync(id);
+            // Assert
+            Assert.IsType<NoContentResult>(response);
+            Assert.Null(model);
+        }
+
+        [Fact]
+        public async void Http_Delete_Blog_Post_That_DoesNotExist()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            BlogPostsController controller = new BlogPostsController(context, _logger, _mapper);
+            int id = 50;
+
+            // Act
+            ActionResult response = await controller.DeleteBlogPost(id);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(response);
         }
     }
 }
