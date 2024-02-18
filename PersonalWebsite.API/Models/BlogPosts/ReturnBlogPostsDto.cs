@@ -1,8 +1,6 @@
-﻿using PersonalWebsite.API.Data;
-
-namespace PersonalWebsite.API.Models.BlogPosts
+﻿namespace PersonalWebsite.API.Models.BlogPosts
 {
-    public class ReturnBlogPostDto
+    public class ReturnBlogPostsDto
     {
         public int Id { get; set; }
 
@@ -15,7 +13,5 @@ namespace PersonalWebsite.API.Models.BlogPosts
         public DateTime UpdatedDate { get; set; }
 
         public string Title { get; set; } = null!;
-
-        public ICollection<Category> Categories { get; set; } = new List<Category>();
     }
 }

@@ -59,7 +59,7 @@ namespace PersonalWebsite.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(id))
+                if (!await CategoryExists(id))
                 {
                     return NotFound();
                 }
@@ -84,7 +84,7 @@ namespace PersonalWebsite.API.Controllers
             }
             catch (DbUpdateException)
             {
-                if (CategoryExists(category.Id))
+                if (await CategoryExists(category.Id))
                 {
                     return Conflict();
                 }
@@ -113,9 +113,9 @@ namespace PersonalWebsite.API.Controllers
             return NoContent();
         }
 
-        private bool CategoryExists(int id)
+        private async Task<bool> CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return await _context.Categories.AnyAsync(e => e.Id == id);
         }
     }
 }

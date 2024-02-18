@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -28,6 +30,7 @@ namespace PersonalWebsite.Test.Controllers
             await databaseContext.Database.EnsureCreatedAsync();
             try
             {
+                // Create ONE DEFAULT USER FOR INMEMORYDATABASE
                 await databaseContext.Users.AddAsync(new ApplicationUser
                 {
                     Id = "toja",
@@ -37,6 +40,7 @@ namespace PersonalWebsite.Test.Controllers
 
                 await databaseContext.SaveChangesAsync();
 
+                // CREATE 10 BLOG POSTS
                 if (await databaseContext.BlogPosts.CountAsync() <= 0)
                 {
                     for (int i = 1; i <= 10; i++)
@@ -55,6 +59,7 @@ namespace PersonalWebsite.Test.Controllers
                         await databaseContext.SaveChangesAsync();
                     }
                 }
+
             }
             catch (Exception ex)
             {
@@ -71,9 +76,14 @@ namespace PersonalWebsite.Test.Controllers
             var loggerMock = new Mock<ILogger<BlogPostsController>>();
             _logger = loggerMock.Object;
 
-            // Mock IMapper Interface
-            var mapperMock = new Mock<IMapper>();
-            _mapper = mapperMock.Object;
+            //// Mock IMapper Interface maybe this is the error
+            //var mapperMock = new Mock<IMapper>();
+            //_mapper = mapperMock.Object;
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MapperConfig>();
+            });
+            _mapper = mapperConfig.CreateMapper();
         }
         [Fact]
         public async void BlogPostsController_Http_Get_BlogPost()
@@ -85,14 +95,13 @@ namespace PersonalWebsite.Test.Controllers
 
             // Act
 
-            var response = await controller.GetBlogPost(id);
-
-            ReturnBlogPostDto? blogPost = response.Value;
+            ActionResult<ReturnBlogPostDto> response = await controller.GetBlogPost(id);
 
             // Assert
-            Assert.NotNull(blogPost);
-            Assert.Equal(typeof(ReturnBlogPostDto), blogPost.GetType());
-            Assert.Equal(blogPost.Id, id);
+            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
+            ReturnBlogPostDto model = Assert.IsType<ReturnBlogPostDto>(okObjectResult.Value);
+            Assert.NotNull(model);
+            Assert.True(model.Id == id);
         }
 
         [Fact]
@@ -114,6 +123,7 @@ namespace PersonalWebsite.Test.Controllers
             //response.
         }
 
+        // TESTS FOR HTTP GET ROUTE "/api/BlogPosts" which can take parameters "page" and "size"
         [Fact]
         public async void BlogPostsController_Http_Get_BlogPosts()
         {
@@ -122,11 +132,88 @@ namespace PersonalWebsite.Test.Controllers
             BlogPostsController controller = new BlogPostsController(context, _logger, _mapper);
 
             // Act
-            var response = await controller.GetBlogPosts();
-            IEnumerable<ReturnBlogPostDto>? blogPosts = response.Value;
+            ActionResult<PaginateBlogPostsDto> response = await controller.GetBlogPosts();
 
             // Assert
-            Assert.Equal(10, blogPosts?.Count());
+            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
+            PaginateBlogPostsDto model = Assert.IsType<PaginateBlogPostsDto>(okObjectResult.Value);
+            Assert.NotNull(model);
+            Assert.Equal(3, model.blogPostsDtos.Count);
+            Assert.True(model.hasNext);
+            Assert.False(model.hasPrev);
+        }
+
+        [Fact]
+        public async void BlogPostsController_Http_Get_BlogPosts_WithQueryParameter_ThirdPage()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            BlogPostsController controller = new BlogPostsController(context, _logger, _mapper);
+
+            // Act
+            ActionResult<PaginateBlogPostsDto> response = await controller.GetBlogPosts(3, 3);
+
+            // Assert
+            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
+            PaginateBlogPostsDto model = Assert.IsType<PaginateBlogPostsDto>(okObjectResult.Value);
+            Assert.NotNull(model);
+            Assert.Equal(3, model.blogPostsDtos.Count);
+            Assert.Equal(7, model.blogPostsDtos.ElementAt(0).Id);
+            Assert.Equal(8, model.blogPostsDtos.ElementAt(1).Id);
+            Assert.Equal(9, model.blogPostsDtos.ElementAt(2).Id);
+            Assert.True(model.hasNext);
+            Assert.True(model.hasPrev);
+        }
+        [Fact]
+        public async void BlogPostsController_Http_Get_BlogPosts_WithQueryParameter_FourthPage()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            BlogPostsController controller = new BlogPostsController(context, _logger, _mapper);
+
+            // Act
+            ActionResult<PaginateBlogPostsDto> response = await controller.GetBlogPosts(3, 4);
+
+            // Assert
+            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
+            PaginateBlogPostsDto model = Assert.IsType<PaginateBlogPostsDto>(okObjectResult.Value);
+            Assert.NotNull(model);
+            Assert.Single(model.blogPostsDtos);
+            Assert.Equal(10, model.blogPostsDtos.ElementAt(0).Id);
+            Assert.False(model.hasNext);
+            Assert.True(model.hasPrev);
+        }
+
+        [Fact]
+        public async void BlogPostsController_Http_Get_BlogPosts_WithQueryParameter_FifthPage()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            BlogPostsController controller = new BlogPostsController(context, _logger, _mapper);
+
+            // Act
+            ActionResult<PaginateBlogPostsDto> response = await controller.GetBlogPosts(3, 5);
+
+            // Assert
+            BadRequestObjectResult errorObjectResult = Assert.IsType<BadRequestObjectResult>(response.Result);
+            Assert.True("Out of range page and/or size parameters." == errorObjectResult.Value);
+            
+        }
+
+        [Fact]
+        public async void BlogPostsController_Http_Get_BlogPosts_WithQueryParameter_InvalidPageAndSize()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            BlogPostsController controller = new BlogPostsController(context, _logger, _mapper);
+
+            // Act
+            ActionResult<PaginateBlogPostsDto> response = await controller.GetBlogPosts(-3, -5);
+
+            // Assert
+            BadRequestObjectResult errorObjectResult = Assert.IsType<BadRequestObjectResult>(response.Result);
+            Assert.True("Invalid size and/or page params should be size >= 1 and page >= 1." == errorObjectResult.Value);
+
         }
     }
 }

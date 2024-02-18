@@ -28,17 +28,49 @@ namespace PersonalWebsite.API.Controllers
 
         // GET: api/BlogPosts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ReturnBlogPostDto>>> GetBlogPosts()
+        public async Task<ActionResult<PaginateBlogPostsDto>> GetBlogPosts(int size = 3, int page = 1)
         {
+            if (size < 1 || page < 1)
+                return BadRequest("Invalid size and/or page params should be size >= 1 and page >= 1.");
             try
             {
-                // rawBlogPosts uses LINQ to retrieve User Data about the post
+                bool hasNext = true;
+                bool hasPrev = page > 1;
                 // and the AutoMapper should map ApplicationUser to BlogPostUser
                 // so I don't have any data memory leaks
-                var rawBlogPosts = await _context.BlogPosts.Include(e => e.User).ToListAsync();
-                var blogPosts = _mapper.Map<ReturnBlogPostDto>(rawBlogPosts);
+                // BLOG POSTS ARE RETURNED IN A CREATED DATE DESCENDING ORDER
 
-                return Ok(blogPosts);
+                int blogsCount = await _context.BlogPosts.CountAsync();
+
+                // it is size * page because I need to check one page in advance
+                if (size * page > blogsCount)
+                {
+                    hasNext = false;
+                }
+
+                // # To do
+                int howManyToSkip = size * (page - 1);
+
+                if (howManyToSkip >= blogsCount)
+                    return BadRequest("Out of range page and/or size parameters.");
+
+                // Add pagination with .Skip() and .Take()
+                List<BlogPost> rawBlogPosts = await _context.BlogPosts
+                    .OrderByDescending(e => e.CreatedDate)
+                    .Skip(howManyToSkip)
+                    .Take(size)
+                    .ToListAsync();
+
+                List<ReturnBlogPostsDto> blogPosts = _mapper.Map<List<ReturnBlogPostsDto>>(rawBlogPosts);
+
+                PaginateBlogPostsDto result = new PaginateBlogPostsDto
+                {
+                    blogPostsDtos = blogPosts,
+                    hasPrev = hasPrev,
+                    hasNext = hasNext
+                };
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -53,14 +85,14 @@ namespace PersonalWebsite.API.Controllers
         {
             try
             {
-                var blogPost = await _context.BlogPosts.FindAsync(id);
+                var blogPost = await _context.BlogPosts.Include(e => e.Categories).SingleAsync(e => e.Id == id);
 
                 if (blogPost == null)
                 {
                     return NotFound();
                 }
 
-                var blogPostDto = _mapper.Map<ReturnBlogPostDto>(blogPost);
+                ReturnBlogPostDto blogPostDto = _mapper.Map<ReturnBlogPostDto>(blogPost);
 
                 return Ok(blogPostDto);
             }

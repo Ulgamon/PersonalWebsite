@@ -11,6 +11,7 @@ namespace PersonalWebsite.API.Configurations
         {
             // Blog Posts Mapping
             CreateMap<BlogPost, ReturnBlogPostDto>().ReverseMap();
+            CreateMap<BlogPost, ReturnBlogPostsDto>().ReverseMap();
             CreateMap<BlogPost, CreateBlogPostDto>().ReverseMap();
             CreateMap<BlogPost, UpdateBlogPostDto>().ReverseMap();
             // User Model Mapping
