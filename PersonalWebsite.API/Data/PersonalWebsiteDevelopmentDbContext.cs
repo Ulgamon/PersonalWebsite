@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -66,6 +67,22 @@ public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext<App
                         j.ToTable("BlogsCategories");
                     });
         });
+
+        // Add Roles
+        modelBuilder.Entity<IdentityRole>().HasData(
+            new IdentityRole
+            {
+                Name = "User",
+                NormalizedName = "USER",
+                Id = "f2a04be0-60e2-4835-b0ea-4ac09e8449c5"
+            },
+            new IdentityRole
+            {
+                Name = "Administrator",
+                NormalizedName = "ADMINISTRATOR",
+                Id = "5424f84e-ebad-491f-bf86-96903dbaf476"
+            }
+        );
 
         modelBuilder.Entity<Comment>(entity =>
         {

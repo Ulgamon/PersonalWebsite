@@ -17,6 +17,7 @@ namespace PersonalWebsite.API.Configurations
             CreateMap<BlogPost, UpdateBlogPostDto>().ReverseMap();
             // User Model Mapping
             CreateMap<ApplicationUser, BlogPostUserDto>().ReverseMap();
+            CreateMap<ApplicationUser, LoginApplicationUserDto>().ReverseMap();
 
             // Category Model Mapping
             CreateMap<Category, ReturnCategoryDto>().ReverseMap();
