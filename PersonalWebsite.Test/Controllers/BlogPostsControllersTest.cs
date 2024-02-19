@@ -223,7 +223,7 @@ namespace PersonalWebsite.Test.Controllers
 
             // Assert
             BadRequestObjectResult errorObjectResult = Assert.IsType<BadRequestObjectResult>(response.Result);
-            Assert.True("Out of range page and/or size parameters." == errorObjectResult.Value);
+            Assert.Equal ("Out of range page and/or size parameters.", errorObjectResult.Value);
             
         }
 
@@ -239,7 +239,7 @@ namespace PersonalWebsite.Test.Controllers
 
             // Assert
             BadRequestObjectResult errorObjectResult = Assert.IsType<BadRequestObjectResult>(response.Result);
-            Assert.True("Invalid size and/or page params should be size >= 1 and page >= 1." == errorObjectResult.Value);
+            Assert.Equal("Invalid size and/or page params should be size >= 1 and page >= 1.", errorObjectResult.Value);
 
         }
 

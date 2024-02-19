@@ -24,8 +24,8 @@ namespace PersonalWebsite.API.Configurations
                 .ForMember(
                     dest => dest.NumberOfBlogPosts, 
                     opt => opt.MapFrom(src => src.BlogPosts.Count)
-                )
-                .ReverseMap();
+                );
+            CreateMap<ReturnCategoriesDto, Category>();
             CreateMap<Category, UpdateCategoryDto>().ReverseMap();
             CreateMap<Category, CreateCategoryDto>().ReverseMap();
         }

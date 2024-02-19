@@ -116,7 +116,7 @@ namespace PersonalWebsite.Test.Controllers
             ActionResult<IList<ReturnCategoriesDto>> categories = await controller.GetCategories();
             // Assert
             OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(categories.Result);
-            IList<ReturnCategoriesDto> models = Assert.IsType<IList<ReturnCategoriesDto>>(okObjectResult.Value);
+            List<ReturnCategoriesDto> models = Assert.IsType<List<ReturnCategoriesDto>>(okObjectResult.Value);
             Assert.NotNull(models);
             Assert.True(models.Count() == 5);
             Assert.True(1 == models.First().NumberOfBlogPosts);
@@ -133,7 +133,7 @@ namespace PersonalWebsite.Test.Controllers
             ActionResult<IList<ReturnCategoriesDto>> categories = await controller.GetCategories(12, 1);
             // Assert
             OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(categories.Result);
-            IList<ReturnCategoriesDto> models = Assert.IsType<IList<ReturnCategoriesDto>>(okObjectResult.Value);
+            List<ReturnCategoriesDto> models = Assert.IsType<List<ReturnCategoriesDto>>(okObjectResult.Value);
             Assert.NotNull(models);
             Assert.True(models.Count() == 10);
 
@@ -150,7 +150,7 @@ namespace PersonalWebsite.Test.Controllers
             // Act
             ActionResult<IList<ReturnCategoriesDto>> categories = await controller.GetCategories(12, 3);
             // Assert
-            Assert.IsType<BadRequestResult>(categories.Result);
+            Assert.IsType<BadRequestObjectResult>(categories.Result);
         }
 
         [Fact]
@@ -185,7 +185,7 @@ namespace PersonalWebsite.Test.Controllers
             var response = await controller.PutCategory(id, model);
 
             // Assert
-            Assert.IsType<OkObjectResult>(response);
+            Assert.IsType<OkResult>(response);
             Category? dbModel = await context.Categories.FindAsync(id);
             Assert.NotNull(dbModel);
             Assert.True(dbModel.Id == model.Id);
@@ -201,7 +201,7 @@ namespace PersonalWebsite.Test.Controllers
             var controller = new CategoriesController(context, _logger, _mapper);
 
             // Act
-            int id = 5;
+            int id = 50;
             UpdateCategoryDto model = new UpdateCategoryDto
             {
                 Id = id,
@@ -254,7 +254,7 @@ namespace PersonalWebsite.Test.Controllers
 
             // Assert
             Assert.IsType<OkResult>(response);
-            int maxId = await context.Categories.MaxAsync(e => e.Id);
+            int maxId = await context.Categories.MinAsync(e => e.Id);
 
             Category createdModel = await context.Categories
                 .Where(e => e.Id == maxId)
@@ -274,21 +274,18 @@ namespace PersonalWebsite.Test.Controllers
             // Act
             CreateCategoryDto createModel = new CreateCategoryDto
             {
-                CategoryName = "KA",
-                Description = "Odllicna Kategorija"
+               
             };
-            var response = await controller.PostCategory(createModel);
+            var response = await controller.PostCategory(new CreateCategoryDto { });
 
             // Assert
             Assert.IsType<BadRequestResult>(response);
-            int maxId = await context.Categories.MaxAsync(e => e.Id);
+            int maxId = await context.Categories.MinAsync(e => e.Id);
 
             Category createdModel = await context.Categories
                 .Where(e => e.Id == maxId)
                 .FirstAsync();
-            Assert.NotNull(createdModel);
-            Assert.True(createdModel.CategoryName == createModel.CategoryName);
-            Assert.True(createdModel.Description == createModel.Description);
+            Assert.Null(createdModel);
         }
 
         [Fact]
@@ -303,9 +300,24 @@ namespace PersonalWebsite.Test.Controllers
             IActionResult response = await controller.DeleteCategory(id);
 
             // Assert
-            Assert.IsType<OkObjectResult>(response);
+            Assert.IsType<OkResult>(response);
             Category? model = await context.Categories.FindAsync(id);
             Assert.Null(model);
+        }
+
+        [Fact]
+        public async void Http_DELETE_Category_With_Incorrect_Id()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            var controller = new CategoriesController(context, _logger, _mapper);
+
+            // Act
+            int id = 30;
+            IActionResult response = await controller.DeleteCategory(id);
+
+            // Assert
+            Assert.IsType<NotFoundResult>(response);
         }
     }
 }

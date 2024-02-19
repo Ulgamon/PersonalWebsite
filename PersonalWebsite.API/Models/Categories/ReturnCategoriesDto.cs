@@ -12,8 +12,5 @@ namespace PersonalWebsite.API.Models.Categories
 
         public int NumberOfBlogPosts { get; set; }
 
-        public bool HasPrev { get; set; }
-
-        public bool HasNext { get; set; }
     }
 }

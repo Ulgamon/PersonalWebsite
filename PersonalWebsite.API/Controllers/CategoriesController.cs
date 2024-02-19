@@ -38,16 +38,7 @@ namespace PersonalWebsite.API.Controllers
 
             try
             {
-                bool hasNext = true;
-                bool hasPrev = page > 1;
-
                 int categoriesCount = await _context.BlogPosts.CountAsync();
-
-                // it is size * page because I need to check one page in advance
-                if (size * page > categoriesCount)
-                {
-                    hasNext = false;
-                }
 
                 // # To do
                 int howManyToSkip = size * (page - 1);
@@ -61,13 +52,13 @@ namespace PersonalWebsite.API.Controllers
                     .Take(size)
                     .ToListAsync();
 
-                var categoriesDto = _mapper.Map<ReturnCategoriesDto>(categories);
+                var categoriesDto = _mapper.Map<IList<ReturnCategoriesDto>>(categories);
 
                 return Ok(categoriesDto);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Blog Posts GET: {ex.Message}");
+                _logger.LogError(ex, $"Categories GET: {ex.Message}");
                 if (ex.GetBaseException() is DbUpdateException)
                 {
                     return BadRequest();
@@ -97,7 +88,7 @@ namespace PersonalWebsite.API.Controllers
         //    }
         //    catch (Exception ex)
         //    {
-        //        _logger.LogError(ex, $"Blog Posts GET: {ex.Message}");
+        //        _logger.LogError(ex, $"Categories GET: {ex.Message}");
         //        if (ex.GetBaseException() is DbUpdateException)
         //        {
         //            return BadRequest();
@@ -112,7 +103,34 @@ namespace PersonalWebsite.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(int id, UpdateCategoryDto categoryDto)
         {
-            return Ok();
+            if (id != categoryDto.Id)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                Category? category = await _context.Categories.FindAsync(id);
+                if (category == null)
+                {
+                    return BadRequest();
+                }
+
+                category.Description = categoryDto.Description;
+                category.CategoryName = categoryDto.CategoryName;
+
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Categories PUT: {ex.Message}");
+                if (ex.GetBaseException() is DbUpdateException)
+                {
+                    return BadRequest();
+                }
+                return StatusCode(500);
+            }
         }
 
         // POST: api/Categories
@@ -120,19 +138,48 @@ namespace PersonalWebsite.API.Controllers
         [HttpPost]
         public async Task<ActionResult> PostCategory(CreateCategoryDto categoryDto)
         {
-            return Ok();
+            try
+            {
+                Category category = _mapper.Map<Category>(categoryDto);
+                await _context.Categories.AddAsync(category);
+
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (DbUpdateException dbex)
+            {
+                _logger.LogError(dbex, $"Categories POST: {dbex.Message}");
+                return BadRequest();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, $"Categories POST: {ex.Message}");
+                return StatusCode(500);
+            }
         }
 
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            return Ok();
-        }
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                _context.Categories.Remove(category);
+                await _context.SaveChangesAsync();
 
-        private async Task<bool> CategoryExists(int id)
-        {
-            return await _context.Categories.AnyAsync(e => e.Id == id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Category DELETE: {ex.Message}");
+                return StatusCode(500);
+            }
         }
     }
 }
