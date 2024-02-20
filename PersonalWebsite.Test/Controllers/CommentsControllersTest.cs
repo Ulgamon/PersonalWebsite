@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -80,7 +81,7 @@ namespace PersonalWebsite.Test.Controllers
                     await databaseContext.SaveChangesAsync();
                 }
 
-                // ADD 10 Comments for each BlogPost
+                // ADD 10 Comments for BlogPost with id 3
                 if (await databaseContext.Comments.CountAsync() <= 0)
                 {
                     for (int i = 1; i <= 10; i++)
@@ -89,7 +90,7 @@ namespace PersonalWebsite.Test.Controllers
                             new Comment
                             {
                                 Id = i,
-                                BlogPostId = i,
+                                BlogPostId = 3,
                                 Comment1 = $"Comment number {i}.",
                                 Email = $"test{i}@gmail.com",
                                 Name = $"test{i}",
@@ -127,7 +128,7 @@ namespace PersonalWebsite.Test.Controllers
                 await databaseContext.Comments.AddAsync(
                     new Comment
                     {
-                        Id = 13,
+                        Id = 14,
                         Comment1 = "Comment number 24.",
                         CommentId = 12,
                         Email = "test24@gmail.com",
@@ -141,7 +142,7 @@ namespace PersonalWebsite.Test.Controllers
                     {
                         Id = 25,
                         Comment1 = "Comment number 24.",
-                        CommentId = 13,
+                        CommentId = 14,
                         Email = "test24@gmail.com",
                         Name = "test24",
                     }
@@ -278,15 +279,40 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void DELETE_Comment_With_Valid_Id()
+        public async void DELETE_Comment_With_Valid_Id_Attached_To_BlogPost()
         {
             // Arrange
             var context = await GetDatabaseContext();
             var controller = new CommentsController(context, _logger, _mapper);
 
             // Act
+            int id = 3;
+            var response = await controller.DeleteComment(id);
+            Comment? deletedComment = await context.Comments.FindAsync(id);
 
             // Assert
+            Assert.IsType<OkResult>(response);
+            Assert.Null(deletedComment);
+        }
+
+        [Fact]
+        public async void DELETE_Comment_With_Valid_Id_Attached_To_Comment()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            var controller = new CommentsController(context, _logger, _mapper);
+
+            // Act
+            int id = 14;
+            int attachedId = 25;
+            var response = await controller.DeleteComment(id);
+            Comment? deletedComment = await context.Comments.FindAsync(id);
+            Comment? attachedToDeleted = await context.Comments.FindAsync(attachedId);
+
+            // Assert
+            Assert.IsType<OkResult>(response);
+            Assert.Null(deletedComment);
+            Assert.Null(attachedToDeleted);
         }
 
         [Fact]
@@ -297,8 +323,13 @@ namespace PersonalWebsite.Test.Controllers
             var controller = new CommentsController(context, _logger, _mapper);
 
             // Act
+            int id = 666;
+            var response = await controller.DeleteComment(id);
+            Comment? deletedComment = await context.Comments.FindAsync(id);
 
             // Assert
+            Assert.IsType<BadRequestResult>(response);
+            Assert.Null(deletedComment);
         }
     }
 }
