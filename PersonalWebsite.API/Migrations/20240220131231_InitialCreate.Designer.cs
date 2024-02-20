@@ -12,8 +12,8 @@ using PersonalWebsite.API.Data;
 namespace PersonalWebsite.API.Migrations
 {
     [DbContext(typeof(PersonalWebsiteDevelopmentDbContext))]
-    [Migration("20240216234459_AddForeignKeyUserIdOnBlogPostsTable")]
-    partial class AddForeignKeyUserIdOnBlogPostsTable
+    [Migration("20240220131231_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,6 +66,20 @@ namespace PersonalWebsite.API.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "f2a04be0-60e2-4835-b0ea-4ac09e8449c5",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "5424f84e-ebad-491f-bf86-96903dbaf476",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -242,7 +256,10 @@ namespace PersonalWebsite.API.Migrations
             modelBuilder.Entity("PersonalWebsite.API.Data.BlogPost", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BlogMdText")
                         .IsRequired()
@@ -270,6 +287,7 @@ namespace PersonalWebsite.API.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
+                        .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id")
@@ -283,7 +301,10 @@ namespace PersonalWebsite.API.Migrations
             modelBuilder.Entity("PersonalWebsite.API.Data.Category", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
@@ -304,7 +325,10 @@ namespace PersonalWebsite.API.Migrations
             modelBuilder.Entity("PersonalWebsite.API.Data.Comment", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("BlogPostId")
                         .HasColumnType("int");
@@ -416,8 +440,8 @@ namespace PersonalWebsite.API.Migrations
                     b.HasOne("PersonalWebsite.API.Data.ApplicationUser", "User")
                         .WithMany("BlogPosts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_BlogPosts_To_AspNetUser");
 
                     b.Navigation("User");
                 });

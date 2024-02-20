@@ -30,7 +30,7 @@ public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext<App
         {
             entity.HasKey(e => e.Id).HasName("PK__BlogPost__3214EC075FEB897D");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.BlogMdText).HasColumnType("text");
             entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.ImgUrl).HasMaxLength(250);
@@ -48,7 +48,7 @@ public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext<App
         {
             entity.HasKey(e => e.Id).HasName("PK__Categori__3214EC071E8F58BC");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.CategoryName).HasMaxLength(50);
             entity.Property(e => e.Description).HasMaxLength(500);
 
@@ -88,7 +88,7 @@ public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext<App
         {
             entity.HasKey(e => e.Id).HasName("PK__Comments__3214EC0708EEAC55");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.Comment1)
                 .HasMaxLength(500)
                 .HasColumnName("Comment");

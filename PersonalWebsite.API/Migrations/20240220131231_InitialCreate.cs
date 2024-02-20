@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PersonalWebsite.API.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIdentityTables : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,7 +52,20 @@ namespace PersonalWebsite.API.Migrations
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
-           
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__Categori__3214EC071E8F58BC", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
@@ -157,6 +172,90 @@ namespace PersonalWebsite.API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "BlogPosts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImgUrl = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    BlogMdText = table.Column<string>(type: "text", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__BlogPost__3214EC075FEB897D", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BlogPosts_To_AspNetUser",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BlogsCategories",
+                columns: table => new
+                {
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    BlogPostId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__BlogsCat__9A284E1D78AF3402", x => new { x.CategoryId, x.BlogPostId });
+                    table.ForeignKey(
+                        name: "FK_BlogPostId_ToBlogPosts",
+                        column: x => x.BlogPostId,
+                        principalTable: "BlogPosts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoryId_To_Categories",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    BlogPostId = table.Column<int>(type: "int", nullable: true),
+                    CommentId = table.Column<int>(type: "int", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__Comments__3214EC0708EEAC55", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comment_To_BlogPost",
+                        column: x => x.BlogPostId,
+                        principalTable: "BlogPosts",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Comment_To_Comment",
+                        column: x => x.CommentId,
+                        principalTable: "Comments",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "5424f84e-ebad-491f-bf86-96903dbaf476", null, "Administrator", "ADMINISTRATOR" },
+                    { "f2a04be0-60e2-4835-b0ea-4ac09e8449c5", null, "User", "USER" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -196,6 +295,25 @@ namespace PersonalWebsite.API.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogPosts_UserId",
+                table: "BlogPosts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogsCategories_BlogPostId",
+                table: "BlogsCategories",
+                column: "BlogPostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_BlogPostId",
+                table: "Comments",
+                column: "BlogPostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_CommentId",
+                table: "Comments",
+                column: "CommentId");
         }
 
         /// <inheritdoc />
@@ -217,7 +335,19 @@ namespace PersonalWebsite.API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BlogsCategories");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "BlogPosts");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -253,7 +253,10 @@ namespace PersonalWebsite.API.Migrations
             modelBuilder.Entity("PersonalWebsite.API.Data.BlogPost", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BlogMdText")
                         .IsRequired()
@@ -295,7 +298,10 @@ namespace PersonalWebsite.API.Migrations
             modelBuilder.Entity("PersonalWebsite.API.Data.Category", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
@@ -316,7 +322,10 @@ namespace PersonalWebsite.API.Migrations
             modelBuilder.Entity("PersonalWebsite.API.Data.Comment", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("BlogPostId")
                         .HasColumnType("int");
