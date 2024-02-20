@@ -254,7 +254,7 @@ namespace PersonalWebsite.Test.Controllers
 
             // Assert
             Assert.IsType<OkResult>(response);
-            int maxId = await context.Categories.MinAsync(e => e.Id);
+            int maxId = await context.Categories.MaxAsync(e => e.Id);
 
             Category createdModel = await context.Categories
                 .Where(e => e.Id == maxId)
@@ -265,7 +265,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_POST_Category_With_Incorrect_Data()
+        public async void Http_POST_Category_With_Trailing_Spaces_Data()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -274,18 +274,20 @@ namespace PersonalWebsite.Test.Controllers
             // Act
             CreateCategoryDto createModel = new CreateCategoryDto
             {
-               
+                CategoryName = "           KATEGORIJA             ",
+                Description = "            Odllicna Kategorija         "
             };
-            var response = await controller.PostCategory(new CreateCategoryDto { });
+            var response = await controller.PostCategory(createModel);
 
             // Assert
-            Assert.IsType<BadRequestResult>(response);
-            int maxId = await context.Categories.MinAsync(e => e.Id);
+            Assert.IsType<OkResult>(response);
+            int maxId = await context.Categories.MaxAsync(e => e.Id);
 
             Category createdModel = await context.Categories
                 .Where(e => e.Id == maxId)
                 .FirstAsync();
-            Assert.Null(createdModel);
+            Assert.True(createdModel.CategoryName == createModel.CategoryName.Trim());
+            Assert.True(createdModel.Description == createModel.Description.Trim());
         }
 
         [Fact]

@@ -26,9 +26,39 @@ namespace PersonalWebsite.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<Comment>>> GetComments(int id, int size = 5, int page = 1)
         {
+            if (size < 1 || page < 1)
+                return BadRequest("Invalid size and/or page params should be size >= 1 and page >= 1.");
+            try
+            {
+                bool hasNext = true;
+                bool hasPrev = page > 1;
+                // and the AutoMapper should map ApplicationUser to BlogPostUser
+                // so I don't have any data memory leaks
+                // BLOG POSTS ARE RETURNED IN A CREATED DATE DESCENDING ORDER
 
+                int blogsCount = await _context.BlogPosts.CountAsync();
 
-            return BadRequest();
+                // it is size * page because I need to check one page in advance
+                if (size * page > blogsCount)
+                {
+                    hasNext = false;
+                }
+
+                // # To do
+                int howManyToSkip = size * (page - 1);
+
+                if (howManyToSkip >= blogsCount)
+                    return BadRequest("Out of range page and/or size parameters.");
+
+                
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Blog Posts GET: {ex.Message}");
+                return StatusCode(500);
+            }
         }
 
         // PUT: api/Comments/5

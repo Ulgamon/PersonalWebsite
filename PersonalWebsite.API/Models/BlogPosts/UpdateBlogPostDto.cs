@@ -20,5 +20,11 @@ namespace PersonalWebsite.API.Models.BlogPosts
         [MaxLength(50, ErrorMessage = "Cannot enter more than 50 characters.")]
         [MinLength(5, ErrorMessage = "Cannot enter less than 5 characters.")]
         public string Title { get; set; } = null!;
+        public void Trim()
+        {
+            ImgUrl = ImgUrl.Trim();
+            BlogMdText = BlogMdText.Trim();
+            Title = Title.Trim();
+        }
     }
 }

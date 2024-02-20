@@ -122,6 +122,7 @@ namespace PersonalWebsite.API.Controllers
                 {
                     return BadRequest();
                 }
+                blogPostDto.Trim();
 
                 BlogPost? blogPost = await _context.BlogPosts.FindAsync(id);
 
@@ -150,7 +151,7 @@ namespace PersonalWebsite.API.Controllers
         [HttpPost]
         public async Task<ActionResult> PostBlogPost(CreateBlogPostDto blogPostDto)
         {
-
+            blogPostDto.Trim();
             BlogPost blogPost = _mapper.Map<BlogPost>(blogPostDto);
 
             _context.BlogPosts.Add(blogPost);

@@ -109,6 +109,7 @@ namespace PersonalWebsite.API.Controllers
             }
             try
             {
+                categoryDto.Trim();
                 Category? category = await _context.Categories.FindAsync(id);
                 if (category == null)
                 {
@@ -140,6 +141,7 @@ namespace PersonalWebsite.API.Controllers
         {
             try
             {
+                categoryDto.Trim();
                 Category category = _mapper.Map<Category>(categoryDto);
                 await _context.Categories.AddAsync(category);
 

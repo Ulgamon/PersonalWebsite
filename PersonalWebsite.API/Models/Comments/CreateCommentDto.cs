@@ -23,5 +23,12 @@ namespace PersonalWebsite.API.Models.Comments
 
         public int? CommentId { get; set; }
 
+        public void Trim()
+        {
+            Name = Name.Trim();
+            Email = Email.Trim();
+            Comment1 = Comment1.Trim();
+        }
+
     }
 }

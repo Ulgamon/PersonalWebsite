@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System.ComponentModel.DataAnnotations;
 
 namespace PersonalWebsite.API.Models.BlogPosts
 {
@@ -18,5 +19,11 @@ namespace PersonalWebsite.API.Models.BlogPosts
         [MinLength(5, ErrorMessage = "Cannot enter less than 5 characters.")]
         public string Title { get; set; } = null!;
 
+        public void Trim()
+        {
+            ImgUrl = ImgUrl.Trim();
+            BlogMdText = BlogMdText.Trim();
+            Title = Title.Trim();
+        }
     }
 }

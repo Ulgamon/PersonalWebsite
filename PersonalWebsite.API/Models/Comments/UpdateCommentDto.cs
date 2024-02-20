@@ -1,4 +1,5 @@
-﻿using PersonalWebsite.API.Data;
+﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using PersonalWebsite.API.Data;
 using System.ComponentModel.DataAnnotations;
 
 namespace PersonalWebsite.API.Models.Comments
@@ -18,5 +19,10 @@ namespace PersonalWebsite.API.Models.Comments
         [MinLength(3, ErrorMessage = "Cannot enter less than 3 characters.")]
         public string Comment1 { get; set; } = null!;
 
+        public void Trim()
+        {
+            Name = Name.Trim();
+            Comment1 = Comment1.Trim();
+        }
     }
 }

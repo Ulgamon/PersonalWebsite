@@ -16,5 +16,11 @@ namespace PersonalWebsite.API.Models.Categories
         [MaxLength(500, ErrorMessage = "Cannot enter more than 500 characters.")]
         [MinLength(3, ErrorMessage = "Cannot enter less than 3 characters.")]
         public string Description { get; set; } = null!;
+
+        public void Trim()
+        {
+            CategoryName = CategoryName.Trim();
+            Description = Description.Trim();
+        }
     }
 }

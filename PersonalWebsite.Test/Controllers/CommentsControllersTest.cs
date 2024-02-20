@@ -6,6 +6,7 @@ using Moq;
 using PersonalWebsite.API.Configurations;
 using PersonalWebsite.API.Controllers;
 using PersonalWebsite.API.Data;
+using PersonalWebsite.API.Models.Comments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -267,15 +268,25 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void POST_Comment_With_Invalid_Value()
+        public async void POST_Comment_With_Invalid_ForeignKeys_Both_Null()
         {
             // Arrange
             var context = await GetDatabaseContext();
             var controller = new CommentsController(context, _logger, _mapper);
 
             // Act
-
+            CreateCommentDto createComment = new CreateCommentDto
+            {
+                Comment1 = "SOMETHINGSOMETHING",
+                Email = "gmail@gmail.com",
+                Name = "Gmail",
+            };
+            int id = 11;
+            var response = await controller.PostComment(createComment);
+            var createdComment = await context.Comments.FindAsync(11);
             // Assert
+            
+            Assert.IsType<BadRequestResult>(response);
         }
 
         [Fact]
