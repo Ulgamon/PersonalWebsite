@@ -256,15 +256,63 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void POST_Comment_With_Valid_Value()
+        public async void POST_Comment_On_BlogPost_With_Valid_Values()
         {
             // Arrange
             var context = await GetDatabaseContext();
             var controller = new CommentsController(context, _logger, _mapper);
 
             // Act
-
+            int blogPostId = 3;
+            CreateCommentDto createComment = new CreateCommentDto
+            {
+                Comment1 = "SOMETHINGSOMETHING",
+                Email = "gmail@gmail.com",
+                Name = "Gmail",
+                BlogPostId = blogPostId,
+            };
+            var response = await controller.PostComment(createComment);
+            var blogPostComments = await context.Comments
+                .Where(e => e.BlogPostId == blogPostId)
+                .ToListAsync();
+            var createdComment = (from comment in blogPostComments
+                                 where comment.Name == createComment.Name
+                                 select comment).First();
             // Assert
+            Assert.IsType<OkResult>(response);
+            Assert.NotNull(blogPostComments);
+            Assert.NotNull(createdComment);
+            Assert.Equal(12, blogPostComments.Count);
+        }
+
+        [Fact]
+        public async void POST_Comment_On_Comment_With_Valid_Values()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            var controller = new CommentsController(context, _logger, _mapper);
+
+            // Act
+            int commentId = 12;
+            CreateCommentDto createComment = new CreateCommentDto
+            {
+                Comment1 = "SOMETHINGSOMETHING",
+                Email = "gmail@gmail.com",
+                Name = "Gmail",
+                BlogPostId = commentId,
+            };
+            var response = await controller.PostComment(createComment);
+            var commentsComments = await context.Comments
+                .Where(e => e.CommentId == commentId)
+                .ToListAsync();
+            var createdComment = (from comment in commentsComments
+                                  where comment.Name == createComment.Name
+                                  select comment).First();
+            // Assert
+            Assert.IsType<OkResult>(response);
+            Assert.NotNull(commentsComments);
+            Assert.NotNull(createdComment);
+            Assert.Equal(3, commentsComments.Count);
         }
 
         [Fact]
@@ -281,11 +329,89 @@ namespace PersonalWebsite.Test.Controllers
                 Email = "gmail@gmail.com",
                 Name = "Gmail",
             };
-            int id = 11;
             var response = await controller.PostComment(createComment);
-            var createdComment = await context.Comments.FindAsync(11);
+            var createdComment = await context.Comments
+                .Where(e => e.Name == createComment.Name)
+                .FirstAsync();
             // Assert
-            
+
+            Assert.Null(createdComment);
+            Assert.IsType<BadRequestResult>(response);
+        }
+
+        [Fact]
+        public async void POST_Comment_With_Invalid_ForeignKeys_Both()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            var controller = new CommentsController(context, _logger, _mapper);
+
+            // Act
+            CreateCommentDto createComment = new CreateCommentDto
+            {
+                Comment1 = "SOMETHINGSOMETHING",
+                Email = "gmail@gmail.com",
+                Name = "Gmail",
+                BlogPostId = 3,
+                CommentId = 3
+            };
+            var response = await controller.PostComment(createComment);
+            var createdComment = await context.Comments
+                .Where(e => e.Name == createComment.Name)
+                .FirstAsync();
+            // Assert
+
+            Assert.Null(createdComment);
+            Assert.IsType<BadRequestResult>(response);
+        }
+
+        [Fact]
+        public async void POST_Comment_With_Invalid_BlogPost_Id()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            var controller = new CommentsController(context, _logger, _mapper);
+
+            // Act
+            CreateCommentDto createComment = new CreateCommentDto
+            {
+                Comment1 = "SOMETHINGSOMETHING",
+                Email = "gmail@gmail.com",
+                Name = "Gmail",
+                BlogPostId = 33333,
+            };
+            var response = await controller.PostComment(createComment);
+            var createdComment = await context.Comments
+                .Where(e => e.Name == createComment.Name)
+                .FirstAsync();
+            // Assert
+
+            Assert.Null(createdComment);
+            Assert.IsType<BadRequestResult>(response);
+        }
+
+        [Fact]
+        public async void POST_Comment_With_Invalid_Comment_Id()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            var controller = new CommentsController(context, _logger, _mapper);
+
+            // Act
+            CreateCommentDto createComment = new CreateCommentDto
+            {
+                Comment1 = "SOMETHINGSOMETHING",
+                Email = "gmail@gmail.com",
+                Name = "Gmail",
+                CommentId = 33333,
+            };
+            var response = await controller.PostComment(createComment);
+            var createdComment = await context.Comments
+                .Where(e => e.Name == createComment.Name)
+                .FirstAsync();
+            // Assert
+
+            Assert.Null(createdComment);
             Assert.IsType<BadRequestResult>(response);
         }
 
