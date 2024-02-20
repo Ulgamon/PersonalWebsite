@@ -24,7 +24,7 @@ namespace PersonalWebsite.API.Controllers
         // With Query Param for BlogPost ID
         // GET: api/Comments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetComments(int id, int size = 5, int page = 1)
+        public async Task<ActionResult<ReturnCommentsDto>> GetComments(int id, int size = 5, int page = 1)
         {
             if (size < 1 || page < 1)
                 return BadRequest("Invalid size and/or page params should be size >= 1 and page >= 1.");

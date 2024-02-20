@@ -192,6 +192,7 @@ namespace PersonalWebsite.Test.Controllers
 
             // Act
 
+
             // Assert
         }
 
@@ -227,8 +228,23 @@ namespace PersonalWebsite.Test.Controllers
             var controller = new CommentsController(context, _logger, _mapper);
 
             // Act
+            int modelId = 5;
+            var updateModel = new UpdateCommentDto
+            {
+                Id = modelId,
+                Comment1 = "COMMENT123",
+                Name = "Ulgamon"
+            };
 
+            var response = await controller.PutComment(modelId, updateModel);
+            var updatedModel = await context.Comments.FindAsync(modelId);
             // Assert
+
+            Assert.IsType<OkResult>(response);
+            Assert.NotNull(updatedModel);
+            Assert.Equal(updateModel.Id, updatedModel.Id);
+            Assert.Equal(updateModel.Comment1, updatedModel.Comment1);
+            Assert.Equal(updateModel.Name, updatedModel.Name);
         }
 
         [Fact]
@@ -239,8 +255,19 @@ namespace PersonalWebsite.Test.Controllers
             var controller = new CommentsController(context, _logger, _mapper);
 
             // Act
+            int modelId = 500;
+            var updateModel = new UpdateCommentDto
+            {
+                Id = modelId,
+                Comment1 = "COMMENT1",
+                Name = "Ulgamon"
+            };
 
+            var response = await controller.PutComment(modelId, updateModel);
+            var updatedModel = await context.Comments.FindAsync(modelId);
             // Assert
+            Assert.Null(updatedModel);
+            Assert.IsType<BadRequestResult>(response);
         }
 
         [Fact]
@@ -251,8 +278,20 @@ namespace PersonalWebsite.Test.Controllers
             var controller = new CommentsController(context, _logger, _mapper);
 
             // Act
+            int id = 3;
+            int modelId = 5;
+            var updateModel = new UpdateCommentDto
+            {
+                Id = modelId,
+                Comment1 = "COMMENT1",
+                Name = "Ulgamon"
+            };
 
+            var response = await controller.PutComment(id, updateModel);
+            var updatedModel = await context.Comments.FindAsync(modelId);
             // Assert
+            Assert.Null(updatedModel);
+            Assert.IsType<BadRequestResult>(response);
         }
 
         [Fact]
