@@ -173,7 +173,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void GET_Comments_For_Existent_BlogPost_Id()
+        public async void GET_Comments_For_Existing_BlogPost_Id()
         {
             // Arrange
             PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
@@ -187,12 +187,15 @@ namespace PersonalWebsite.Test.Controllers
             OkObjectResult objectResult = Assert.IsType<OkObjectResult>(response.Result);
             PaginateCommentsDto model = Assert.IsType<PaginateCommentsDto>(objectResult.Value);
             Assert.NotNull(model);
+            Assert.Equal(1, model.CurrentPage);
+            Assert.True(model.HasNext);
+            Assert.False(model.HasPrev);
             ICollection<ReturnCommentsDto> comments = model.Comments;
             Assert.Equal(5, comments.Count);
         }
 
         [Fact]
-        public async void GET_Comments_For_Existent_BlogPost_Id_Page2()
+        public async void GET_Comments_For_Existing_BlogPost_Id_Page3()
         {
             // Arrange
             PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
@@ -200,7 +203,7 @@ namespace PersonalWebsite.Test.Controllers
 
             // Act
             int blogId = 3;
-            int page = 2;
+            int page = 3;
             int size = 5;
             ActionResult<PaginateCommentsDto> response = await controller.GetComments(blogId, size, page);
 
@@ -209,10 +212,22 @@ namespace PersonalWebsite.Test.Controllers
             PaginateCommentsDto model = Assert.IsType<PaginateCommentsDto>(objectResult.Value);
             Assert.NotNull(model);
             Assert.Equal(model.CurrentPage, page);
-            Assert.True(model.HasNext);
+            Assert.False(model.HasNext);
             Assert.True(model.HasPrev);
             ICollection<ReturnCommentsDto> comments = model.Comments;
-            Assert.Equal(5, comments.Count);
+            Assert.Single(comments);
+            ReturnCommentsDto elZero = comments.ElementAt(0);
+            Assert.IsType<ReturnCommentsDto>(elZero);
+            // I have 12th comment attached to a BlogPost Id = 3
+            // 12th comment has 2 comments attached to it
+            var commentsForTwelve = elZero.InverseCommentNavigation;
+            Assert.Equal(2, commentsForTwelve.Count);
+            // 14th comment attached to 12th
+            var fourteen = commentsForTwelve.ElementAt(1);
+            Assert.IsType<ReturnCommentsDto>(fourteen);
+            Assert.Equal(14, fourteen.Id);
+            // because it has an attached 15th comment to 14th
+            Assert.Single(fourteen.InverseCommentNavigation);
         }
 
         [Fact]
@@ -224,10 +239,13 @@ namespace PersonalWebsite.Test.Controllers
 
             // Act
             int blogId = 3;
-            ActionResult<PaginateCommentsDto> response = await controller.GetComments(blogId);
+            int page = 4;
+            int size = 5;
+            ActionResult<PaginateCommentsDto> response = await controller.GetComments(blogId, size, page);
 
             // Assert
-            Assert.IsType<BadRequestResult>(response);
+            BadRequestObjectResult result = Assert.IsType<BadRequestObjectResult>(response.Result);
+            Assert.Equal("Out of range page and/or size parameters.", result.Value);
         }
 
         [Fact]
@@ -242,7 +260,8 @@ namespace PersonalWebsite.Test.Controllers
             ActionResult<PaginateCommentsDto> response = await controller.GetComments(blogId, -1, 3);
 
             // Assert
-            Assert.IsType<BadRequestResult>(response);
+            BadRequestObjectResult result = Assert.IsType<BadRequestObjectResult>(response.Result);
+            Assert.Equal("Invalid size and/or page params should be size >= 1 and page >= 1.", result.Value);
         }
 
         [Fact]
@@ -258,7 +277,8 @@ namespace PersonalWebsite.Test.Controllers
             BlogPost? model = await context.BlogPosts.FindAsync(id);
             // Assert
             Assert.Null(model);
-            Assert.IsType<BadRequestResult>(response);
+            BadRequestObjectResult result = Assert.IsType<BadRequestObjectResult>(response.Result);
+            Assert.Equal("Blog Post doesn't exist.", result.Value);
         }
 
         // PUT METHOD
@@ -541,7 +561,8 @@ namespace PersonalWebsite.Test.Controllers
             OkObjectResult result = Assert.IsType<OkObjectResult>(response);
             Assert.Equal($"Comment with id:{id} deleted successfully.", result.Value);
             Assert.Null(deletedComment);
-            Assert.Equal(attachedToDeleted.CommentId, null);
+            Assert.Null(attachedToDeleted);
+            Assert.Null(attachedToDeleted.CommentId);
         }
 
         [Fact]

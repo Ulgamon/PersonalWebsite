@@ -66,9 +66,11 @@ namespace PersonalWebsite.API.Controllers
 
                 PaginateBlogPostsDto result = new PaginateBlogPostsDto
                 {
-                    blogPostsDtos = blogPosts,
-                    hasPrev = hasPrev,
-                    hasNext = hasNext
+                    BlogPostsDtos = blogPosts,
+                    HasPrev = hasPrev,
+                    HasNext = hasNext,
+                    CurrentPage = page,
+                    NumberOfElements = blogsCount
                 };
 
                 return Ok(result);

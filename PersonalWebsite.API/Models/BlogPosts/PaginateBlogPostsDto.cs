@@ -2,10 +2,14 @@
 {
     public class PaginateBlogPostsDto
     {
-        public ICollection<ReturnBlogPostsDto> blogPostsDtos { get; set; } = null!;
+        public ICollection<ReturnBlogPostsDto> BlogPostsDtos { get; set; } = null!;
 
-        public bool hasPrev { get; set; }
+        public int NumberOfElements { get; set; } = 0;
 
-        public bool hasNext { get; set; }
+        public int CurrentPage { get; set; } = 1;
+
+        public bool HasPrev { get; set; }
+
+        public bool HasNext { get; set; }
     }
 }

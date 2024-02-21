@@ -64,6 +64,8 @@ namespace PersonalWebsite.Test.Controllers
                 {
                     for (int i = 1; i <= 10; i++)
                     {
+                        var item = await databaseContext.Categories.FindAsync(i);
+                        if (item == null) continue;
                         await databaseContext.BlogPosts.AddAsync(
                             new BlogPost
                             {
@@ -74,7 +76,7 @@ namespace PersonalWebsite.Test.Controllers
                                 UserId = "toja",
                                 Categories = new List<Category>
                                 {
-                                    await databaseContext.Categories.FindAsync(i),
+                                    item
                                 }
                             }
                         );
@@ -165,9 +167,9 @@ namespace PersonalWebsite.Test.Controllers
             OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
             PaginateBlogPostsDto model = Assert.IsType<PaginateBlogPostsDto>(okObjectResult.Value);
             Assert.NotNull(model);
-            Assert.Equal(3, model.blogPostsDtos.Count);
-            Assert.True(model.hasNext);
-            Assert.False(model.hasPrev);
+            Assert.Equal(3, model.BlogPostsDtos.Count);
+            Assert.True(model.HasNext);
+            Assert.False(model.HasPrev);
         }
 
         [Fact]
@@ -184,12 +186,12 @@ namespace PersonalWebsite.Test.Controllers
             OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
             PaginateBlogPostsDto model = Assert.IsType<PaginateBlogPostsDto>(okObjectResult.Value);
             Assert.NotNull(model);
-            Assert.Equal(3, model.blogPostsDtos.Count);
-            Assert.Equal(4, model.blogPostsDtos.ElementAt(0).Id);
-            Assert.Equal(3, model.blogPostsDtos.ElementAt(1).Id);
-            Assert.Equal(2, model.blogPostsDtos.ElementAt(2).Id);
-            Assert.True(model.hasNext);
-            Assert.True(model.hasPrev);
+            Assert.Equal(3, model.BlogPostsDtos.Count);
+            Assert.Equal(4, model.BlogPostsDtos.ElementAt(0).Id);
+            Assert.Equal(3, model.BlogPostsDtos.ElementAt(1).Id);
+            Assert.Equal(2, model.BlogPostsDtos.ElementAt(2).Id);
+            Assert.True(model.HasNext);
+            Assert.True(model.HasPrev);
         }
         [Fact]
         public async void Http_Get_BlogPosts_WithQueryParameter_FourthPage()
@@ -205,10 +207,10 @@ namespace PersonalWebsite.Test.Controllers
             OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
             PaginateBlogPostsDto model = Assert.IsType<PaginateBlogPostsDto>(okObjectResult.Value);
             Assert.NotNull(model);
-            Assert.Single(model.blogPostsDtos);
-            Assert.Equal(1, model.blogPostsDtos.ElementAt(0).Id);
-            Assert.False(model.hasNext);
-            Assert.True(model.hasPrev);
+            Assert.Single(model.BlogPostsDtos);
+            Assert.Equal(1, model.BlogPostsDtos.ElementAt(0).Id);
+            Assert.False(model.HasNext);
+            Assert.True(model.HasPrev);
         }
 
         [Fact]

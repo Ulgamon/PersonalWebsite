@@ -33,7 +33,10 @@ namespace PersonalWebsite.API.Controllers
                 bool hasNext = true;
                 bool hasPrev = page > 1;
 
-
+                if (!await _context.BlogPosts.AnyAsync(e => e.Id == id))
+                {
+                    return BadRequest("Blog Post doesn't exist.");
+                }
 
                 int commentsCount = await _context.Comments
                     .Where(e => e.BlogPostId == id)
@@ -45,15 +48,36 @@ namespace PersonalWebsite.API.Controllers
                     hasNext = false;
                 }
 
-                // # To do
                 int howManyToSkip = size * (page - 1);
 
                 if (howManyToSkip >= commentsCount)
                     return BadRequest("Out of range page and/or size parameters.");
 
-                
+                List<Comment> firstLevelComments = await _context.Comments
+                    .Where(e => e.BlogPostId == id)
+                    .Include(e => e.InverseCommentNavigation)
+                    .OrderByDescending(e => e.CreatedDate)
+                    .Skip(howManyToSkip)
+                    .Take(size)
+                    .ToListAsync();
 
-                return Ok();
+                //for (int i = 0; i < firstLevelComments.Count; i++)
+                //{
+                //    firstLevelComments[i]
+                //        .InverseCommentNavigation 
+                //        = await GetCommentRecursive(firstLevelComments[i].Id);
+                //}
+
+                List<ReturnCommentsDto> commentsDto = _mapper.Map<List<ReturnCommentsDto>>(firstLevelComments);
+
+                PaginateCommentsDto result = new PaginateCommentsDto
+                {
+                    Comments = commentsDto,
+                    CurrentPage = page,
+                    HasNext = hasNext,
+                    HasPrev = hasPrev,
+                };
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -161,6 +185,15 @@ namespace PersonalWebsite.API.Controllers
                 return StatusCode(500);
             }
         }
+
+        //private async Task<List<Comment>> GetCommentRecursive(int id)
+        //{
+        //    List<Comment> comments = await _context.Comments
+        //            .Where(e => e.CommentId == id)
+        //            .OrderByDescending(e => e.CreatedDate)
+        //            .ToListAsync();
+        //    if ()
+        //}
 
     }
 }

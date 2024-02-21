@@ -86,6 +86,8 @@ namespace PersonalWebsite.Test.Controllers
                 {
                     for (int i = 1; i <= 10; i++)
                     {
+                        var item = await databaseContext.Categories.FindAsync(i);
+                        if (item == null) continue;
                         await databaseContext.BlogPosts.AddAsync(
                             new BlogPost
                             {
@@ -96,7 +98,7 @@ namespace PersonalWebsite.Test.Controllers
                                 UserId = "toja",
                                 Categories = new List<Category>
                                 {
-                                    await databaseContext.Categories.FindAsync(i),
+                                    item
                                 }
                             }
                         );
