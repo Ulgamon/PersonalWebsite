@@ -62,15 +62,19 @@ namespace PersonalWebsite.API.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(LoginApplicationUserDto applicationUser)
+        public async Task<ActionResult<AuthResponse>> Login(LoginApplicationUserDto applicationUser)
         {
             _logger.LogInformation($"Login attempt for {applicationUser.Email}");
             try
             {
                 ApplicationUser? user = await _userManager.FindByEmailAsync(applicationUser.Email);
+                if (user == null)
+                {
+                    return Unauthorized();
+                }
                 bool passwordValid = await _userManager.CheckPasswordAsync(user, applicationUser.Password);
 
-                if (user == null || passwordValid == false || !user.EmailConfirmed)
+                if (passwordValid == false || !user.EmailConfirmed)
                 {
                     return Unauthorized();
                 }
@@ -110,7 +114,8 @@ namespace PersonalWebsite.API.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim("uid", user.Id)
-            }.Union(userClaims)
+            }
+            .Union(userClaims)
             .Union(roleClaims);
 
             var token = new JwtSecurityToken(

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -116,6 +118,7 @@ namespace PersonalWebsite.API.Controllers
         // PUT: api/BlogPosts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> PutBlogPost(int id, UpdateBlogPostDto blogPostDto)
         {
             try
@@ -151,12 +154,27 @@ namespace PersonalWebsite.API.Controllers
         // POST: api/BlogPosts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> PostBlogPost(CreateBlogPostDto blogPostDto)
         {
+            string? userEmail = User.FindFirstValue(ClaimTypes.Email);
+            if (userEmail == null)
+            {
+                return Unauthorized();
+            }
+            var user = await _context.Users
+                .Where(e => e.Email == userEmail)
+                .FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return Unauthorized();
+            }
             blogPostDto.Trim();
             BlogPost blogPost = _mapper.Map<BlogPost>(blogPostDto);
 
-            _context.BlogPosts.Add(blogPost);
+            blogPost.UserId = user.Id;
+
+            await _context.BlogPosts.AddAsync(blogPost);
 
             try
             {
@@ -177,6 +195,7 @@ namespace PersonalWebsite.API.Controllers
 
         // DELETE: api/BlogPosts/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteBlogPost(int id)
         {
             var blogPost = await _context.BlogPosts.FindAsync(id);

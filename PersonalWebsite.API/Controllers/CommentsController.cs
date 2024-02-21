@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PersonalWebsite.API.Data;
@@ -89,6 +90,7 @@ namespace PersonalWebsite.API.Controllers
         // PUT: api/Comments/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutComment(int id, UpdateCommentDto commentDto)
         {
             if (id != commentDto.Id)
@@ -126,6 +128,7 @@ namespace PersonalWebsite.API.Controllers
         // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostComment(CreateCommentDto commentDto)
         {
             commentDto.Trim();
@@ -166,6 +169,7 @@ namespace PersonalWebsite.API.Controllers
 
         // DELETE: api/Comments/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteComment(int id)
         {
             Comment? comment = await _context.Comments.FindAsync(id);

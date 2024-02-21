@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +39,7 @@ namespace PersonalWebsite.API.Controllers
 
             try
             {
-                int categoriesCount = await _context.BlogPosts.CountAsync();
+                int categoriesCount = await _context.Categories.CountAsync();
 
                 // # To do
                 int howManyToSkip = size * (page - 1);
@@ -101,6 +102,7 @@ namespace PersonalWebsite.API.Controllers
         //PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutCategory(int id, UpdateCategoryDto categoryDto)
         {
             if (id != categoryDto.Id)
@@ -137,6 +139,7 @@ namespace PersonalWebsite.API.Controllers
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> PostCategory(CreateCategoryDto categoryDto)
         {
             try
@@ -163,6 +166,7 @@ namespace PersonalWebsite.API.Controllers
 
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var category = await _context.Categories.FindAsync(id);
