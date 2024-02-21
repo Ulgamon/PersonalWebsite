@@ -510,7 +510,8 @@ namespace PersonalWebsite.Test.Controllers
             Comment? deletedComment = await context.Comments.FindAsync(id);
 
             // Assert
-            Assert.IsType<OkResult>(response);
+            OkObjectResult result = Assert.IsType<OkObjectResult>(response);
+            Assert.Equal($"Comment with id:{id} deleted successfully.", result.Value); 
             Assert.Null(deletedComment);
         }
 
@@ -529,7 +530,8 @@ namespace PersonalWebsite.Test.Controllers
             Comment? attachedToDeleted = await context.Comments.FindAsync(attachedId);
 
             // Assert
-            Assert.IsType<OkResult>(response);
+            OkObjectResult result = Assert.IsType<OkObjectResult>(response);
+            Assert.Equal($"Comment with id:{id} deleted successfully.", result.Value);
             Assert.Null(deletedComment);
             Assert.Null(attachedToDeleted);
         }
@@ -547,7 +549,8 @@ namespace PersonalWebsite.Test.Controllers
             Comment? deletedComment = await context.Comments.FindAsync(id);
 
             // Assert
-            Assert.IsType<BadRequestResult>(response);
+            BadRequestObjectResult result = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Equal("Non existing comment.", result.Value);
             Assert.Null(deletedComment);
         }
     }

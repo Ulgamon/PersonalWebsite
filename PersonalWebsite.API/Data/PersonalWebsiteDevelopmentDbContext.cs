@@ -98,10 +98,12 @@ public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext<App
 
             entity.HasOne(d => d.BlogPost).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.BlogPostId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Comment_To_BlogPost");
 
             entity.HasOne(d => d.CommentNavigation).WithMany(p => p.InverseCommentNavigation)
                 .HasForeignKey(d => d.CommentId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Comment_To_Comment");
         });
 

@@ -33,7 +33,11 @@ namespace PersonalWebsite.API.Controllers
                 bool hasNext = true;
                 bool hasPrev = page > 1;
 
-                int commentsCount = await _context.BlogPosts.CountAsync();
+
+
+                int commentsCount = await _context.Comments
+                    .Where(e => e.BlogPostId == id)
+                    .CountAsync();
 
                 // it is size * page because I need to check one page in advance
                 if (size * page > commentsCount)
@@ -53,7 +57,7 @@ namespace PersonalWebsite.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Blog Posts GET: {ex.Message}");
+                _logger.LogError(ex, $"Comments GET: {ex.Message}");
                 return StatusCode(500);
             }
         }
@@ -78,13 +82,23 @@ namespace PersonalWebsite.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteComment(int id)
         {
-            
-            return BadRequest();
+            Comment? comment = await _context.Comments.FindAsync(id);
+            if (comment == null)
+            {
+                return BadRequest("Non existing comment.");
+            }
+            try
+            {
+                _context.Comments.Remove(comment);
+                await _context.SaveChangesAsync();
+                return Ok($"Comment with id:{id} deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Comments DELETE: {ex.Message}");
+                return StatusCode(500);
+            }
         }
 
-        private async Task<bool> CommentExists(int id)
-        {
-            return await _context.Comments.AnyAsync(e => e.Id == id);
-        }
     }
 }
