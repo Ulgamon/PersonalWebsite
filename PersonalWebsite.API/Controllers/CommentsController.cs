@@ -67,7 +67,36 @@ namespace PersonalWebsite.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutComment(int id, UpdateCommentDto commentDto)
         {
-            return BadRequest();
+            if (id != commentDto.Id)
+            {
+                return BadRequest("Id parameters aren't mathing.");
+            }
+            commentDto.Trim();
+
+
+            try
+            {
+                Comment? comment = await _context.Comments.FindAsync(id);
+                if (comment == null)
+                {
+                    return BadRequest("Comment that you are trying to change doesn't exist.");
+                }
+                comment.Comment1 = commentDto.Comment1;
+                comment.Name = commentDto.Name;
+
+                await _context.SaveChangesAsync();
+
+                return Ok("Comment successfully changed.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Comment PUT: {ex.Message}");
+                if (ex.GetBaseException() is DbUpdateException)
+                {
+                    return BadRequest("Check if you entered correct values.");
+                }
+                return StatusCode(500);
+            }
         }
 
         // POST: api/Comments
@@ -75,7 +104,40 @@ namespace PersonalWebsite.API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostComment(CreateCommentDto commentDto)
         {
-            return BadRequest();
+            commentDto.Trim();
+            Comment comment = _mapper.Map<Comment>(commentDto);
+            if (commentDto.CommentId != null && commentDto.BlogPostId != null)
+            {
+                return BadRequest("Invalid CommentId and/or BlogPostId.");
+            }
+            try
+            {
+                if (
+                    (await _context.BlogPosts
+                        .AnyAsync(e => e.Id == commentDto.BlogPostId))
+                    ||
+                    (await _context.Comments
+                        .AnyAsync(e => e.Id == commentDto.CommentId))
+                )
+                {
+                    await _context.Comments.AddAsync(comment);
+                    await _context.SaveChangesAsync();
+
+                    return Ok("Comment is posted.");
+                }
+
+                return BadRequest("Invalid CommentId and/or BlogPostId.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Comments POST: {ex.Message}");
+                if (ex.GetBaseException() is DbUpdateException)
+                {
+                    return BadRequest("Check if you entered correct values.");
+                }
+                return StatusCode(500);
+            }
+
         }
 
         // DELETE: api/Comments/5

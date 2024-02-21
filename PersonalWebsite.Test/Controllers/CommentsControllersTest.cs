@@ -283,7 +283,8 @@ namespace PersonalWebsite.Test.Controllers
             var updatedModel = await context.Comments.FindAsync(modelId);
             // Assert
 
-            Assert.IsType<OkResult>(response);
+            OkObjectResult result = Assert.IsType<OkObjectResult>(response);
+            Assert.Equal("Comment successfully changed.", result.Value);
             Assert.NotNull(updatedModel);
             Assert.Equal(updateModel.Id, updatedModel.Id);
             Assert.Equal(updateModel.Comment1, updatedModel.Comment1);
@@ -310,7 +311,8 @@ namespace PersonalWebsite.Test.Controllers
             var updatedModel = await context.Comments.FindAsync(modelId);
             // Assert
             Assert.Null(updatedModel);
-            Assert.IsType<BadRequestResult>(response);
+            BadRequestObjectResult result = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Equal("Comment that you are trying to change doesn't exist.", result.Value);
         }
 
         [Fact]
@@ -331,10 +333,9 @@ namespace PersonalWebsite.Test.Controllers
             };
 
             var response = await controller.PutComment(id, updateModel);
-            var updatedModel = await context.Comments.FindAsync(modelId);
             // Assert
-            Assert.Null(updatedModel);
-            Assert.IsType<BadRequestResult>(response);
+            BadRequestObjectResult result = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Equal("Id parameters aren't mathing.", result.Value);
         }
 
         [Fact]
@@ -354,14 +355,16 @@ namespace PersonalWebsite.Test.Controllers
                 BlogPostId = blogPostId,
             };
             var response = await controller.PostComment(createComment);
-            var blogPostComments = await context.Comments
+            var blogPostComments = context.Comments
                 .Where(e => e.BlogPostId == blogPostId)
-                .ToListAsync();
-            var createdComment = (from comment in blogPostComments
-                                 where comment.Name == createComment.Name
-                                 select comment).First();
+                .ToList();
+            var createdComment = blogPostComments
+                .Where(e => e.Comment1 == createComment.Comment1)
+                .FirstOrDefault();
+
             // Assert
-            Assert.IsType<OkResult>(response);
+            OkObjectResult result = Assert.IsType<OkObjectResult>(response);
+            Assert.Equal("Comment is posted.", result.Value);
             Assert.NotNull(blogPostComments);
             Assert.NotNull(createdComment);
             Assert.Equal(12, blogPostComments.Count);
@@ -381,17 +384,18 @@ namespace PersonalWebsite.Test.Controllers
                 Comment1 = "SOMETHINGSOMETHING",
                 Email = "gmail@gmail.com",
                 Name = "Gmail",
-                BlogPostId = commentId,
+                CommentId = commentId,
             };
             var response = await controller.PostComment(createComment);
-            var commentsComments = await context.Comments
+            var commentsComments = context.Comments
                 .Where(e => e.CommentId == commentId)
-                .ToListAsync();
-            var createdComment = (from comment in commentsComments
-                                  where comment.Name == createComment.Name
-                                  select comment).First();
+                .ToList();
+            var createdComment = commentsComments
+                .Where(e => e.Comment1 == createComment.Comment1)
+                .FirstOrDefault();
             // Assert
-            Assert.IsType<OkResult>(response);
+            OkObjectResult result = Assert.IsType<OkObjectResult>(response);
+            Assert.Equal("Comment is posted.", result.Value);
             Assert.NotNull(commentsComments);
             Assert.NotNull(createdComment);
             Assert.Equal(3, commentsComments.Count);
@@ -412,13 +416,14 @@ namespace PersonalWebsite.Test.Controllers
                 Name = "Gmail",
             };
             var response = await controller.PostComment(createComment);
-            var createdComment = await context.Comments
-                .Where(e => e.Name == createComment.Name)
-                .FirstAsync();
+            var createdComment = context.Comments
+                .Where(e => e.Comment1 == createComment.Comment1)
+                .FirstOrDefault();
             // Assert
 
             Assert.Null(createdComment);
-            Assert.IsType<BadRequestResult>(response);
+            BadRequestObjectResult result = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Equal("Invalid CommentId and/or BlogPostId.", result.Value);
         }
 
         [Fact]
@@ -438,13 +443,14 @@ namespace PersonalWebsite.Test.Controllers
                 CommentId = 3
             };
             var response = await controller.PostComment(createComment);
-            var createdComment = await context.Comments
-                .Where(e => e.Name == createComment.Name)
-                .FirstAsync();
+            var createdComment = context.Comments
+                .Where(e => e.Comment1 == createComment.Comment1)
+                .FirstOrDefault();
             // Assert
 
             Assert.Null(createdComment);
-            Assert.IsType<BadRequestResult>(response);
+            BadRequestObjectResult result = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Equal("Invalid CommentId and/or BlogPostId.", result.Value);
         }
 
         [Fact]
@@ -463,13 +469,14 @@ namespace PersonalWebsite.Test.Controllers
                 BlogPostId = 33333,
             };
             var response = await controller.PostComment(createComment);
-            var createdComment = await context.Comments
-                .Where(e => e.Name == createComment.Name)
-                .FirstAsync();
+            var createdComment = context.Comments
+                .Where(e => e.Comment1 == createComment.Comment1)
+                .FirstOrDefault();
             // Assert
 
             Assert.Null(createdComment);
-            Assert.IsType<BadRequestResult>(response);
+            BadRequestObjectResult result = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Equal("Invalid CommentId and/or BlogPostId.", result.Value);
         }
 
         [Fact]
@@ -488,13 +495,14 @@ namespace PersonalWebsite.Test.Controllers
                 CommentId = 33333,
             };
             var response = await controller.PostComment(createComment);
-            var createdComment = await context.Comments
-                .Where(e => e.Name == createComment.Name)
-                .FirstAsync();
+            var createdComment = context.Comments
+                .Where(e => e.Comment1 == createComment.Comment1)
+                .FirstOrDefault();
             // Assert
 
             Assert.Null(createdComment);
-            Assert.IsType<BadRequestResult>(response);
+            BadRequestObjectResult result = Assert.IsType<BadRequestObjectResult>(response);
+            Assert.Equal("Invalid CommentId and/or BlogPostId.", result.Value);
         }
 
         [Fact]
@@ -533,7 +541,7 @@ namespace PersonalWebsite.Test.Controllers
             OkObjectResult result = Assert.IsType<OkObjectResult>(response);
             Assert.Equal($"Comment with id:{id} deleted successfully.", result.Value);
             Assert.Null(deletedComment);
-            Assert.Null(attachedToDeleted);
+            Assert.Equal(attachedToDeleted.CommentId, null);
         }
 
         [Fact]

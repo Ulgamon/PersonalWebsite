@@ -292,7 +292,7 @@ namespace PersonalWebsite.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BlogPosts", (string)null);
+                    b.ToTable("BlogPosts");
                 });
 
             modelBuilder.Entity("PersonalWebsite.API.Data.Category", b =>
@@ -316,7 +316,7 @@ namespace PersonalWebsite.API.Migrations
                     b.HasKey("Id")
                         .HasName("PK__Categori__3214EC071E8F58BC");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("PersonalWebsite.API.Data.Comment", b =>
@@ -361,7 +361,7 @@ namespace PersonalWebsite.API.Migrations
 
                     b.HasIndex("CommentId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("BlogsCategory", b =>

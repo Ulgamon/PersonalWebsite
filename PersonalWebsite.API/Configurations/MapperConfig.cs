@@ -2,6 +2,7 @@
 using PersonalWebsite.API.Data;
 using PersonalWebsite.API.Models.BlogPosts;
 using PersonalWebsite.API.Models.Categories;
+using PersonalWebsite.API.Models.Comments;
 using PersonalWebsite.API.Models.Users;
 
 namespace PersonalWebsite.API.Configurations
@@ -30,6 +31,11 @@ namespace PersonalWebsite.API.Configurations
             CreateMap<ReturnCategoriesDto, Category>();
             CreateMap<Category, UpdateCategoryDto>().ReverseMap();
             CreateMap<Category, CreateCategoryDto>().ReverseMap();
+
+            // Comments Model Mapping
+            CreateMap<Comment, ReturnCommentsDto>().ReverseMap();
+            CreateMap<Comment, CreateCommentDto>().ReverseMap();
+            CreateMap<Comment, UpdateCommentDto>().ReverseMap();
         }
     }
 }

@@ -12,7 +12,7 @@ using PersonalWebsite.API.Data;
 namespace PersonalWebsite.API.Migrations
 {
     [DbContext(typeof(PersonalWebsiteDevelopmentDbContext))]
-    [Migration("20240220131231_InitialCreate")]
+    [Migration("20240221105658_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
