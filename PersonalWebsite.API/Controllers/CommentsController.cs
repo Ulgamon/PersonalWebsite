@@ -24,7 +24,7 @@ namespace PersonalWebsite.API.Controllers
         // With Query Param for BlogPost ID
         // GET: api/Comments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ReturnCommentsDto>> GetComments(int id, int size = 5, int page = 1)
+        public async Task<ActionResult<PaginateCommentsDto>> GetComments(int id, int size = 5, int page = 1)
         {
             if (size < 1 || page < 1)
                 return BadRequest("Invalid size and/or page params should be size >= 1 and page >= 1.");
@@ -32,14 +32,11 @@ namespace PersonalWebsite.API.Controllers
             {
                 bool hasNext = true;
                 bool hasPrev = page > 1;
-                // and the AutoMapper should map ApplicationUser to BlogPostUser
-                // so I don't have any data memory leaks
-                // BLOG POSTS ARE RETURNED IN A CREATED DATE DESCENDING ORDER
 
-                int blogsCount = await _context.BlogPosts.CountAsync();
+                int commentsCount = await _context.BlogPosts.CountAsync();
 
                 // it is size * page because I need to check one page in advance
-                if (size * page > blogsCount)
+                if (size * page > commentsCount)
                 {
                     hasNext = false;
                 }
@@ -47,7 +44,7 @@ namespace PersonalWebsite.API.Controllers
                 // # To do
                 int howManyToSkip = size * (page - 1);
 
-                if (howManyToSkip >= blogsCount)
+                if (howManyToSkip >= commentsCount)
                     return BadRequest("Out of range page and/or size parameters.");
 
                 

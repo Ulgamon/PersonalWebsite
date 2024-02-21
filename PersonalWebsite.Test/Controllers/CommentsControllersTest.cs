@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -175,50 +176,92 @@ namespace PersonalWebsite.Test.Controllers
         public async void GET_Comments_For_Existent_BlogPost_Id()
         {
             // Arrange
-            var context = await GetDatabaseContext();
-            var controller = new CommentsController(context, _logger, _mapper);
+            PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
+            CommentsController controller = new CommentsController(context, _logger, _mapper);
 
             // Act
+            int blogId = 3;
+            ActionResult<PaginateCommentsDto> response = await controller.GetComments(blogId);
 
             // Assert
+            OkObjectResult objectResult = Assert.IsType<OkObjectResult>(response.Result);
+            PaginateCommentsDto model = Assert.IsType<PaginateCommentsDto>(objectResult.Value);
+            Assert.NotNull(model);
+            ICollection<ReturnCommentsDto> comments = model.Comments;
+            Assert.Equal(5, comments.Count);
+        }
+
+        [Fact]
+        public async void GET_Comments_For_Existent_BlogPost_Id_Page2()
+        {
+            // Arrange
+            PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
+            CommentsController controller = new CommentsController(context, _logger, _mapper);
+
+            // Act
+            int blogId = 3;
+            int page = 2;
+            int size = 5;
+            ActionResult<PaginateCommentsDto> response = await controller.GetComments(blogId, size, page);
+
+            // Assert
+            OkObjectResult objectResult = Assert.IsType<OkObjectResult>(response.Result);
+            PaginateCommentsDto model = Assert.IsType<PaginateCommentsDto>(objectResult.Value);
+            Assert.NotNull(model);
+            Assert.Equal(model.CurrentPage, page);
+            Assert.True(model.HasNext);
+            Assert.True(model.HasPrev);
+            ICollection<ReturnCommentsDto> comments = model.Comments;
+            Assert.Equal(5, comments.Count);
+        }
+
+        [Fact]
+        public async void GET_Comments_For_Existent_BlogPost_Id_Page4_Non_Existent()
+        {
+            // Arrange
+            PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
+            CommentsController controller = new CommentsController(context, _logger, _mapper);
+
+            // Act
+            int blogId = 3;
+            ActionResult<PaginateCommentsDto> response = await controller.GetComments(blogId);
+
+            // Assert
+            Assert.IsType<BadRequestResult>(response);
+        }
+
+        [Fact]
+        public async void GET_Comments_For_Existent_BlogPost_Id_Invalid_Params()
+        {
+            // Arrange
+            PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
+            CommentsController controller = new CommentsController(context, _logger, _mapper);
+
+            // Act
+            int blogId = 3;
+            ActionResult<PaginateCommentsDto> response = await controller.GetComments(blogId, -1, 3);
+
+            // Assert
+            Assert.IsType<BadRequestResult>(response);
         }
 
         [Fact]
         public async void GET_Comments_For_NonExistent_BlogPost_Id()
         {
             // Arrange
-            var context = await GetDatabaseContext();
-            var controller = new CommentsController(context, _logger, _mapper);
+            PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
+            CommentsController controller = new CommentsController(context, _logger, _mapper);
 
             // Act
-
-
+            int id = 555;
+            ActionResult<PaginateCommentsDto> response = await controller.GetComments(id);
+            BlogPost? model = await context.BlogPosts.FindAsync(id);
             // Assert
+            Assert.Null(model);
+            Assert.IsType<BadRequestResult>(response);
         }
 
-        [Fact]
-        public async void GET_Comment_With_Valid_Id()
-        {
-            // Arrange
-            var context = await GetDatabaseContext();
-            var controller = new CommentsController(context, _logger, _mapper);
-
-            // Act
-
-            // Assert
-        }
-
-        [Fact]
-        public async void GET_Comment_With_Invalid_Id()
-        {
-            // Arrange
-            var context = await GetDatabaseContext();
-            var controller = new CommentsController(context, _logger, _mapper);
-
-            // Act
-
-            // Assert
-        }
+        // PUT METHOD
 
         [Fact]
         public async void PUT_Comment_With_Valid_Id_And_Valid_Value()
