@@ -1,12 +1,12 @@
 import "./App.css";
-import { Button } from "@/components/ui/button";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Dashboard from "./layout/Dashboard";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Button>Toja</Button>}/>
+        <Route path="/" element={<Dashboard />}></Route>
       </Routes>
     </BrowserRouter>
   );
