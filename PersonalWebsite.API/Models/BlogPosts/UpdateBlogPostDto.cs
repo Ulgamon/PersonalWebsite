@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PersonalWebsite.API.Models.Categories;
+using System.ComponentModel.DataAnnotations;
 
 namespace PersonalWebsite.API.Models.BlogPosts
 {
@@ -20,6 +21,9 @@ namespace PersonalWebsite.API.Models.BlogPosts
         [MaxLength(50, ErrorMessage = "Cannot enter more than 50 characters.")]
         [MinLength(5, ErrorMessage = "Cannot enter less than 5 characters.")]
         public string Title { get; set; } = null!;
+
+        public ICollection<ReturnCategoryDto> Categories { get; set; } = new List<ReturnCategoryDto>();
+
         public void Trim()
         {
             ImgUrl = ImgUrl.Trim();

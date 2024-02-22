@@ -1,9 +1,10 @@
-import LeftPanel from "@/layout/LeftPanel";
+import LeftPanel from "@/components/leftpanel/LeftPanel";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { Outlet } from "react-router-dom";
 
 function Dashboard() {
   return (
@@ -12,7 +13,7 @@ function Dashboard() {
         <LeftPanel />
       </ResizablePanel>
       <ResizableHandle withHandle />
-      <ResizablePanel defaultSize={80}>Two</ResizablePanel>
+      <ResizablePanel defaultSize={80}><Outlet /></ResizablePanel>
     </ResizablePanelGroup>
   );
 }
