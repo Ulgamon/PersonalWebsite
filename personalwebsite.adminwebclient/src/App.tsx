@@ -1,12 +1,14 @@
 import "./App.css";
 import { Button } from "@/components/ui/button";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <>
-      <h1 className="text-6xl">CAO NINA!!!!</h1>
-      <Button>Hallo</Button>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Button>Toja</Button>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
