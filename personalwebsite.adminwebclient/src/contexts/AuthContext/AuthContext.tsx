@@ -20,19 +20,20 @@ export interface IAuthContextProvider {
 function AuthContextProvider({ children }: IAuthContextProvider) {
   const { toast } = useToast();
   const cookieName: string = "token";
+  const emailString: string = "email";
   const [cookies, setCookie, removeCookie] = useCookies([cookieName]);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
     cookies[cookieName] ? true : false
   );
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>(cookies[emailString]);
 
   function handleLogin(authData: AuthResponse) {
     setEmail(authData.email ? authData.email : "");
     setCookie(cookieName, authData.token);
     setIsLoggedIn(true);
     toast({
-      description: "You logged in successfully!"
-    })
+      description: "You logged in successfully!",
+    });
   }
 
   function handleLogout() {
@@ -41,8 +42,8 @@ function AuthContextProvider({ children }: IAuthContextProvider) {
     setIsLoggedIn(false);
     toast({
       variant: "destructive",
-      description: "You logged out!"
-    })
+      description: "You logged out!",
+    });
   }
 
   function getCookie() {

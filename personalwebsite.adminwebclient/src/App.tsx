@@ -3,6 +3,7 @@ import Dashboard from "./components/layout/Dashboard";
 import AuthContextProvider from "./contexts/AuthContext/AuthContext";
 import { Toaster } from "./components/ui/toaster";
 import WelcomePage from "./pages/welcomepage/WelcomePage";
+import CreateBlogPost from "./pages/createblogpost/CreateBlogPost";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
           <Route path="/" element={<Dashboard />}>
             <Route index element={<WelcomePage />} />
             <Route path="blogposts" element={<>Blog Posts</>} />
-            <Route path="createblogpost" element={<>Create Blog Post</>} />
+            <Route path="createblogpost" element={<CreateBlogPost />} />
             <Route
               path="updateblogpost/:blogId"
               element={<>Update Blog Post</>}
