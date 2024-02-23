@@ -5,26 +5,13 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { Outlet } from "react-router-dom";
-import { useContext } from "react";
-import { IAuthContext, AuthContext } from "@/contexts/AuthContext/AuthContext";
-import { Button } from "../ui/button";
-import { Dialog, DialogTrigger } from "../ui/dialog";
-import { DialogContent } from "@radix-ui/react-dialog";
+import AuthorizeDialog from "../authorizedialog/AuthorizeDialog";
 
 function Dashboard() {
-  const { isLoggedIn } = useContext<IAuthContext>(AuthContext);
   return (
     <ResizablePanelGroup className="w-full min-h-screen" direction="horizontal">
-      <ResizablePanel defaultSize={20}>
-        <Dialog>
-          <DialogTrigger asChild>
-            {isLoggedIn ? "" : <Button className="w-full my-3" variant="secondary">Log In</Button>}
-          </DialogTrigger>
-
-          <DialogContent className="w-64 h-40 bg-black fixed">
-            <p>HAHAHAH</p>
-          </DialogContent>
-        </Dialog>
+      <ResizablePanel defaultSize={20} minSize={10} maxSize={50}>
+        <AuthorizeDialog />
         <LeftPanel />
       </ResizablePanel>
       <ResizableHandle withHandle />

@@ -17,7 +17,9 @@ export interface IAuthContextProvider {
 function AuthContextProvider({ children }: IAuthContextProvider) {
   const cookieName: string = "token";
   const [cookies, setCookie, removeCookie] = useCookies([cookieName]);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
+    cookies[cookieName] ? true : false
+  );
 
   function handleLogin(token: string) {
     setCookie(cookieName, token);
