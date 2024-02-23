@@ -16,7 +16,6 @@ interface CustomNavLinkProps {
 }
 
 function CustomNavLink({ type, children, to }: CustomNavLinkProps) {
-
   let color: string = "bg-green-300";
   switch (type) {
     case LinkMethod.POST:
@@ -32,7 +31,14 @@ function CustomNavLink({ type, children, to }: CustomNavLinkProps) {
 
   return (
     <li>
-      <NavLink className="grid grid-cols-2 hover:bg-slate-300 py-3 px-2" to={to}>
+      <NavLink
+        className={({ isActive }) => {
+          const defStyle: string =
+            "grid grid-cols-2 hover:bg-slate-300 py-3 px-2 ";
+          return isActive ? defStyle + " bg-slate-200 " : defStyle;
+        }}
+        to={to}
+      >
         <Badge className={"font-bold me-3 w-fit " + color}>{type}</Badge>
         {children}
       </NavLink>

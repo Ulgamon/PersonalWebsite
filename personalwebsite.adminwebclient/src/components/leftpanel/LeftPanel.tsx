@@ -10,7 +10,7 @@ import {
 
 function LeftPanel() {
   return (
-    <Accordion type="multiple" className="w-full my-10">
+    <Accordion type="multiple" className="w-full">
       <AccordionItem className="px-3" value="item-1">
         <AccordionTrigger>Blog Posts</AccordionTrigger>
         <AccordionContent>

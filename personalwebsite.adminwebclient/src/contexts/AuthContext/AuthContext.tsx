@@ -10,7 +10,7 @@ export interface IAuthContext {
 
 export const AuthContext = createContext<IAuthContext>(null!);
 
-interface IAuthContextProvider {
+export interface IAuthContextProvider {
   children: ReactNode;
 }
 

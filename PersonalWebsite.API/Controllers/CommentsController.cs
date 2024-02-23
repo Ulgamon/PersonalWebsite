@@ -128,7 +128,6 @@ namespace PersonalWebsite.API.Controllers
         // POST: api/Comments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> PostComment(CreateCommentDto commentDto)
         {
             commentDto.Trim();
