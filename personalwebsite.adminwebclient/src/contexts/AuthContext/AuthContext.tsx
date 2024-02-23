@@ -1,9 +1,11 @@
+import { AuthResponse } from "@/helpers/clients";
 import { ReactNode, createContext, useState } from "react";
 import { useCookies } from "react-cookie";
 
 export interface IAuthContext {
+  email: string;
   isLoggedIn: boolean;
-  handleLogin: (token: string) => void;
+  handleLogin: (authData: AuthResponse) => void;
   handleLogout: () => void;
   getCookie: () => string;
 }
@@ -20,9 +22,11 @@ function AuthContextProvider({ children }: IAuthContextProvider) {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
     cookies[cookieName] ? true : false
   );
+  const [email, setEmail] = useState<string>("");
 
-  function handleLogin(token: string) {
-    setCookie(cookieName, token);
+  function handleLogin(authData: AuthResponse) {
+    setEmail(authData.email ? authData.email : "");
+    setCookie(cookieName, authData.token);
     setIsLoggedIn(true);
   }
 
@@ -36,6 +40,7 @@ function AuthContextProvider({ children }: IAuthContextProvider) {
   }
 
   const value: IAuthContext = {
+    email: email,
     isLoggedIn: isLoggedIn,
     handleLogin: handleLogin,
     handleLogout: handleLogout,

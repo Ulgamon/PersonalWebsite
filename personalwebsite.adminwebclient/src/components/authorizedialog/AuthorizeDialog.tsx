@@ -5,15 +5,21 @@ import { IAuthContext, AuthContext } from "@/contexts/AuthContext/AuthContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import Login from "../login/Login";
 import Register from "../register/Register";
+import { AvatarIcon } from "@radix-ui/react-icons";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
 function AuthorizeDialog() {
-  const { isLoggedIn } = useContext<IAuthContext>(AuthContext);
+  const { isLoggedIn, email } = useContext<IAuthContext>(AuthContext);
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         {isLoggedIn ? (
-          ""
+          <Alert>
+            <AvatarIcon className="h-4 w-4" />
+            <AlertTitle>Welcome! {email}</AlertTitle>
+            <AlertDescription>Now you can change anything.</AlertDescription>
+          </Alert>
         ) : (
           <Button className="w-full my-3" variant="secondary">
             Log In

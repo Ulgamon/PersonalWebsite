@@ -4,7 +4,7 @@ export interface IUseInput {
   enteredValue: string;
   valueIsValid: boolean;
   invalidInput: boolean;
-  changeInputHandler: (event: React.FormEvent<HTMLInputElement>) => void;
+  changeInputHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
   blurInputHandler: () => void;
   reset: () => void;
 }
@@ -19,8 +19,8 @@ const useInput = (
   const valueIsValid: boolean = validateValue(enteredValue);
   const invalidInput: boolean = !valueIsValid && isTouched;
 
-  const changeInputHandler = (event: React.FormEvent<HTMLInputElement>) => {
-    setEnteredValue(event.currentTarget.value);
+  const changeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEnteredValue(event.target.value);
   };
 
   const blurInputHandler = () => {

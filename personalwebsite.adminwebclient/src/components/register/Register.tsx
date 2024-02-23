@@ -16,7 +16,7 @@ function Register() {
       <CardHeader>
         <CardTitle>Account</CardTitle>
         <CardDescription>
-          Make changes to your account here. Click save when you're done.
+          Create your account here.
         </CardDescription>
         <form>
           <CardContent className="space-y-2">
@@ -25,7 +25,7 @@ function Register() {
               <Input id="username" placeholder="@username" />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="password">password</Label>
+              <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" placeholder="@password" />
             </div>
           </CardContent>
