@@ -34,7 +34,7 @@ function CustomNavLink({ type, children, to }: CustomNavLinkProps) {
       <NavLink
         className={({ isActive }) => {
           const defStyle: string =
-            "grid grid-cols-2 hover:bg-slate-300 py-3 px-2 ";
+            "grid grid-cols-2 hover:bg-slate-300 py-3 px-2 truncate ";
           return isActive ? defStyle + " bg-slate-200 " : defStyle;
         }}
         to={to}

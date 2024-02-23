@@ -100,6 +100,7 @@ function Register() {
                 onBlur={blurEmail}
                 value={email}
                 onChange={changeEmail}
+                autoComplete="email"
               />
               {invalidEmail ? (
                 <Label htmlFor="email" className={errorClassName}>
@@ -118,6 +119,7 @@ function Register() {
                 onBlur={blurPassword}
                 value={password}
                 onChange={changePassword}
+                autoComplete="password"
               />
               {invalidPassword ? (
                 <Label htmlFor="password" className={errorClassName}>

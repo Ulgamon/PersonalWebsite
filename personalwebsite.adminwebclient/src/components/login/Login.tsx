@@ -38,31 +38,31 @@ function Login() {
   });
 
   const {
-    enteredValue: username,
-    blurInputHandler: blurUsername,
-    changeInputHandler: changeUsername,
-    invalidInput: invalidUsername,
-    reset: resetUsername,
-    valueIsValid: usernameIsValid,
+    enteredValue: email,
+    blurInputHandler: blurEmail,
+    changeInputHandler: changeEmail,
+    invalidInput: invalidEmail,
+    reset: resetEmail,
+    valueIsValid: emailIsValid,
   }: IUseInput = useInput((val: string) => {
     return val.trim().length >= 3;
   });
 
   const errorClassName: string = " text-red-400 outline-red-400";
   const passwordError = "Password field is required.";
-  const usernameError = "Username must be at least 3 characters long";
+  const emailError = "email must be at least 3 characters long";
 
   async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!passwordIsValid || !usernameIsValid) {
+    if (!passwordIsValid || !emailIsValid) {
       blurPassword();
-      blurUsername();
+      blurEmail();
       return;
     }
 
     const payload: LoginApplicationUserDto = {
-      email: username,
+      email: email,
       password: password,
     };
 
@@ -81,7 +81,7 @@ function Login() {
     }
 
     resetPassword();
-    resetUsername();
+    resetEmail();
   }
 
   return (
@@ -93,17 +93,18 @@ function Login() {
           <Label htmlFor="login text-red-400">{error}</Label>
           <CardContent className="space-y-2">
             <div className="space-y-1">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="email">email</Label>
               <Input
-                id="username"
-                placeholder="@username"
-                onBlur={blurUsername}
-                value={username}
-                onChange={changeUsername}
+                id="email"
+                placeholder="@email"
+                onBlur={blurEmail}
+                value={email}
+                onChange={changeEmail}
+                autoComplete="email"
               />
-              {invalidUsername ? (
-                <Label htmlFor="username" className={errorClassName}>
-                  {usernameError}
+              {invalidEmail ? (
+                <Label htmlFor="email" className={errorClassName}>
+                  {emailError}
                 </Label>
               ) : (
                 ""
@@ -118,6 +119,7 @@ function Login() {
                 onBlur={blurPassword}
                 value={password}
                 onChange={changePassword}
+                autoComplete="password"
               />
               {invalidPassword ? (
                 <Label htmlFor="password" className={errorClassName}>
