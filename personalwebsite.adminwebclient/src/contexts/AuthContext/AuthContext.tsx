@@ -31,6 +31,7 @@ function AuthContextProvider({ children }: IAuthContextProvider) {
   }
 
   function handleLogout() {
+    setEmail("");
     removeCookie(cookieName);
     setIsLoggedIn(false);
   }

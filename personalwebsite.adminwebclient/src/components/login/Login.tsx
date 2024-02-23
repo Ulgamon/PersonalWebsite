@@ -34,9 +34,7 @@ function Login() {
     reset: resetPassword,
     valueIsValid: passwordIsValid,
   }: IUseInput = useInput((val: string) => {
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{6,}$/.test(
-      val
-    );
+    return val.trim().length > 0;
   });
 
   const {
@@ -47,12 +45,11 @@ function Login() {
     reset: resetUsername,
     valueIsValid: usernameIsValid,
   }: IUseInput = useInput((val: string) => {
-    return val.length >= 3;
+    return val.trim().length >= 3;
   });
 
   const errorClassName: string = " text-red-400 outline-red-400";
-  const passwordError =
-    "Password must be at least 6 characters long, must have an uppercase letter, a number and special character.";
+  const passwordError = "Password field is required.";
   const usernameError = "Username must be at least 3 characters long";
 
   async function submitHandler(event: React.FormEvent<HTMLFormElement>) {

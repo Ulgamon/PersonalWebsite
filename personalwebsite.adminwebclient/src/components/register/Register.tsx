@@ -11,13 +11,17 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
 function Register() {
+  const passwordError =
+    "Password must be at least 6 characters long, must have an uppercase letter, a number and special character.";
+
+    // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{6,}$/.test(
+    //     val
+    //   );
   return (
     <Card>
       <CardHeader>
         <CardTitle>Account</CardTitle>
-        <CardDescription>
-          Create your account here.
-        </CardDescription>
+        <CardDescription>Create your account here.</CardDescription>
         <form>
           <CardContent className="space-y-2">
             <div className="space-y-1">

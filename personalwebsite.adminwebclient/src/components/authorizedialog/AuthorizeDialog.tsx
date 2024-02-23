@@ -9,23 +9,29 @@ import { AvatarIcon } from "@radix-ui/react-icons";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
 function AuthorizeDialog() {
-  const { isLoggedIn, email } = useContext<IAuthContext>(AuthContext);
+  const { isLoggedIn, email, handleLogout } =
+    useContext<IAuthContext>(AuthContext);
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        {isLoggedIn ? (
-          <Alert>
-            <AvatarIcon className="h-4 w-4" />
-            <AlertTitle>Welcome! {email}</AlertTitle>
-            <AlertDescription>Now you can change anything.</AlertDescription>
-          </Alert>
-        ) : (
+      {isLoggedIn ? (
+        <Alert className="rounded-none border-x-0">
+          <AvatarIcon className="h-4 w-4" />
+          <AlertTitle>Welcome! {email}</AlertTitle>
+          <AlertDescription className="flex flex-col">
+            Now you can change anything.{" "}
+            <Button className="h-8 w-fit my-1" onClick={handleLogout} variant="secondary">
+              Sign Out
+            </Button>
+          </AlertDescription>
+        </Alert>
+      ) : (
+        <DialogTrigger asChild>
           <Button className="w-full my-3" variant="secondary">
             Log In
           </Button>
-        )}
-      </DialogTrigger>
+        </DialogTrigger>
+      )}
 
       <DialogContent className="sm:max-w-[450px]">
         <Tabs defaultValue="login" className="w-[400px] mx-0 mt-5">
