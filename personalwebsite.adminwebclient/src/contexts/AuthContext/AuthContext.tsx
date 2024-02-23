@@ -1,6 +1,7 @@
 import { AuthResponse } from "@/helpers/clients";
 import { ReactNode, createContext, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useToast } from "@/components/ui/use-toast";
 
 export interface IAuthContext {
   email: string;
@@ -17,6 +18,7 @@ export interface IAuthContextProvider {
 }
 
 function AuthContextProvider({ children }: IAuthContextProvider) {
+  const { toast } = useToast();
   const cookieName: string = "token";
   const [cookies, setCookie, removeCookie] = useCookies([cookieName]);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
@@ -28,12 +30,19 @@ function AuthContextProvider({ children }: IAuthContextProvider) {
     setEmail(authData.email ? authData.email : "");
     setCookie(cookieName, authData.token);
     setIsLoggedIn(true);
+    toast({
+      description: "You logged in successfully!"
+    })
   }
 
   function handleLogout() {
     setEmail("");
     removeCookie(cookieName);
     setIsLoggedIn(false);
+    toast({
+      variant: "destructive",
+      description: "You logged out!"
+    })
   }
 
   function getCookie() {

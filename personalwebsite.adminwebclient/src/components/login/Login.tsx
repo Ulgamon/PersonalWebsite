@@ -90,7 +90,7 @@ function Login() {
         <CardTitle>Log In</CardTitle>
         <CardDescription>Log in to your admin account here.</CardDescription>
         <form id="login" onSubmit={submitHandler}>
-          <Label htmlFor="login">{error}</Label>
+          <Label htmlFor="login text-red-400">{error}</Label>
           <CardContent className="space-y-2">
             <div className="space-y-1">
               <Label htmlFor="username">Username</Label>
@@ -134,7 +134,8 @@ function Login() {
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? <ReloadIcon className="spin" /> : <></>} Log In
+              {isLoading ? <ReloadIcon className="animate-spin me-2" /> : <></>}{" "}
+              Log In
             </Button>
           </CardFooter>
         </form>
