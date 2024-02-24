@@ -37,6 +37,8 @@ public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext<App
             entity.Property(e => e.Title).HasMaxLength(50);
             entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.UserId).HasMaxLength(450);
+            entity.Property(e => e.PublishedDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Published);
 
             entity.HasOne(d => d.User).WithMany(p => p.BlogPosts)
                 .HasForeignKey(d => d.UserId)

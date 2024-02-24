@@ -15,6 +15,10 @@ public partial class BlogPost
 
     public DateTime UpdatedDate { get; set; }
 
+    public DateTime PublishedDate { get; set; }
+
+    public bool Published { get; set; }
+
     public string Title { get; set; } = null!;
 
     public string UserId { get; set; } = null!;
