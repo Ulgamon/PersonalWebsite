@@ -2,6 +2,93 @@
 @tailwind components;
 @tailwind utilities;
 
+.dark-theme {
+  --blue-1: #fbfdff;
+  --blue-2: #f4faff;
+  --blue-3: #e6f4fe;
+  --blue-4: #d5efff;
+  --blue-5: #c2e5ff;
+  --blue-6: #acd8fc;
+  --blue-7: #8ec8f6;
+  --blue-8: #5eb1ef;
+  --blue-9: #0090ff;
+  --blue-10: #0588f0;
+  --blue-11: #0d74ce;
+  --blue-12: #113264;
+  --gray-1: #fcfcfc;
+  --gray-2: #f9f9f9;
+  --gray-3: #f0f0f0;
+  --gray-4: #e8e8e8;
+  --gray-5: #e0e0e0;
+  --gray-6: #d9d9d9;
+  --gray-7: #cecece;
+  --gray-8: #bbbbbb;
+  --gray-9: #8d8d8d;
+  --gray-10: #838383;
+  --gray-11: #646464;
+  --gray-12: #202020;
+}
+@supports (color: color(display-p3 1 1 1)) {
+  @media (color-gamut: p3) {
+    .dark-theme {
+      --blue-1: color(display-p3 0.986 0.992 0.999);
+      --blue-2: color(display-p3 0.96 0.979 0.998);
+      --blue-3: color(display-p3 0.912 0.956 0.991);
+      --blue-4: color(display-p3 0.853 0.932 1);
+      --blue-5: color(display-p3 0.788 0.894 0.998);
+      --blue-6: color(display-p3 0.709 0.843 0.976);
+      --blue-7: color(display-p3 0.606 0.777 0.947);
+      --blue-8: color(display-p3 0.451 0.688 0.917);
+      --blue-9: color(display-p3 0.247 0.556 0.969);
+      --blue-10: color(display-p3 0.234 0.523 0.912);
+      --blue-11: color(display-p3 0.15 0.44 0.84);
+      --blue-12: color(display-p3 0.102 0.193 0.379);
+      --gray-1: color(display-p3 0.988 0.988 0.988);
+      --gray-2: color(display-p3 0.975 0.975 0.975);
+      --gray-3: color(display-p3 0.939 0.939 0.939);
+      --gray-4: color(display-p3 0.908 0.908 0.908);
+      --gray-5: color(display-p3 0.88 0.88 0.88);
+      --gray-6: color(display-p3 0.849 0.849 0.849);
+      --gray-7: color(display-p3 0.807 0.807 0.807);
+      --gray-8: color(display-p3 0.732 0.732 0.732);
+      --gray-9: color(display-p3 0.553 0.553 0.553);
+      --gray-10: color(display-p3 0.512 0.512 0.512);
+      --gray-11: color(display-p3 0.392 0.392 0.392);
+      --gray-12: color(display-p3 0.125 0.125 0.125);
+    }
+  }
+}
+
+.dark-editor {
+  --accentBase: var(--blue-1);
+  --accentBgSubtle: var(--blue-2);
+  --accentBg: var(--blue-3);
+  --accentBgHover: var(--blue-4);
+  --accentBgActive: var(--blue-5);
+  --accentLine: var(--blue-6);
+  --accentBorder: var(--blue-7);
+  --accentBorderHover: var(--blue-8);
+  --accentSolid: var(--blue-9);
+  --accentSolidHover: var(--blue-10);
+  --accentText: var(--blue-11);
+  --accentTextContrast: var(--blue-12);
+
+  --baseBase: var(--gray-8);
+  --baseBgSubtle: var(--gray-2);
+  --baseBg: var(--gray-3);
+  --baseBgHover: var(--gray-4);
+  --baseBgActive: var(--gray-5);
+  --baseLine: var(--gray-6);
+  --baseBorder: var(--gray-7);
+  --baseBorderHover: var(--gray-8);
+  --baseSolid: var(--gray-9);
+  --baseSolidHover: var(--gray-10);
+  --baseText: var(--gray-12);
+  --baseTextContrast: var(--gray-12);
+
+  color: var(--gray-12);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -76,9 +163,6 @@
 }
 
 /* Tailwind remove style class */
-
-.remove-all {
-}
 
 .no-tailwind {
   all: unset;

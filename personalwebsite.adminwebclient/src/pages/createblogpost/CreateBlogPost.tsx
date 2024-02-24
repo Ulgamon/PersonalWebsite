@@ -16,39 +16,115 @@ import {
   diffSourcePlugin,
   linkPlugin,
   sandpackPlugin,
+  markdownShortcutPlugin,
+  imagePlugin,
+  InsertImage,
+  tablePlugin,
+  InsertTable,
+  codeBlockPlugin,
+  ListsToggle,
+  frontmatterPlugin,
+  InsertFrontmatter,
+  InsertSandpack,
+  SandpackConfig,
+  codeMirrorPlugin,
+  ConditionalContents,
+  InsertCodeBlock,
+  ChangeCodeMirrorLanguage,
+  ShowSandpackInfo,
 } from "@mdxeditor/editor";
 
 function CreateBlogPost() {
+  const defaultSnippetContent = `
+export default function App() {
+  return (
+    <div className="App">
+      <h1>Hello CodeSandbox</h1>
+      <h2>Start editing to see some magic happen!</h2>
+    </div>
+  );
+}
+`.trim();
+  const simpleSandpackConfig: SandpackConfig = {
+    defaultPreset: "react-ts",
+
+    presets: [
+      {
+        label: "React",
+        name: "react-ts",
+        meta: "live react",
+        sandpackTemplate: "react-ts",
+        sandpackTheme: "light",
+        snippetFileName: "/App.tsx",
+        snippetLanguage: "tsx",
+        initialSnippetContent: defaultSnippetContent,
+      },
+    ],
+  };
   return (
     <main className="bg-gray-200 min-h-screen">
-      <MDXEditor
-        className="bg-gray-50 text-black"
-        markdown={"# Hello World"}
-        plugins={[
-          headingsPlugin(),
-          thematicBreakPlugin(),
-          linkPlugin(),
-          linkDialogPlugin(),
-          quotePlugin(),
-          listsPlugin(),
-          diffSourcePlugin(),
-          sandpackPlugin(),
-          toolbarPlugin({
-            toolbarContents: () => (
-              <>
-                {" "}
-                <DiffSourceToggleWrapper>
-                  <UndoRedo />
-                  <BoldItalicUnderlineToggles />
-                  <BlockTypeSelect />
-                  <CodeToggle />
-                  <CreateLink />
-                </DiffSourceToggleWrapper>
-              </>
-            ),
-          }),
-        ]}
-      />
+      <div className="w-full bg-gray-50 py-7">
+        <MDXEditor
+          className=" px-5 dark-theme rounded-none dark-editor"
+          contentEditableClassName="prose"
+          markdown={`# hELLO`}
+          plugins={[
+            codeBlockPlugin({ defaultCodeBlockLanguage: "js" }),
+            sandpackPlugin({ sandpackConfig: simpleSandpackConfig }),
+            codeMirrorPlugin({
+              codeBlockLanguages: { js: "JavaScript", css: "CSS", typescript: "TypeScript" },
+            }),
+            headingsPlugin(),
+            markdownShortcutPlugin(),
+            frontmatterPlugin(),
+            thematicBreakPlugin(),
+            linkPlugin(),
+            linkDialogPlugin(),
+            quotePlugin(),
+            listsPlugin(),
+            diffSourcePlugin({ viewMode: "rich-text" }),
+            imagePlugin(),
+            tablePlugin(),
+            toolbarPlugin({
+              toolbarContents: () => (
+                <>
+                  <DiffSourceToggleWrapper>
+                    <InsertFrontmatter />
+                    <BoldItalicUnderlineToggles />
+                    <BlockTypeSelect />
+                    <CodeToggle />
+                    <CreateLink />
+                    <InsertImage />
+                    <InsertTable />
+                    <ListsToggle />
+                    <ConditionalContents
+                      options={[
+                        {
+                          when: (editor) => editor?.editorType === "codeblock",
+                          contents: () => <ChangeCodeMirrorLanguage />,
+                        },
+                        {
+                          when: (editor) => editor?.editorType === "sandpack",
+                          contents: () => <ShowSandpackInfo />,
+                        },
+                        {
+                          fallback: () => (
+                            <>
+                              <InsertCodeBlock />
+                              <InsertSandpack />
+                            </>
+                          ),
+                        },
+                      ]}
+                    />
+                    <UndoRedo />
+                  </DiffSourceToggleWrapper>
+                </>
+              ),
+            }),
+          ]}
+        />
+      </div>
     </main>
   );
 }

@@ -27,7 +27,7 @@ function AuthorizeDialog() {
         </Alert>
       ) : (
         <DialogTrigger asChild>
-          <Button className="w-full rounded-none" variant="secondary">
+          <Button className="w-full h-12 rounded-none" variant="secondary">
             Log In
           </Button>
         </DialogTrigger>
