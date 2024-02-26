@@ -59,7 +59,8 @@ namespace PersonalWebsite.API.Controllers
 
                 // Add pagination with .Skip() and .Take()
                 List<BlogPost> rawBlogPosts = await _context.BlogPosts
-                    .OrderByDescending(e => e.CreatedDate)
+                    .Where(e => e.Published == true)
+                    .OrderByDescending(e => e.PublishedDate)
                     .Skip(howManyToSkip)
                     .Take(size)
                     .ToListAsync();
@@ -97,7 +98,7 @@ namespace PersonalWebsite.API.Controllers
                 var blogPost = await _context.BlogPosts
                     // Automapper used for mapping Category Model to ReturnCategoryDto Model
                     .Include(e => e.Categories)
-                    .SingleAsync(e => e.Id == id);
+                    .SingleAsync(e => e.Id == id && e.Published == true);
 
                 ReturnBlogPostDto blogPostDto = _mapper.Map<ReturnBlogPostDto>(blogPost);
 
@@ -136,6 +137,11 @@ namespace PersonalWebsite.API.Controllers
                     blogPost.BlogMdText = blogPostDto.BlogMdText;
                     blogPost.ImgUrl = blogPostDto.ImgUrl;
                     blogPost.Title = blogPostDto.Title;
+
+                    if (blogPostDto.Published == true)
+                    {
+
+                    }
 
                     await _context.SaveChangesAsync();
 

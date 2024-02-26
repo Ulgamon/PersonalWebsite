@@ -12,6 +12,8 @@
 
         public DateTime UpdatedDate { get; set; }
 
+        public DateTime PublishedDate { get; set; }
+
         public string Title { get; set; } = null!;
     }
 }

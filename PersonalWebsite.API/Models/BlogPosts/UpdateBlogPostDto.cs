@@ -22,6 +22,8 @@ namespace PersonalWebsite.API.Models.BlogPosts
         [MinLength(5, ErrorMessage = "Cannot enter less than 5 characters.")]
         public string Title { get; set; } = null!;
 
+        public bool Published { get; set; }
+
         public ICollection<ReturnCategoryDto> Categories { get; set; } = new List<ReturnCategoryDto>();
 
         public void Trim()

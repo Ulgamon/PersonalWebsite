@@ -15,6 +15,8 @@ namespace PersonalWebsite.API.Models.BlogPosts
 
         public DateTime UpdatedDate { get; set; }
 
+        public DateTime PublishedDate { get; set; }
+
         public string Title { get; set; } = null!;
 
         public ICollection<ReturnCategoryDto> Categories { get; set; } = new List<ReturnCategoryDto>();

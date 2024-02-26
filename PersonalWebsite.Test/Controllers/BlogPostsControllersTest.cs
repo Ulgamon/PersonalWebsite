@@ -74,6 +74,7 @@ namespace PersonalWebsite.Test.Controllers
                                 Title = $"Good BlogPost {i}",
                                 ImgUrl = $"http://localhost:1333/img{i}",
                                 UserId = "toja",
+                                Published = true,
                                 Categories = new List<Category>
                                 {
                                     item
@@ -83,7 +84,29 @@ namespace PersonalWebsite.Test.Controllers
                     }
                     await databaseContext.SaveChangesAsync();
                 }
-            }
+
+                // Add another one BlogPost that is not Published for the tests to be correct
+                int num = 55;
+                var category = await databaseContext.Categories.FindAsync(10);
+                await databaseContext.BlogPosts.AddAsync(
+                           new BlogPost
+                           {
+                               Id = num,
+                               BlogMdText = $"# Hello World {num}",
+                               Title = $"Good BlogPost {num}",
+                               ImgUrl = $"http://localhost:1333/img{num}",
+                               UserId = "toja",
+                               Categories = new List<Category>
+                               {
+                                    category
+                               }
+                           }
+                       );
+            
+                await databaseContext.SaveChangesAsync();
+
+
+        }
             catch (Exception ex)
             {
                 throw new InvalidDataException($"cannot create database blog posts: {ex.Message}");
