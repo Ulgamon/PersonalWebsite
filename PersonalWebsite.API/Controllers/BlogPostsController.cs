@@ -161,7 +161,7 @@ namespace PersonalWebsite.API.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> PostBlogPost(CreateBlogPostDto blogPostDto)
+        public async Task<ActionResult<int>> PostBlogPost(CreateBlogPostDto blogPostDto)
         {
             string? userEmail = User.FindFirstValue(ClaimTypes.Email);
             if (userEmail == null)
@@ -185,7 +185,7 @@ namespace PersonalWebsite.API.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-                return Created();
+                return Ok(blogPost.Id);
             }
             catch (Exception ex)
             {

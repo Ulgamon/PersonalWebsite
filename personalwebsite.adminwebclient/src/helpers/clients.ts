@@ -30,6 +30,18 @@ export interface IClient {
     blogPostsGET(size: number | undefined, page: number | undefined): Promise<PaginateBlogPostsDto>;
 
     /**
+     * @return Success
+     */
+    blogPostsGET2(id: number): Promise<ReturnBlogPostDto>;
+
+    /**
+     * @param size (optional) 
+     * @param page (optional) 
+     * @return Success
+     */
+    blogPostsGET3(size: number | undefined, page: number | undefined): Promise<PaginateBlogPostsDto>;
+
+    /**
      * @param body (optional) 
      * @return Success
      */
@@ -38,7 +50,7 @@ export interface IClient {
     /**
      * @return Success
      */
-    blogPostsGET2(id: number): Promise<ReturnBlogPostDto>;
+    blogPostsGET4(id: number): Promise<ReturnBlogPostDto>;
 
     /**
      * @param body (optional) 
@@ -98,6 +110,12 @@ export interface IClient {
      * @return Success
      */
     commentsPOST(body: CreateCommentDto | undefined): Promise<void>;
+
+    /**
+     * @param formFile (optional) 
+     * @return Success
+     */
+    image(formFile: FileParameter | undefined): Promise<ImageUploadResponseDto>;
 }
 
 export class Client implements IClient {
@@ -195,7 +213,7 @@ export class Client implements IClient {
      * @return Success
      */
     blogPostsGET(size: number | undefined, page: number | undefined): Promise<PaginateBlogPostsDto> {
-        let url_ = this.baseUrl + "/api/BlogPosts?";
+        let url_ = this.baseUrl + "/api/Auth/BlogPosts?";
         if (size === null)
             throw new Error("The parameter 'size' cannot be null.");
         else if (size !== undefined)
@@ -219,6 +237,91 @@ export class Client implements IClient {
     }
 
     protected processBlogPostsGET(response: Response): Promise<PaginateBlogPostsDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as PaginateBlogPostsDto;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<PaginateBlogPostsDto>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    blogPostsGET2(id: number): Promise<ReturnBlogPostDto> {
+        let url_ = this.baseUrl + "/api/Auth/BlogPosts/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processBlogPostsGET2(_response);
+        });
+    }
+
+    protected processBlogPostsGET2(response: Response): Promise<ReturnBlogPostDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ReturnBlogPostDto;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ReturnBlogPostDto>(null as any);
+    }
+
+    /**
+     * @param size (optional) 
+     * @param page (optional) 
+     * @return Success
+     */
+    blogPostsGET3(size: number | undefined, page: number | undefined): Promise<PaginateBlogPostsDto> {
+        let url_ = this.baseUrl + "/api/BlogPosts?";
+        if (size === null)
+            throw new Error("The parameter 'size' cannot be null.");
+        else if (size !== undefined)
+            url_ += "size=" + encodeURIComponent("" + size) + "&";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processBlogPostsGET3(_response);
+        });
+    }
+
+    protected processBlogPostsGET3(response: Response): Promise<PaginateBlogPostsDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -276,7 +379,7 @@ export class Client implements IClient {
     /**
      * @return Success
      */
-    blogPostsGET2(id: number): Promise<ReturnBlogPostDto> {
+    blogPostsGET4(id: number): Promise<ReturnBlogPostDto> {
         let url_ = this.baseUrl + "/api/BlogPosts/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -291,11 +394,11 @@ export class Client implements IClient {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processBlogPostsGET2(_response);
+            return this.processBlogPostsGET4(_response);
         });
     }
 
-    protected processBlogPostsGET2(response: Response): Promise<ReturnBlogPostDto> {
+    protected processBlogPostsGET4(response: Response): Promise<ReturnBlogPostDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -713,6 +816,50 @@ export class Client implements IClient {
         }
         return Promise.resolve<void>(null as any);
     }
+
+    /**
+     * @param formFile (optional) 
+     * @return Success
+     */
+    image(formFile: FileParameter | undefined): Promise<ImageUploadResponseDto> {
+        let url_ = this.baseUrl + "/api/Upload/Image";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (formFile === null || formFile === undefined)
+            throw new Error("The parameter 'formFile' cannot be null.");
+        else
+            content_.append("formFile", formFile.data, formFile.fileName ? formFile.fileName : "formFile");
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processImage(_response);
+        });
+    }
+
+    protected processImage(response: Response): Promise<ImageUploadResponseDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ImageUploadResponseDto;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ImageUploadResponseDto>(null as any);
+    }
 }
 
 export interface AuthResponse {
@@ -746,6 +893,11 @@ export interface CreateCommentDto {
     commentId?: number | undefined;
 }
 
+export interface ImageUploadResponseDto {
+    responseCode?: number;
+    fileUrl?: string | undefined;
+}
+
 export interface LoginApplicationUserDto {
     email: string;
     password: string;
@@ -772,6 +924,7 @@ export interface ReturnBlogPostDto {
     blogMdText?: string | undefined;
     createdDate?: string;
     updatedDate?: string;
+    publishedDate?: string;
     title?: string | undefined;
     categories?: ReturnCategoryDto[] | undefined;
 }
@@ -782,6 +935,7 @@ export interface ReturnBlogPostsDto {
     blogMdText?: string | undefined;
     createdDate?: string;
     updatedDate?: string;
+    publishedDate?: string;
     title?: string | undefined;
 }
 
@@ -813,6 +967,7 @@ export interface UpdateBlogPostDto {
     imgUrl: string;
     blogMdText: string;
     title: string;
+    published?: boolean;
     categories?: ReturnCategoryDto[] | undefined;
 }
 
@@ -826,6 +981,11 @@ export interface UpdateCommentDto {
     id: number;
     name: string;
     comment1: string;
+}
+
+export interface FileParameter {
+    data: any;
+    fileName: string;
 }
 
 export class ApiException extends Error {

@@ -4,6 +4,7 @@ import AuthContextProvider from "./contexts/AuthContext/AuthContext";
 import { Toaster } from "./components/ui/toaster";
 import WelcomePage from "./pages/welcomepage/WelcomePage";
 import CreateBlogPost from "./pages/createblogpost/CreateBlogPost";
+import UpdateBlogPost from "./pages/updateblogpost/UpdateBlogPost";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
             <Route path="createblogpost" element={<CreateBlogPost />} />
             <Route
               path="updateblogpost/:blogId"
-              element={<>Update Blog Post</>}
+              element={<UpdateBlogPost />}
             />
             <Route path="comments" element={<>Comments</>} />
             <Route path="createcomment" element={<>Create Comment</>} />
