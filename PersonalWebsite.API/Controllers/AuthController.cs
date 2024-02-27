@@ -106,7 +106,7 @@ namespace PersonalWebsite.API.Controllers
         [Authorize]
         [HttpGet]
         [Route("BlogPosts")]
-        public async Task<ActionResult<Models.BlogPosts.PaginateBlogPostsDto>> GetBlogPosts(int size = 3, int page = 1)
+        public async Task<ActionResult<PaginateBlogPostsDto>> GetAuthBlogPosts(int size = 3, int page = 1)
         {
             if (size < 1 || page < 1)
                 return BadRequest("Invalid size and/or page params should be size >= 1 and page >= 1.");
@@ -161,9 +161,8 @@ namespace PersonalWebsite.API.Controllers
 
         // GET: api/BlogPosts/5
         [Authorize]
-        [HttpGet("{id}")]
-        [Route("BlogPosts")]
-        public async Task<ActionResult<ReturnBlogPostDto>> GetBlogPost(int id)
+        [HttpGet("BlogPosts/{id}")]
+        public async Task<ActionResult<ReturnBlogPostDto>> GetAuthBlogPost(int id)
         {
             try
             {

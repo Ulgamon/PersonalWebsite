@@ -9,12 +9,20 @@ namespace PersonalWebsite.API.Controllers
     [ApiController]
     public class UploadController : ControllerBase
     {
-            //[Authorize]
-            //[HttpPost]
-            //[Route("Image")]
-            //public async Task<IActionResult> PostImage(IFormFile formFile)
-            //{
-            
-            //}
+        //private readonly IConfiguration _configuration;
+
+        //public UploadController(IConfiguration configuration)
+        //{
+        //    _configuration = configuration;
+        //}
+
+
+        //[HttpPost]
+        //[Route("Image")]
+        //[Authorize]
+        //public async Task<ActionResult> PostImage(IFormFile formFile)
+        //{
+        //    return Ok();
+        //}
     }
 }

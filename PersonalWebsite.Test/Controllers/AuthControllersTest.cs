@@ -184,7 +184,7 @@ namespace PersonalWebsite.Test.Controllers
             AuthController controller = new AuthController(_userManager, context, _logger, _mapper, _configuration);
 
             // Act
-            ActionResult<PaginateBlogPostsDto> response = await controller.GetBlogPosts();
+            ActionResult<PaginateBlogPostsDto> response = await controller.GetAuthBlogPosts();
 
             // Assert
             OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
@@ -203,7 +203,7 @@ namespace PersonalWebsite.Test.Controllers
             AuthController controller = new AuthController(_userManager, context, _logger, _mapper, _configuration);
 
             // Act
-            ActionResult<PaginateBlogPostsDto> response = await controller.GetBlogPosts(3, 3);
+            ActionResult<PaginateBlogPostsDto> response = await controller.GetAuthBlogPosts(3, 3);
 
             // Assert
             OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
@@ -225,7 +225,7 @@ namespace PersonalWebsite.Test.Controllers
             AuthController controller = new AuthController(_userManager, context, _logger, _mapper, _configuration);
 
             // Act
-            ActionResult<PaginateBlogPostsDto> response = await controller.GetBlogPosts(3, 4);
+            ActionResult<PaginateBlogPostsDto> response = await controller.GetAuthBlogPosts(3, 4);
 
             // Assert
             OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
@@ -245,7 +245,7 @@ namespace PersonalWebsite.Test.Controllers
             AuthController controller = new AuthController(_userManager, context, _logger, _mapper, _configuration);
 
             // Act
-            ActionResult<PaginateBlogPostsDto> response = await controller.GetBlogPosts(3, 5);
+            ActionResult<PaginateBlogPostsDto> response = await controller.GetAuthBlogPosts(3, 5);
 
             // Assert
             BadRequestObjectResult errorObjectResult = Assert.IsType<BadRequestObjectResult>(response.Result);
@@ -261,7 +261,7 @@ namespace PersonalWebsite.Test.Controllers
             AuthController controller = new AuthController(_userManager, context, _logger, _mapper, _configuration);
 
             // Act
-            ActionResult<PaginateBlogPostsDto> response = await controller.GetBlogPosts(-3, -5);
+            ActionResult<PaginateBlogPostsDto> response = await controller.GetAuthBlogPosts(-3, -5);
 
             // Assert
             BadRequestObjectResult errorObjectResult = Assert.IsType<BadRequestObjectResult>(response.Result);
