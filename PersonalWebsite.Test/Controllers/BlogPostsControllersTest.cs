@@ -135,7 +135,7 @@ namespace PersonalWebsite.Test.Controllers
 
         // Tests FOR SINGLE POST FETCHED BY ID
         [Fact]
-        public async void Http_Get_BlogPost()
+        public async void GET_BlogPost()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -157,7 +157,7 @@ namespace PersonalWebsite.Test.Controllers
         }    
 
         [Fact]
-        public async void Http_Get_NonExistent_BlogPost()
+        public async void GET_NonExistent_BlogPost()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -177,7 +177,7 @@ namespace PersonalWebsite.Test.Controllers
 
         // TESTS FOR HTTP GET ROUTE "/api/BlogPosts" which can take parameters "page" and "size"
         [Fact]
-        public async void Http_Get_BlogPosts()
+        public async void GET_BlogPosts()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -196,7 +196,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_Get_BlogPosts_WithQueryParameter_ThirdPage()
+        public async void GET_BlogPosts_WithQueryParameter_ThirdPage()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -217,7 +217,7 @@ namespace PersonalWebsite.Test.Controllers
             Assert.True(model.HasPrev);
         }
         [Fact]
-        public async void Http_Get_BlogPosts_WithQueryParameter_FourthPage()
+        public async void GET_BlogPosts_WithQueryParameter_FourthPage()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -237,7 +237,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_Get_BlogPosts_WithQueryParameter_FifthPage()
+        public async void GET_BlogPosts_WithQueryParameter_FifthPage()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -253,7 +253,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_Get_BlogPosts_WithQueryParameter_InvalidPageAndSize()
+        public async void GET_BlogPosts_WithQueryParameter_InvalidPageAndSize()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -271,7 +271,7 @@ namespace PersonalWebsite.Test.Controllers
         // TEST HTTP PUT REQUEST
 
         [Fact]
-        public async void HttpPut_Update_Existing_BlogPost_Successfully()
+        public async void PUT_Existing_BlogPost_Successfully()
         {
             // To do
             // After Auth Controller Tests check for authorization and authentication
@@ -303,7 +303,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void HttpPut_Update_NonExisting_BlogPost()
+        public async void PUT_NonExisting_BlogPost()
         {
             // To do
             // After Auth Controller Tests check for authorization and authentication
@@ -332,7 +332,7 @@ namespace PersonalWebsite.Test.Controllers
 
         // Test POST REQUEST
         [Fact]
-        public async void Http_Create_BlogPost_With_Good_Params()
+        public async void POST_BlogPost_With_Good_Params()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -362,7 +362,7 @@ namespace PersonalWebsite.Test.Controllers
 
         // TESTS FOR DELETE
         [Fact]
-        public async void Http_Delete_Blog_Post_SuccessFully()
+        public async void DELETE_Blog_Post_SuccessFully()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -379,7 +379,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_Delete_Blog_Post_That_DoesNotExist()
+        public async void DELETE_Blog_Post_That_DoesNotExist()
         {
             // Arrange
             var context = await GetDatabaseContext();

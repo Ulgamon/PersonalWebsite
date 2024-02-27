@@ -106,7 +106,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_GET_Categories_Default()
+        public async void GET_Categories_Default()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -123,7 +123,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_GET_Categories_Size12_Page1()
+        public async void GET_Categories_Size12_Page1()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -141,7 +141,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_GET_Categories_Size12_Page3()
+        public async void GET_Categories_Size12_Page3()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -154,7 +154,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_GET_Categories_SizeMinus10_PageMinus3()
+        public async void GET_Categories_SizeMinus10_PageMinus3()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -168,7 +168,7 @@ namespace PersonalWebsite.Test.Controllers
 
         // Test PUT Requests
         [Fact]
-        public async void Http_PUT_Category_With_Correct_Id()
+        public async void PUT_Category_With_Correct_Id()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -194,7 +194,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_PUT_Category_With_Incorrect_Id()
+        public async void PUT_Category_With_Incorrect_Id()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -215,7 +215,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_PUT_Category_With_Incorrect_Ids()
+        public async void PUT_Category_With_Incorrect_Ids()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -238,7 +238,7 @@ namespace PersonalWebsite.Test.Controllers
 
         // POST Category
         [Fact]
-        public async void Http_POST_Category_With_Correct_Data()
+        public async void POST_Category_With_Correct_Data()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -265,7 +265,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_POST_Category_With_Trailing_Spaces_Data()
+        public async void POST_Category_With_Trailing_Spaces_Data()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -291,7 +291,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_DELETE_Category_With_Correct_Id()
+        public async void DELETE_Category_With_Correct_Id()
         {
             // Arrange
             var context = await GetDatabaseContext();
@@ -308,7 +308,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void Http_DELETE_Category_With_Incorrect_Id()
+        public async void DELETE_Category_With_Incorrect_Id()
         {
             // Arrange
             var context = await GetDatabaseContext();

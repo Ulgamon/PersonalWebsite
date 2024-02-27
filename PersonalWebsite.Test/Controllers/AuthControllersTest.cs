@@ -10,6 +10,7 @@ using PersonalWebsite.API.Configurations;
 using PersonalWebsite.API.Controllers;
 using PersonalWebsite.API.Data;
 using PersonalWebsite.API.Models.BlogPosts;
+using PersonalWebsite.API.Models.Categories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -174,6 +175,47 @@ namespace PersonalWebsite.Test.Controllers
                 cfg.AddProfile<MapperConfig>();
             });
             _mapper = mapperConfig.CreateMapper();
+        }
+
+        // Tests FOR SINGLE POST FETCHED BY ID
+        [Fact]
+        public async void GET_BlogPost()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            AuthController controller = new AuthController(_userManager, context, _logger, _mapper, _configuration);
+            int id = 55;
+
+            // Act
+
+            ActionResult<ReturnBlogPostDto> response = await controller.GetAuthBlogPost(id);
+
+            // Assert
+            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
+            ReturnBlogPostDto model = Assert.IsType<ReturnBlogPostDto>(okObjectResult.Value);
+            Assert.NotNull(model);
+            Assert.True(model.Id == id);
+            Assert.IsType<List<ReturnCategoryDto>>(model.Categories);
+            Assert.True(model.Categories.Count == 1);
+        }
+
+        [Fact]
+        public async void GET_NonExistent_BlogPost()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            AuthController controller = new AuthController(_userManager, context, _logger, _mapper, _configuration);
+            int id = 600;
+
+            // Act
+
+            var response = await controller.GetAuthBlogPost(id);
+
+            ReturnBlogPostDto? blogPost = response.Value;
+
+            // Assert
+            NotFoundResult notFoundResult = Assert.IsType<NotFoundResult>(response.Result);
+            //response.
         }
 
         [Fact]
