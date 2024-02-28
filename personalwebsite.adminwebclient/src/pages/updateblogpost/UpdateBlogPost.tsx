@@ -78,6 +78,18 @@ function UpdateBlogPost() {
     }
   }, []);
 
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "s" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        console.log("SAVING");
+      }
+    };
+
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+
   async function submitSaveHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
   }
@@ -87,7 +99,7 @@ function UpdateBlogPost() {
   }
 
   function setMarkdownBlogPost(markdown: string) {
-    setBlogPostDto(prevState => ({...prevState, blogMdText: markdown}))
+    setBlogPostDto((prevState) => ({ ...prevState, blogMdText: markdown }));
     console.log(markdown);
   }
 
@@ -97,7 +109,10 @@ function UpdateBlogPost() {
         <ReloadIcon className="animate-spin h-10 w-10 mx-auto" />
       ) : (
         <>
-          <MdxComponent setParentValue={setMarkdownBlogPost} defaultValue={blogPostDto.blogMdText} />
+          <MdxComponent
+            setParentValue={setMarkdownBlogPost}
+            defaultValue={blogPostDto.blogMdText}
+          />
           <Alert className="w-1/2 mx-auto mt-5">
             <Pencil2Icon className="w-4 h-4" />
             <AlertTitle>Tip</AlertTitle>

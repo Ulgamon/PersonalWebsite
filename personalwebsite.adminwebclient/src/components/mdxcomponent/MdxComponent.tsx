@@ -29,7 +29,6 @@ import {
   InsertCodeBlock,
   ChangeCodeMirrorLanguage,
 } from "@mdxeditor/editor";
-import { useState } from "react";
 
 interface IMdxComponentProps {
   defaultValue: string;
