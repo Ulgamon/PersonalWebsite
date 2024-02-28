@@ -6,19 +6,39 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CreateBlogPostDto } from "@/helpers/clients";
+import { Client, CreateBlogPostDto, IClient } from "@/helpers/clients";
+import { apiUrl } from "@/helpers/constants";
+import { useState } from "react";
+import { redirect } from "react-router-dom";
 
 function CreateBlogPost() {
-  const defaultBlogPost: CreateBlogPostDto = {
-    blogMdText: "# This is your starting template",
-    imgUrl: "You should put image url here.",
-    title: "Hello World!",
-  };
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
-  function submitHandler(event: React.FormEvent<HTMLFormElement>) {
+  async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    const defaultBlogPost: CreateBlogPostDto = {
+      blogMdText: "# This is your starting template",
+      imgUrl: "You should put image url here.",
+      title: "Hello World!",
+    };
 
+    const client: IClient = new Client(apiUrl);
+    try {
+      setIsLoading(true);
+      const response = await client.blogPostsPOST(defaultBlogPost);
+      // This needs to be either tested or tried out
+      redirect(`/updateblogpost/${response}`);
+    } catch (e: unknown) {
+      if (typeof e === "string") {
+        setError(e);
+      } else if (e instanceof Error) {
+        setError(e.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
