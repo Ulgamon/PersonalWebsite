@@ -8,12 +8,18 @@ import {
 } from "@/components/ui/card";
 import { Client, CreateBlogPostDto, IClient } from "@/helpers/clients";
 import { apiUrl } from "@/helpers/constants";
-import { useState } from "react";
-import { redirect } from "react-router-dom";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
+import { AuthContext } from "@/contexts/AuthContext/AuthContext";
 
 function CreateBlogPost() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const { toast } = useToast();
+  const { getCookie } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   async function submitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -22,20 +28,34 @@ function CreateBlogPost() {
       blogMdText: "# This is your starting template",
       imgUrl: "You should put image url here.",
       title: "Hello World!",
+      categories: [],
     };
 
-    const client: IClient = new Client(apiUrl);
+    const client: IClient = new Client(apiUrl, {
+      async fetch(url: RequestInfo, init: RequestInit) {
+        const accessToken = getCookie();
+        init.headers["Authorization"] = `Bearer ${accessToken}`;
+
+        return fetch(url, init);
+      },
+    });
     try {
       setIsLoading(true);
       const response = await client.blogPostsPOST(defaultBlogPost);
+      console.log(response);
       // This needs to be either tested or tried out
-      redirect(`/updateblogpost/${response}`);
+      navigate(`/updateblogpost/${response}`);
     } catch (e: unknown) {
       if (typeof e === "string") {
         setError(e);
       } else if (e instanceof Error) {
         setError(e.message);
       }
+      toast({
+        variant: "destructive",
+        title: "Something went wrong!",
+        description: error,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -53,7 +73,12 @@ function CreateBlogPost() {
 
         <CardFooter>
           <form id="createblogpost" onSubmit={submitHandler}>
-            <Button type="submit" className="ms-auto">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="ms-auto disabled:opacity-75 hover:disabled:cursor-not-allowed"
+            >
+              {isLoading ? <ReloadIcon className="animate-spin me-2" /> : <></>}{" "}
               Continue
             </Button>
           </form>

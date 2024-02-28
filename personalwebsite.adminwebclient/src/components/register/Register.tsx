@@ -132,7 +132,7 @@ function Register() {
           </CardContent>
           <CardFooter>
             <Button
-              className="disabled:opacity-75 disabled:cursor-not-allowed"
+              className="disabled:opacity-75 hover:disabled:cursor-not-allowed"
               type="submit"
               disabled={isLoading}
             >

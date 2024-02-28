@@ -15,10 +15,7 @@ function App() {
             <Route index element={<WelcomePage />} />
             <Route path="blogposts" element={<>Blog Posts</>} />
             <Route path="createblogpost" element={<CreateBlogPost />} />
-            <Route
-              path="updateblogpost/:blogId"
-              element={<UpdateBlogPost />}
-            />
+            <Route path="updateblogpost/:blogId" element={<UpdateBlogPost />} />
             <Route path="comments" element={<>Comments</>} />
             <Route path="createcomment" element={<>Create Comment</>} />
             <Route path="updatecomment" element={<>Update Comment</>} />
