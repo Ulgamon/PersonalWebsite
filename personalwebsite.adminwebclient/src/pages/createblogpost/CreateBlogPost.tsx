@@ -42,7 +42,6 @@ function CreateBlogPost() {
     try {
       setIsLoading(true);
       const response = await client.blogPostsPOST(defaultBlogPost);
-      console.log(response);
       // This needs to be either tested or tried out
       navigate(`/updateblogpost/${response}`);
     } catch (e: unknown) {

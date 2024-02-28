@@ -32,15 +32,13 @@ import {
 import { useState } from "react";
 
 interface IMdxComponentProps {
-  defaultValue?: string;
+  defaultValue: string;
   setParentValue: (value: string) => void;
 }
 
 function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
-  const [value, setValue] = useState<string>(defaultValue || "");
 
   function changeHandler(markdown: string) {
-    setValue(markdown);
     setParentValue(markdown);
   }
   return (
@@ -49,7 +47,7 @@ function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
         onChange={changeHandler}
         className=" px-5 dark-theme rounded-none flex flex-col dark-editor"
         contentEditableClassName="prose"
-        markdown={value}
+        markdown={defaultValue}
         plugins={[
           codeBlockPlugin({ defaultCodeBlockLanguage: "tsx" }),
           codeMirrorPlugin({
@@ -60,6 +58,7 @@ function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
               tsx: "TypeScript (React)",
               csharp: "CSharp",
               sql: "SQL",
+              golang: "GOLANG",
             },
           }),
           headingsPlugin(),

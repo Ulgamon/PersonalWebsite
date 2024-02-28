@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 import { useToast } from "@/components/ui/use-toast";
 
 export interface IAuthContext {
-  email: string;
+  getEmail: () => string;
   isLoggedIn: boolean;
   handleLogin: (authData: AuthResponse) => void;
   handleLogout: () => void;
@@ -25,11 +25,10 @@ function AuthContextProvider({ children }: IAuthContextProvider) {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
     cookies[cookieName] ? true : false
   );
-  const [email, setEmail] = useState<string>(cookies[emailString]);
 
   function handleLogin(authData: AuthResponse) {
-    setEmail(authData.email ? authData.email : "");
     setCookie(cookieName, authData.token);
+    setCookie(emailString, authData.email);
     setIsLoggedIn(true);
     toast({
       description: "You logged in successfully!",
@@ -37,7 +36,7 @@ function AuthContextProvider({ children }: IAuthContextProvider) {
   }
 
   function handleLogout() {
-    setEmail("");
+    removeCookie(emailString);
     removeCookie(cookieName);
     setIsLoggedIn(false);
     toast({
@@ -50,8 +49,12 @@ function AuthContextProvider({ children }: IAuthContextProvider) {
     return cookies[cookieName];
   }
 
+  function getEmail() {
+    return cookies[emailString];
+  }
+
   const value: IAuthContext = {
-    email: email,
+    getEmail: getEmail,
     isLoggedIn: isLoggedIn,
     handleLogin: handleLogin,
     handleLogout: handleLogout,

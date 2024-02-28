@@ -9,8 +9,10 @@ import { AvatarIcon } from "@radix-ui/react-icons";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
 function AuthorizeDialog() {
-  const { isLoggedIn, email, handleLogout } =
+  const { isLoggedIn, getEmail, handleLogout } =
     useContext<IAuthContext>(AuthContext);
+
+  const email = getEmail();
 
   return (
     <Dialog>
@@ -20,7 +22,11 @@ function AuthorizeDialog() {
           <AlertTitle>Welcome! {email}</AlertTitle>
           <AlertDescription className="flex flex-col">
             Now you can change anything.{" "}
-            <Button className="h-8 w-fit my-1" onClick={handleLogout} variant="secondary">
+            <Button
+              className="h-8 w-fit my-1"
+              onClick={handleLogout}
+              variant="secondary"
+            >
               Sign Out
             </Button>
           </AlertDescription>

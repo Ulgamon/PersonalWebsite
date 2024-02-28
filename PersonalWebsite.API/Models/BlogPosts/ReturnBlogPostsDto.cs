@@ -14,6 +14,8 @@
 
         public DateTime PublishedDate { get; set; }
 
+        public bool Published { get; set; }
+
         public string Title { get; set; } = null!;
     }
 }

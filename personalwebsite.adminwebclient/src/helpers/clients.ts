@@ -930,6 +930,7 @@ export interface ReturnBlogPostDto {
     publishedDate?: string;
     title?: string | undefined;
     categories?: ReturnCategoryDto[] | undefined;
+    published?: boolean;
 }
 
 export interface ReturnBlogPostsDto {
@@ -940,6 +941,7 @@ export interface ReturnBlogPostsDto {
     updatedDate?: string;
     publishedDate?: string;
     title?: string | undefined;
+    published?: boolean;
 }
 
 export interface ReturnCategoriesDto {
