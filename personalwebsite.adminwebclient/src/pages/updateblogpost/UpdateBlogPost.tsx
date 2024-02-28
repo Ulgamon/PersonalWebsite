@@ -14,7 +14,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { AuthContext } from "@/contexts/AuthContext/AuthContext";
-import { Client, IClient, UpdateBlogPostDto } from "@/helpers/clients";
+import {
+  Client,
+  FileParameter,
+  IClient,
+  UpdateBlogPostDto,
+} from "@/helpers/clients";
 import { apiUrl } from "@/helpers/constants";
 import { Pencil2Icon, ReloadIcon } from "@radix-ui/react-icons";
 import React, { useContext, useEffect, useState, useCallback } from "react";
@@ -39,7 +44,6 @@ function UpdateBlogPost() {
   const [error, setError] = useState<string>("");
   const { getCookie } = useContext(AuthContext);
   const { toast } = useToast();
-  const published = blogPostDto.published;
 
   useEffect(() => {
     async function fetchBlog(blogId: number) {
@@ -132,7 +136,7 @@ function UpdateBlogPost() {
 
   async function submitSaveHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    saveHandler(setIsPublishing);
+    saveHandler(setIsSaving);
   }
 
   async function submitPublishUnpublishHandler(
@@ -143,7 +147,6 @@ function UpdateBlogPost() {
       ...prevState,
       published: !prevState.published,
     }));
-    saveHandler(setIsPublishing);
   }
 
   function setMarkdownBlogPost(markdown: string) {
@@ -162,6 +165,52 @@ function UpdateBlogPost() {
       ...prevState,
       title: event.target.value,
     }));
+  }
+
+  // Image hadler function
+  async function imageUploadHandler(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files) return;
+    if (!e.target.files[0]) return;
+    const image: File = e.target.files[0];
+
+    const fileData: FileParameter = {
+      data: image,
+      fileName: image.name,
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const client: IClient = new Client(apiUrl, {
+      async fetch(url: RequestInfo, init: RequestInit) {
+        const accessToken = getCookie();
+        init.headers["Authorization"] = `Bearer ${accessToken}`;
+
+        return fetch(url, init);
+      },
+    });
+    try {
+      const response = await client.image(fileData);
+      toast({
+        title: "Image upload successful",
+        description: `You uploaded image: ${response.fileUrl} successfully.`,
+      });
+      const imageUrl: string = response.fileUrl || "";
+      setBlogPostDto((prevState) => ({
+        ...prevState,
+        imgUrl: imageUrl,
+      }));
+    } catch (e: unknown) {
+      let error: string = "";
+      if (typeof e === "string") {
+        error = e;
+      } else if (e instanceof Error) {
+        error = e.message;
+      }
+      toast({
+        variant: "destructive",
+        title: "Couldn't upload image!",
+        description: error,
+      });
+    }
   }
 
   return (
@@ -201,7 +250,13 @@ function UpdateBlogPost() {
               value={blogPostDto.imgUrl}
               onChange={imgUrlChangeHandler}
             />
-            <Input className="my-1" type="file" name="imgFile" id="imgFile" />
+            <Input
+              className="my-1"
+              type="file"
+              name="imgFile"
+              id="imgFile"
+              onChange={imageUploadHandler}
+            />
           </div>
 
           <div className="flex justify-end p-5">
@@ -233,17 +288,18 @@ function UpdateBlogPost() {
                   ) : (
                     <></>
                   )}
-                  {published ? "Unpublish" : "Publish"}
+                  {blogPostDto.published ? "Unpublish" : "Publish"}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   Are you absolutely sure you want to{" "}
-                  {published ? "unpublish" : "publish"}?
+                  {blogPostDto.published ? "unpublish" : "publish"}?
                 </DialogHeader>
                 <DialogDescription>
-                  This will {published ? "unpublish" : "publish"}? your blog
-                  post look at it again you might find another mistake.
+                  This will {blogPostDto.published ? "unpublish" : "publish"}?
+                  your blog post look at it again you might find another
+                  mistake.
                 </DialogDescription>
                 <DialogFooter className="flex justify-end">
                   <DialogClose asChild>
@@ -257,7 +313,7 @@ function UpdateBlogPost() {
                   >
                     <Button
                       type="submit"
-                      className="m-1 disabled:opacity-75 disabled:hover:cursor-not-allowed"
+                      className="disabled:opacity-75 disabled:hover:cursor-not-allowed"
                       disabled={isPublishing}
                     >
                       {isPublishing ? (
@@ -265,7 +321,7 @@ function UpdateBlogPost() {
                       ) : (
                         <></>
                       )}
-                      {published ? "Unpublish" : "Publish"}
+                      {blogPostDto.published ? "Unpublish" : "Publish"}
                     </Button>
                   </form>
                 </DialogFooter>

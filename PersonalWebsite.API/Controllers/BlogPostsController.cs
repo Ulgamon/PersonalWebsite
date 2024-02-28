@@ -43,7 +43,7 @@ namespace PersonalWebsite.API.Controllers
                 // so I don't have any data memory leaks
                 // BLOG POSTS ARE RETURNED IN A CREATED DATE DESCENDING ORDER
 
-                int blogsCount = await _context.BlogPosts.CountAsync();
+                int blogsCount = await _context.BlogPosts.Where(e => e.Published == true).CountAsync();
 
                 // it is size * page because I need to check one page in advance
                 if (size * page > blogsCount)
@@ -137,10 +137,12 @@ namespace PersonalWebsite.API.Controllers
                     blogPost.BlogMdText = blogPostDto.BlogMdText;
                     blogPost.ImgUrl = blogPostDto.ImgUrl;
                     blogPost.Title = blogPostDto.Title;
+                    blogPost.UpdatedDate = DateTime.Now;
+                    blogPost.Published = blogPostDto.Published;
 
                     if (blogPostDto.Published == true)
                     {
-
+                        blogPost.PublishedDate = DateTime.Now;
                     }
 
                     await _context.SaveChangesAsync();

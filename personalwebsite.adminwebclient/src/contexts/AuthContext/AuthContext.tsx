@@ -1,5 +1,5 @@
 import { AuthResponse } from "@/helpers/clients";
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useState, useCallback } from "react";
 import { useCookies } from "react-cookie";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -26,14 +26,17 @@ function AuthContextProvider({ children }: IAuthContextProvider) {
     cookies[cookieName] ? true : false
   );
 
-  function handleLogin(authData: AuthResponse) {
-    setCookie(cookieName, authData.token);
-    setCookie(emailString, authData.email);
-    setIsLoggedIn(true);
-    toast({
-      description: "You logged in successfully!",
-    });
-  }
+  const handleLogin = useCallback(
+    (authData: AuthResponse) => {
+      setCookie(cookieName, authData.token);
+      setCookie(emailString, authData.email);
+      setIsLoggedIn(true);
+      toast({
+        description: "You logged in successfully!",
+      });
+    },
+    [setCookie]
+  );
 
   function handleLogout() {
     removeCookie(emailString);
