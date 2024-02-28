@@ -29,6 +29,7 @@ import {
   InsertCodeBlock,
   ChangeCodeMirrorLanguage,
 } from "@mdxeditor/editor";
+import { useState } from "react";
 
 interface IMdxComponentProps {
   defaultValue: string;
@@ -36,8 +37,10 @@ interface IMdxComponentProps {
 }
 
 function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
+  const [value, setValue] = useState<string>(defaultValue);
 
   function changeHandler(markdown: string) {
+    setValue(markdown);
     setParentValue(markdown);
   }
   return (
@@ -46,7 +49,7 @@ function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
         onChange={changeHandler}
         className=" px-5 dark-theme rounded-none flex flex-col dark-editor"
         contentEditableClassName="prose"
-        markdown={defaultValue}
+        markdown={value}
         plugins={[
           codeBlockPlugin({ defaultCodeBlockLanguage: "tsx" }),
           codeMirrorPlugin({

@@ -15,7 +15,7 @@ import { AuthContext } from "@/contexts/AuthContext/AuthContext";
 import { Client, IClient, UpdateBlogPostDto } from "@/helpers/clients";
 import { apiUrl } from "@/helpers/constants";
 import { Pencil2Icon, ReloadIcon } from "@radix-ui/react-icons";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 
 function UpdateBlogPost() {
@@ -31,6 +31,9 @@ function UpdateBlogPost() {
   // isLoading is for initial load that loads blog post data
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // isSaving is for saving the data
+  const [isSaving, setIsSaving] = useState<boolean>(false);
+  // isPublishing
+  const [isPublishing, setIsPublishing] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const { getCookie } = useContext(AuthContext);
   const { toast } = useToast();
@@ -78,20 +81,52 @@ function UpdateBlogPost() {
     }
   }, []);
 
+  const saveHandler = useCallback(async () => {
+    const client: IClient = new Client(apiUrl, {
+      async fetch(url: RequestInfo, init: RequestInit) {
+        const accessToken = getCookie();
+        init.headers["Authorization"] = `Bearer ${accessToken}`;
+
+        return fetch(url, init);
+      },
+    });
+    const id: number = parseInt(blogId ? blogId : "0");
+    try {
+      setIsSaving(true);
+      await client.blogPostsPUT(id, blogPostDto);
+      toast({ title: "Successful!", description: "Blog post is saved!" });
+      // This needs to be either tested or tried out
+    } catch (e: unknown) {
+      if (typeof e === "string") {
+        setError(e);
+      } else if (e instanceof Error) {
+        setError(e.message);
+      }
+      toast({
+        variant: "destructive",
+        title: "Something went wrong!",
+        description: error,
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  }, [blogPostDto, setIsSaving, getCookie, blogId, error, toast]);
+
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "s" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        console.log("SAVING");
+        saveHandler();
       }
     };
 
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, []);
+  }, [saveHandler]);
 
   async function submitSaveHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    saveHandler();
   }
 
   async function submitPublishHandler(event: React.FormEvent<HTMLFormElement>) {
@@ -100,7 +135,6 @@ function UpdateBlogPost() {
 
   function setMarkdownBlogPost(markdown: string) {
     setBlogPostDto((prevState) => ({ ...prevState, blogMdText: markdown }));
-    console.log(markdown);
   }
 
   return (
@@ -123,9 +157,23 @@ function UpdateBlogPost() {
           </Alert>
 
           <div className="flex justify-end p-5">
-            <Button variant="outline" className="m-1">
-              Save
-            </Button>
+            <form name="saveblogpost" onSubmit={submitSaveHandler}>
+              <Button
+                disabled={isSaving}
+                type="submit"
+                variant="outline"
+                className="m-1 disabled:opacity-75 disabled:hover:cursor-not-allowed"
+              >
+                {isSaving ? (
+                  <>
+                    <ReloadIcon className="animate-spin h-4 w-4 me-2" />
+                    Saving...
+                  </>
+                ) : (
+                  "Save"
+                )}
+              </Button>
+            </form>
             <Dialog>
               <DialogTrigger>
                 <Button className="m-1">Publish</Button>
