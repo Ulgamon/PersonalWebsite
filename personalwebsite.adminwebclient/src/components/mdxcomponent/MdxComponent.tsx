@@ -29,7 +29,11 @@ import {
   InsertCodeBlock,
   ChangeCodeMirrorLanguage,
 } from "@mdxeditor/editor";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { Client, FileParameter, IClient } from "@/helpers/clients";
+import { apiUrl } from "@/helpers/constants";
+import { AuthContext } from "@/contexts/AuthContext/AuthContext";
+import { useToast } from "../ui/use-toast";
 
 interface IMdxComponentProps {
   defaultValue: string;
@@ -38,11 +42,56 @@ interface IMdxComponentProps {
 
 function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
   const [value, setValue] = useState<string>(defaultValue);
+  const { getCookie } = useContext(AuthContext);
+  const { toast } = useToast();
 
   function changeHandler(markdown: string) {
     setValue(markdown);
     setParentValue(markdown);
   }
+
+  async function imageUploadHandler(image: File) {
+    // const formData = new FormData();
+    const fileData: FileParameter = {
+      data: image,
+      fileName: image.name,
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const client: IClient = new Client(apiUrl, {
+      async fetch(url: RequestInfo, init: RequestInit) {
+        const accessToken = getCookie();
+        init.headers["Authorization"] = `Bearer ${accessToken}`;
+
+        return fetch(url, init);
+      },
+    });
+    try {
+      const response = await client.image(fileData);
+      toast({
+        title: "Image upload successful",
+        description: `You uploaded image: ${response.fileUrl} successfully.`,
+      });
+      if (response.fileUrl === undefined) return null;
+      return new Promise<string>((resolve) => {
+        resolve(response.fileUrl || "");
+      });
+    } catch (e: unknown) {
+      let error: string = "";
+      if (typeof e === "string") {
+        error = e;
+      } else if (e instanceof Error) {
+        error = e.message;
+      }
+      toast({
+        variant: "destructive",
+        title: "Couldn't upload image!",
+        description: error,
+      });
+      return null;
+    }
+  }
+
   return (
     <div className="w-full bg-gray-50 py-7">
       <MDXEditor
@@ -72,7 +121,7 @@ function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
           quotePlugin(),
           listsPlugin(),
           diffSourcePlugin({ viewMode: "rich-text" }),
-          imagePlugin(),
+          imagePlugin({ imageUploadHandler }),
           tablePlugin(),
           toolbarPlugin({
             toolbarContents: () => (

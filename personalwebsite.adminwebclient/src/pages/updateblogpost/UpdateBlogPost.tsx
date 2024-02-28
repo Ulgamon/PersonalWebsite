@@ -10,12 +10,14 @@ import {
   DialogClose,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { AuthContext } from "@/contexts/AuthContext/AuthContext";
 import { Client, IClient, UpdateBlogPostDto } from "@/helpers/clients";
 import { apiUrl } from "@/helpers/constants";
 import { Pencil2Icon, ReloadIcon } from "@radix-ui/react-icons";
-import { useContext, useEffect, useState, useCallback } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 
 function UpdateBlogPost() {
@@ -37,6 +39,7 @@ function UpdateBlogPost() {
   const [error, setError] = useState<string>("");
   const { getCookie } = useContext(AuthContext);
   const { toast } = useToast();
+  const published = blogPostDto.published;
 
   useEffect(() => {
     async function fetchBlog(blogId: number) {
@@ -81,42 +84,45 @@ function UpdateBlogPost() {
     }
   }, []);
 
-  const saveHandler = useCallback(async () => {
-    const client: IClient = new Client(apiUrl, {
-      async fetch(url: RequestInfo, init: RequestInit) {
-        const accessToken = getCookie();
-        init.headers["Authorization"] = `Bearer ${accessToken}`;
+  const saveHandler = useCallback(
+    async (setLoading: (value: boolean) => void) => {
+      const client: IClient = new Client(apiUrl, {
+        async fetch(url: RequestInfo, init: RequestInit) {
+          const accessToken = getCookie();
+          init.headers["Authorization"] = `Bearer ${accessToken}`;
 
-        return fetch(url, init);
-      },
-    });
-    const id: number = parseInt(blogId ? blogId : "0");
-    try {
-      setIsSaving(true);
-      await client.blogPostsPUT(id, blogPostDto);
-      toast({ title: "Successful!", description: "Blog post is saved!" });
-      // This needs to be either tested or tried out
-    } catch (e: unknown) {
-      if (typeof e === "string") {
-        setError(e);
-      } else if (e instanceof Error) {
-        setError(e.message);
-      }
-      toast({
-        variant: "destructive",
-        title: "Something went wrong!",
-        description: error,
+          return fetch(url, init);
+        },
       });
-    } finally {
-      setIsSaving(false);
-    }
-  }, [blogPostDto, setIsSaving, getCookie, blogId, error, toast]);
+      const id: number = parseInt(blogId ? blogId : "0");
+      try {
+        setLoading(true);
+        await client.blogPostsPUT(id, blogPostDto);
+        toast({ title: "Successful!", description: "Blog post is saved!" });
+        // This needs to be either tested or tried out
+      } catch (e: unknown) {
+        if (typeof e === "string") {
+          setError(e);
+        } else if (e instanceof Error) {
+          setError(e.message);
+        }
+        toast({
+          variant: "destructive",
+          title: "Something went wrong!",
+          description: error,
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [blogPostDto, getCookie, blogId, error, toast]
+  );
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "s" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        saveHandler();
+        saveHandler(setIsSaving);
       }
     };
 
@@ -126,15 +132,36 @@ function UpdateBlogPost() {
 
   async function submitSaveHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    saveHandler();
+    saveHandler(setIsPublishing);
   }
 
-  async function submitPublishHandler(event: React.FormEvent<HTMLFormElement>) {
+  async function submitPublishUnpublishHandler(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
+    setBlogPostDto((prevState) => ({
+      ...prevState,
+      published: !prevState.published,
+    }));
+    saveHandler(setIsPublishing);
   }
 
   function setMarkdownBlogPost(markdown: string) {
     setBlogPostDto((prevState) => ({ ...prevState, blogMdText: markdown }));
+  }
+
+  function imgUrlChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+    setBlogPostDto((prevState) => ({
+      ...prevState,
+      imgUrl: event.target.value,
+    }));
+  }
+
+  function titleChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
+    setBlogPostDto((prevState) => ({
+      ...prevState,
+      title: event.target.value,
+    }));
   }
 
   return (
@@ -155,6 +182,27 @@ function UpdateBlogPost() {
               want.
             </AlertDescription>
           </Alert>
+          <div className="w-1/2 mx-auto mt-5">
+            <Label htmlFor="title">Title:</Label>
+            <Input
+              id="title"
+              name="title"
+              placeholder="Title for blog post"
+              value={blogPostDto.title}
+              onChange={titleChangeHandler}
+            />
+          </div>
+          <div className="w-1/2 mx-auto mt-5">
+            <Label htmlFor="imgUrl">Main Image URL:</Label>
+            <Input
+              id="imgUrl"
+              name="imgUrl"
+              placeholder="Image URL"
+              value={blogPostDto.imgUrl}
+              onChange={imgUrlChangeHandler}
+            />
+            <Input className="my-1" type="file" name="imgFile" id="imgFile" />
+          </div>
 
           <div className="flex justify-end p-5">
             <form name="saveblogpost" onSubmit={submitSaveHandler}>
@@ -176,15 +224,26 @@ function UpdateBlogPost() {
             </form>
             <Dialog>
               <DialogTrigger>
-                <Button className="m-1">Publish</Button>
+                <Button
+                  className="m-1 disabled:opacity-75 disabled:hover:cursor-not-allowed"
+                  disabled={isSaving}
+                >
+                  {isPublishing ? (
+                    <ReloadIcon className="animate-spin h-4 w-4 me-2" />
+                  ) : (
+                    <></>
+                  )}
+                  {published ? "Unpublish" : "Publish"}
+                </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  Are you absolutely sure you want to publish?
+                  Are you absolutely sure you want to{" "}
+                  {published ? "unpublish" : "publish"}?
                 </DialogHeader>
                 <DialogDescription>
-                  This will publish your blog post look at it again you might
-                  find another mistake.
+                  This will {published ? "unpublish" : "publish"}? your blog
+                  post look at it again you might find another mistake.
                 </DialogDescription>
                 <DialogFooter className="flex justify-end">
                   <DialogClose asChild>
@@ -192,7 +251,23 @@ function UpdateBlogPost() {
                       Close
                     </Button>
                   </DialogClose>
-                  <Button type="button">Publish</Button>
+                  <form
+                    name="publishunpublishblogpost"
+                    onSubmit={submitPublishUnpublishHandler}
+                  >
+                    <Button
+                      type="submit"
+                      className="m-1 disabled:opacity-75 disabled:hover:cursor-not-allowed"
+                      disabled={isPublishing}
+                    >
+                      {isPublishing ? (
+                        <ReloadIcon className="animate-spin h-4 w-4 me-2" />
+                      ) : (
+                        <></>
+                      )}
+                      {published ? "Unpublish" : "Publish"}
+                    </Button>
+                  </form>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
