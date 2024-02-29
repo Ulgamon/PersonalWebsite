@@ -29,17 +29,26 @@ namespace PersonalWebsite.API.Controllers
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IList<ReturnCategoriesDto>>> GetCategories(int size = 5, int page = 1)
-        {   
+        public async Task<ActionResult<PaginateCategoriesDto>> GetCategories(int size = 5, int page = 1)
+        {
             // Will be used only for fetching couple of categories on page with number of blog posts that it has
             if (size < 1 || page < 1)
-            {
-                return BadRequest();
-            }
-
+                return BadRequest("Invalid size and/or page params should be size >= 1 and page >= 1.");
             try
             {
+                bool hasNext = true;
+                bool hasPrev = page > 1;
+                // and the AutoMapper should map ApplicationUser to BlogPostUser
+                // so I don't have any data memory leaks
+                // BLOG POSTS ARE RETURNED IN A CREATED DATE DESCENDING ORDER
+
                 int categoriesCount = await _context.Categories.CountAsync();
+
+                // it is size * page because I need to check one page in advance
+                if (size * page > categoriesCount)
+                {
+                    hasNext = false;
+                }
 
                 // # To do
                 int howManyToSkip = size * (page - 1);
@@ -49,13 +58,22 @@ namespace PersonalWebsite.API.Controllers
 
                 var categories = await _context.Categories
                     .Include(e => e.BlogPosts)
+                    .OrderByDescending(e => e.Id)
                     .Skip(howManyToSkip)
                     .Take(size)
                     .ToListAsync();
 
                 var categoriesDto = _mapper.Map<IList<ReturnCategoriesDto>>(categories);
 
-                return Ok(categoriesDto);
+                var response = new PaginateCategoriesDto
+                {
+                    Categories = categoriesDto,
+                    CurrentPage = page,
+                    HasNext = hasNext,
+                    HasPrev = hasPrev,
+                };
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

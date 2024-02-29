@@ -105,66 +105,102 @@ namespace PersonalWebsite.Test.Controllers
             _mapper = mapperConfig.CreateMapper();
         }
 
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
         [Fact]
-        public async void GET_Categories_Default()
+        public async void GET_Categories()
         {
             // Arrange
             var context = await GetDatabaseContext();
-            var controller = new CategoriesController(context, _logger, _mapper);
+            CategoriesController controller = new CategoriesController(context, _logger, _mapper);
 
             // Act
-            ActionResult<IList<ReturnCategoriesDto>> categories = await controller.GetCategories();
+            ActionResult<PaginateCategoriesDto> response = await controller.GetCategories();
+
             // Assert
-            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(categories.Result);
-            List<ReturnCategoriesDto> models = Assert.IsType<List<ReturnCategoriesDto>>(okObjectResult.Value);
-            Assert.NotNull(models);
-            Assert.True(models.Count() == 5);
-            Assert.True(1 == models.First().NumberOfBlogPosts);
+            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
+            PaginateCategoriesDto model = Assert.IsType<PaginateCategoriesDto>(okObjectResult.Value);
+            Assert.NotNull(model);
+            Assert.True(1 == model.Categories.First().NumberOfBlogPosts);
+            Assert.Equal(5, model.Categories.Count);
+            Assert.True(model.HasNext);
+            Assert.False(model.HasPrev);
         }
 
         [Fact]
-        public async void GET_Categories_Size12_Page1()
+        public async void GET_Categories_WithQueryParameter_ThirdPage()
         {
             // Arrange
             var context = await GetDatabaseContext();
-            var controller = new CategoriesController(context, _logger, _mapper);
+            CategoriesController controller = new CategoriesController(context, _logger, _mapper);
 
             // Act
-            ActionResult<IList<ReturnCategoriesDto>> categories = await controller.GetCategories(12, 1);
-            // Assert
-            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(categories.Result);
-            List<ReturnCategoriesDto> models = Assert.IsType<List<ReturnCategoriesDto>>(okObjectResult.Value);
-            Assert.NotNull(models);
-            Assert.True(models.Count() == 10);
+            ActionResult<PaginateCategoriesDto> response = await controller.GetCategories(3, 3);
 
-            Assert.True(1 == models.First().NumberOfBlogPosts);
+            // Assert
+            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
+            PaginateCategoriesDto model = Assert.IsType<PaginateCategoriesDto>(okObjectResult.Value);
+            Assert.NotNull(model);
+            Assert.Equal(3, model.Categories.Count);
+            Assert.Equal(4, model.Categories.ElementAt(0).Id);
+            Assert.Equal(3, model.Categories.ElementAt(1).Id);
+            Assert.Equal(2, model.Categories.ElementAt(2).Id);
+            Assert.True(model.HasNext);
+            Assert.True(model.HasPrev);
+        }
+        [Fact]
+        public async void GET_Categories_WithQueryParameter_FourthPage()
+        {
+            // Arrange
+            var context = await GetDatabaseContext();
+            CategoriesController controller = new CategoriesController(context, _logger, _mapper);
+
+            // Act
+            ActionResult<PaginateCategoriesDto> response = await controller.GetCategories(3, 4);
+
+            // Assert
+            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
+            PaginateCategoriesDto model = Assert.IsType<PaginateCategoriesDto>(okObjectResult.Value);
+            Assert.NotNull(model);
+            Assert.Single(model.Categories);
+            Assert.Equal(1, model.Categories.ElementAt(0).Id);
+            Assert.False(model.HasNext);
+            Assert.True(model.HasPrev);
         }
 
         [Fact]
-        public async void GET_Categories_Size12_Page3()
+        public async void GET_Categories_WithQueryParameter_FifthPage()
         {
             // Arrange
             var context = await GetDatabaseContext();
-            var controller = new CategoriesController(context, _logger, _mapper);
+            CategoriesController controller = new CategoriesController(context, _logger, _mapper);
 
             // Act
-            ActionResult<IList<ReturnCategoriesDto>> categories = await controller.GetCategories(12, 3);
+            ActionResult<PaginateCategoriesDto> response = await controller.GetCategories(3, 5);
+
             // Assert
-            Assert.IsType<BadRequestObjectResult>(categories.Result);
+            BadRequestObjectResult errorObjectResult = Assert.IsType<BadRequestObjectResult>(response.Result);
+            Assert.Equal("Out of range page and/or size parameters.", errorObjectResult.Value);
+
         }
 
         [Fact]
-        public async void GET_Categories_SizeMinus10_PageMinus3()
+        public async void GET_Categories_WithQueryParameter_InvalidPageAndSize()
         {
             // Arrange
             var context = await GetDatabaseContext();
-            var controller = new CategoriesController(context, _logger, _mapper);
+            CategoriesController controller = new CategoriesController(context, _logger, _mapper);
 
             // Act
-            ActionResult<IList<ReturnCategoriesDto>> categories = await controller.GetCategories(-10, -3);
+            ActionResult<PaginateCategoriesDto> response = await controller.GetCategories(-3, -5);
+
             // Assert
-            Assert.IsType<BadRequestResult>(categories.Result);
+            BadRequestObjectResult errorObjectResult = Assert.IsType<BadRequestObjectResult>(response.Result);
+            Assert.Equal("Invalid size and/or page params should be size >= 1 and page >= 1.", errorObjectResult.Value);
+
         }
+
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         // Test PUT Requests
         [Fact]

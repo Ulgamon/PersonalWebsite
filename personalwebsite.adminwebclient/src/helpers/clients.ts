@@ -68,7 +68,7 @@ export interface IClient {
      * @param page (optional) 
      * @return Success
      */
-    categoriesAll(size: number | undefined, page: number | undefined): Promise<ReturnCategoriesDto[]>;
+    categoriesGET(size: number | undefined, page: number | undefined): Promise<PaginateCategoriesDto>;
 
     /**
      * @param body (optional) 
@@ -500,7 +500,7 @@ export class Client implements IClient {
      * @param page (optional) 
      * @return Success
      */
-    categoriesAll(size: number | undefined, page: number | undefined): Promise<ReturnCategoriesDto[]> {
+    categoriesGET(size: number | undefined, page: number | undefined): Promise<PaginateCategoriesDto> {
         let url_ = this.baseUrl + "/api/Categories?";
         if (size === null)
             throw new Error("The parameter 'size' cannot be null.");
@@ -520,17 +520,17 @@ export class Client implements IClient {
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processCategoriesAll(_response);
+            return this.processCategoriesGET(_response);
         });
     }
 
-    protected processCategoriesAll(response: Response): Promise<ReturnCategoriesDto[]> {
+    protected processCategoriesGET(response: Response): Promise<PaginateCategoriesDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ReturnCategoriesDto[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as PaginateCategoriesDto;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -538,7 +538,7 @@ export class Client implements IClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<ReturnCategoriesDto[]>(null as any);
+        return Promise.resolve<PaginateCategoriesDto>(null as any);
     }
 
     /**
@@ -914,6 +914,13 @@ export interface PaginateBlogPostsDto {
     hasNext?: boolean;
 }
 
+export interface PaginateCategoriesDto {
+    currentPage?: number;
+    hasPrev?: boolean;
+    hasNext?: boolean;
+    categories?: ReturnCategoriesDto[] | undefined;
+}
+
 export interface PaginateCommentsDto {
     currentPage?: number;
     hasPrev?: boolean;
@@ -928,9 +935,9 @@ export interface ReturnBlogPostDto {
     createdDate?: string;
     updatedDate?: string;
     publishedDate?: string;
+    published?: boolean;
     title?: string | undefined;
     categories?: ReturnCategoryDto[] | undefined;
-    published?: boolean;
 }
 
 export interface ReturnBlogPostsDto {
@@ -940,8 +947,8 @@ export interface ReturnBlogPostsDto {
     createdDate?: string;
     updatedDate?: string;
     publishedDate?: string;
-    title?: string | undefined;
     published?: boolean;
+    title?: string | undefined;
 }
 
 export interface ReturnCategoriesDto {

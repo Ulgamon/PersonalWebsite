@@ -348,7 +348,7 @@ namespace PersonalWebsite.Test.Controllers
 
             int id = 11;
 
-            ActionResult response = await controller.PostBlogPost(blogPostDto);
+            var response = await controller.PostBlogPost(blogPostDto);
             BlogPost? rBlogPostDto = await context.BlogPosts.FindAsync(id);
             ReturnBlogPostDto model = _mapper.Map<ReturnBlogPostDto>(rBlogPostDto);
 
