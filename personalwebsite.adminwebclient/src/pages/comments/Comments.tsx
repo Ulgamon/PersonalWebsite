@@ -41,10 +41,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { SelectGroup } from "@radix-ui/react-select";
-import CreateCategory from "@/components/createcategory/CreateCategory";
 import UpdateCategory from "@/components/updatecategory/UpdateCategory";
 
-function Categories() {
+function Comments() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [change, setChange] = useState<boolean>(false);
   const { getCookie } = useContext(AuthContext);
@@ -164,7 +163,6 @@ function Categories() {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <CreateCategory changeHandler={setChangeHandler} />
         </TableCaption>
         <TableHeader>
           <TableRow>
@@ -286,4 +284,4 @@ function Categories() {
   );
 }
 
-export default Categories;
+export default Comments;

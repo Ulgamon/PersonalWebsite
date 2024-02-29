@@ -31,9 +31,6 @@ function LeftPanel() {
             <CustomNavLink to="/comments" type={LinkMethod.GET}>
               Comments
             </CustomNavLink>
-            <CustomNavLink to="/createcomment" type={LinkMethod.POST}>
-              Comment
-            </CustomNavLink>
           </ul>
         </AccordionContent>
       </AccordionItem>
@@ -43,9 +40,6 @@ function LeftPanel() {
           <ul>
             <CustomNavLink to="/categories" type={LinkMethod.GET}>
               Categories
-            </CustomNavLink>
-            <CustomNavLink to="/createcategory" type={LinkMethod.POST}>
-              Category
             </CustomNavLink>
           </ul>
         </AccordionContent>
