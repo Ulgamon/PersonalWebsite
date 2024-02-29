@@ -16,7 +16,12 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Client, IClient, PaginateCategoriesDto } from "@/helpers/clients";
+import {
+  Client,
+  IClient,
+  PaginateCategoriesDto,
+  PaginateCommentsDto,
+} from "@/helpers/clients";
 import { useContext, useEffect, useState } from "react";
 import { apiUrl } from "@/helpers/constants";
 import { AuthContext } from "@/contexts/AuthContext/AuthContext";
@@ -42,6 +47,7 @@ import {
 } from "@/components/ui/dialog";
 import { SelectGroup } from "@radix-ui/react-select";
 import UpdateCategory from "@/components/updatecategory/UpdateCategory";
+import UpdateComment from "@/components/updatecomment/UpdateComment";
 
 function Comments() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -51,9 +57,9 @@ function Comments() {
   const [page, setPage] = useState<number>(1);
   const { toast } = useToast();
 
-  const [paginatedCategories, setPaginatedCategories] =
-    useState<PaginateCategoriesDto>({
-      categories: [],
+  const [paginatedComments, setPaginatedComments] =
+    useState<PaginateCommentsDto>({
+      comments: [],
       currentPage: 0,
       hasPrev: false,
       hasNext: false,
@@ -71,9 +77,9 @@ function Comments() {
       });
       try {
         setIsLoading(true);
-        const response = await client.categoriesGET(size, page);
+        const response = await client.commentsGET(size, page);
         // This needs to be either tested or tried out
-        setPaginatedCategories(response);
+        setPaginatedComments(response);
       } catch (e: unknown) {
         let error: string = "";
         if (typeof e === "string") {
@@ -83,7 +89,7 @@ function Comments() {
         }
         toast({
           variant: "destructive",
-          title: "Couldn't fetch categories.",
+          title: "Couldn't fetch comments.",
           description: error,
         });
       } finally {
@@ -105,7 +111,7 @@ function Comments() {
     setPage(num);
   }
 
-  async function deleteCategory(id: number) {
+  async function deleteComment(id: number) {
     const client: IClient = new Client(apiUrl, {
       async fetch(url: RequestInfo, init: RequestInit) {
         const accessToken = getCookie();
@@ -115,12 +121,12 @@ function Comments() {
       },
     });
     try {
-      await client.categoriesDELETE(id);
+      await client.commentsDELETE(id);
       // This needs to be either tested or tried out
       setChange((prevState) => !prevState);
       toast({
         title: "Deletion was successfull",
-        description: `You successfully deleted category with id: ${id}`,
+        description: `You successfully deleted comment with id: ${id}`,
       });
     } catch (e: unknown) {
       let error: string = "";
@@ -131,7 +137,7 @@ function Comments() {
       }
       toast({
         variant: "destructive",
-        title: "Category deletion went wrong!",
+        title: "Comment deletion went wrong!",
         description: error,
       });
     }
@@ -147,7 +153,7 @@ function Comments() {
       <Table className="grid">
         <TableCaption className="flex justify-center">
           <p className="m-2">
-            This is a list of most recent Blog Posts. Page: {page} with Size:{" "}
+            This is a list of most recent Comments. Page: {page} with Size:
             {size}
           </p>
           <Select onValueChange={selectChangeHandler}>
@@ -168,18 +174,17 @@ function Comments() {
           <TableRow>
             <TableHead className="w-[10%]">Id</TableHead>
             <TableHead className="w-[10%]">Name</TableHead>
-            <TableHead className="w-[10%]">Description</TableHead>
+            <TableHead className="w-[10%]">Comment</TableHead>
             <TableHead className="w-[10%]">Delete</TableHead>
             <TableHead className="w-[10%]">Update</TableHead>
-            <TableHead className="w-[10%]">Posts</TableHead>
           </TableRow>
           <TableBody>
-            {paginatedCategories.categories?.map((el) => (
+            {paginatedComments.comments?.map((el) => (
               <TableRow key={el.id} className="max-h-10">
                 <TableCell className="w-[10%]">{el.id}</TableCell>
-                <TableCell className="w-[10%]">{el.categoryName}</TableCell>
+                <TableCell className="w-[10%]">{el.name}</TableCell>
                 <TableCell className="text-ellipsis overflow-hidden w-[10%]">
-                  {el.description}
+                  {el.comment1}
                 </TableCell>
                 <TableCell className="w-[10%] mx-auto">
                   <Dialog>
@@ -201,7 +206,7 @@ function Comments() {
                         </DialogClose>
                         <Button
                           type="submit"
-                          onClick={() => deleteCategory(el.id || 0)}
+                          onClick={() => deleteComment(el.id || 0)}
                           variant="destructive"
                         >
                           Delete
@@ -211,13 +216,10 @@ function Comments() {
                   </Dialog>
                 </TableCell>
                 <TableCell className="text-right flex w-[10%]">
-                  <UpdateCategory
+                  <UpdateComment
                     changeHandler={setChangeHandler}
-                    category={el}
+                    comment={el}
                   />
-                </TableCell>
-                <TableCell className="w-[10%]">
-                  {el.numberOfBlogPosts}
                 </TableCell>
               </TableRow>
             ))}
@@ -227,13 +229,13 @@ function Comments() {
       <Pagination className="my-10">
         <PaginationContent>
           <PaginationItem>
-            <Button variant="ghost" disabled={!paginatedCategories.hasPrev}>
+            <Button variant="ghost" disabled={!paginatedComments.hasPrev}>
               <PaginationPrevious
-                aria-disabled={!paginatedCategories.hasPrev}
+                aria-disabled={!paginatedComments.hasPrev}
                 onClick={() =>
                   goToPage(
-                    paginatedCategories.currentPage
-                      ? paginatedCategories.currentPage - 1
+                    paginatedComments.currentPage
+                      ? paginatedComments.currentPage - 1
                       : 1
                   )
                 }
@@ -242,22 +244,22 @@ function Comments() {
           </PaginationItem>
           <PaginationItem>
             <PaginationLink isActive>
-              {paginatedCategories.currentPage}
+              {paginatedComments.currentPage}
             </PaginationLink>
           </PaginationItem>
-          {paginatedCategories.hasNext && (
+          {paginatedComments.hasNext && (
             <PaginationItem>
               <PaginationLink
                 onClick={() =>
                   goToPage(
-                    paginatedCategories.currentPage
-                      ? paginatedCategories.currentPage + 1
+                    paginatedComments.currentPage
+                      ? paginatedComments.currentPage + 1
                       : 1
                   )
                 }
               >
-                {paginatedCategories.currentPage
-                  ? paginatedCategories.currentPage + 1
+                {paginatedComments.currentPage
+                  ? paginatedComments.currentPage + 1
                   : 0}
               </PaginationLink>
             </PaginationItem>
@@ -266,12 +268,12 @@ function Comments() {
             <PaginationEllipsis />
           </PaginationItem>
           <PaginationItem>
-            <Button variant="ghost" disabled={!paginatedCategories.hasNext}>
+            <Button variant="ghost" disabled={!paginatedComments.hasNext}>
               <PaginationNext
                 onClick={() =>
                   goToPage(
-                    paginatedCategories.currentPage
-                      ? paginatedCategories.currentPage + 1
+                    paginatedComments.currentPage
+                      ? paginatedComments.currentPage + 1
                       : 1
                   )
                 }

@@ -92,7 +92,20 @@ export interface IClient {
      * @param page (optional) 
      * @return Success
      */
-    commentsGET(id: number, size: number | undefined, page: number | undefined): Promise<PaginateCommentsDto>;
+    commentsGET(size: number | undefined, page: number | undefined): Promise<PaginateCommentsDto>;
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    commentsPOST(body: CreateCommentDto | undefined): Promise<void>;
+
+    /**
+     * @param size (optional) 
+     * @param page (optional) 
+     * @return Success
+     */
+    commentsGET2(id: number, size: number | undefined, page: number | undefined): Promise<PaginateCommentsDto>;
 
     /**
      * @param body (optional) 
@@ -104,12 +117,6 @@ export interface IClient {
      * @return Success
      */
     commentsDELETE(id: number): Promise<void>;
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    commentsPOST(body: CreateCommentDto | undefined): Promise<void>;
 
     /**
      * @param formFile (optional) 
@@ -661,11 +668,8 @@ export class Client implements IClient {
      * @param page (optional) 
      * @return Success
      */
-    commentsGET(id: number, size: number | undefined, page: number | undefined): Promise<PaginateCommentsDto> {
-        let url_ = this.baseUrl + "/api/Comments/{id}?";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+    commentsGET(size: number | undefined, page: number | undefined): Promise<PaginateCommentsDto> {
+        let url_ = this.baseUrl + "/api/Comments?";
         if (size === null)
             throw new Error("The parameter 'size' cannot be null.");
         else if (size !== undefined)
@@ -689,6 +693,93 @@ export class Client implements IClient {
     }
 
     protected processCommentsGET(response: Response): Promise<PaginateCommentsDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as PaginateCommentsDto;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<PaginateCommentsDto>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    commentsPOST(body: CreateCommentDto | undefined): Promise<void> {
+        let url_ = this.baseUrl + "/api/Comments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCommentsPOST(_response);
+        });
+    }
+
+    protected processCommentsPOST(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @param size (optional) 
+     * @param page (optional) 
+     * @return Success
+     */
+    commentsGET2(id: number, size: number | undefined, page: number | undefined): Promise<PaginateCommentsDto> {
+        let url_ = this.baseUrl + "/api/Comments/{id}?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        if (size === null)
+            throw new Error("The parameter 'size' cannot be null.");
+        else if (size !== undefined)
+            url_ += "size=" + encodeURIComponent("" + size) + "&";
+        if (page === null)
+            throw new Error("The parameter 'page' cannot be null.");
+        else if (page !== undefined)
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processCommentsGET2(_response);
+        });
+    }
+
+    protected processCommentsGET2(response: Response): Promise<PaginateCommentsDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -768,44 +859,6 @@ export class Client implements IClient {
     }
 
     protected processCommentsDELETE(response: Response): Promise<void> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            return;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<void>(null as any);
-    }
-
-    /**
-     * @param body (optional) 
-     * @return Success
-     */
-    commentsPOST(body: CreateCommentDto | undefined): Promise<void> {
-        let url_ = this.baseUrl + "/api/Comments";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processCommentsPOST(_response);
-        });
-    }
-
-    protected processCommentsPOST(response: Response): Promise<void> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
