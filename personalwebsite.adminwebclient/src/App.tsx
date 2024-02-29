@@ -6,6 +6,7 @@ import WelcomePage from "./pages/welcomepage/WelcomePage";
 import CreateBlogPost from "./pages/createblogpost/CreateBlogPost";
 import UpdateBlogPost from "./pages/updateblogpost/UpdateBlogPost";
 import BlogPosts from "./pages/blogposts/BlogPosts";
+import Categories from "./pages/categories/Categories";
 
 function App() {
   return (
@@ -19,10 +20,8 @@ function App() {
             <Route path="updateblogpost/:blogId" element={<UpdateBlogPost />} />
             <Route path="comments" element={<>Comments</>} />
             <Route path="createcomment" element={<>Create Comment</>} />
-            <Route path="updatecomment" element={<>Update Comment</>} />
-            <Route path="categories" element={<>Categories</>} />
+            <Route path="categories" element={<Categories />} />
             <Route path="createcategory" element={<>Create Category</>} />
-            <Route path="updatecategory" element={<>Update Category</>} />
           </Route>
         </Routes>
       </BrowserRouter>
