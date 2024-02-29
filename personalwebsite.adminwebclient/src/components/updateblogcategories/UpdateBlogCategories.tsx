@@ -73,8 +73,8 @@ function UpdateBlogCategories({
       const client: IClient = new Client(apiUrl, {
         async fetch(url: RequestInfo, init: RequestInit) {
           const accessToken = getCookie();
-          const reqHeaders = new Headers(init.headers);
-          reqHeaders.set("Authorization", `Bearer ${accessToken}`);
+          init.headers["Authorization"] = `Bearer ${accessToken}`;
+
           return fetch(url, init);
         },
       });
