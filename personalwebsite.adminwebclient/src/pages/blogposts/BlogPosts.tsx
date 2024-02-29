@@ -71,8 +71,8 @@ function BlogPosts() {
       const client: IClient = new Client(apiUrl, {
         async fetch(url: RequestInfo, init: RequestInit) {
           const accessToken = getCookie();
-          init.headers["Authorization"] = `Bearer ${accessToken}`;
-
+          const reqHeaders = new Headers(init.headers);
+          reqHeaders.set("Authorization", `Bearer ${accessToken}`);
           return fetch(url, init);
         },
       });
@@ -80,7 +80,6 @@ function BlogPosts() {
         setIsLoading(true);
         const response = await client.blogPostsGET(size, page);
         // This needs to be either tested or tried out
-        console.log(response);
         setPaginatedBlogPosts(response);
       } catch (e: unknown) {
         let error: string = "";
@@ -113,8 +112,8 @@ function BlogPosts() {
     const client: IClient = new Client(apiUrl, {
       async fetch(url: RequestInfo, init: RequestInit) {
         const accessToken = getCookie();
-        init.headers["Authorization"] = `Bearer ${accessToken}`;
-
+        const reqHeaders = new Headers(init.headers);
+        reqHeaders.set("Authorization", `Bearer ${accessToken}`);
         return fetch(url, init);
       },
     });

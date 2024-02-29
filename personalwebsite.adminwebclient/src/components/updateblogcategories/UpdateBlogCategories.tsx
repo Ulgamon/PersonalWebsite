@@ -40,7 +40,7 @@ import { Checkbox } from "../ui/checkbox";
 
 interface IUpdateBlogCategories {
   setCategories: (categories: ReturnCategoryDto[]) => void;
-  categories: ReturnCategoryDto[];
+  categories?: ReturnCategoryDto[];
 }
 
 function UpdateBlogCategories({
@@ -51,8 +51,9 @@ function UpdateBlogCategories({
   const { getCookie } = useContext(AuthContext);
   const [size, setSize] = useState<number>(5);
   const [page, setPage] = useState<number>(1);
-  const [tempCategories, setTempCategories] =
-    useState<ReturnCategoryDto[]>(categories);
+  const [tempCategories, setTempCategories] = useState<ReturnCategoryDto[]>(
+    categories || []
+  );
   const { toast } = useToast();
 
   const [paginatedCategories, setPaginatedCategories] =
@@ -72,8 +73,8 @@ function UpdateBlogCategories({
       const client: IClient = new Client(apiUrl, {
         async fetch(url: RequestInfo, init: RequestInit) {
           const accessToken = getCookie();
-          init.headers["Authorization"] = `Bearer ${accessToken}`;
-
+          const reqHeaders = new Headers(init.headers);
+          reqHeaders.set("Authorization", `Bearer ${accessToken}`);
           return fetch(url, init);
         },
       });

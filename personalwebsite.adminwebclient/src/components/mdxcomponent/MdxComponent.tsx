@@ -50,19 +50,18 @@ function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
     setParentValue(markdown);
   }
 
-  async function imageUploadHandler(image: File): Promise<string | null> {
+  async function imageUploadHandler(image: File): Promise<string> {
     // const formData = new FormData();
     const fileData: FileParameter = {
       data: image,
       fileName: image.name,
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const client: IClient = new Client(apiUrl, {
       async fetch(url: RequestInfo, init: RequestInit) {
         const accessToken = getCookie();
-        init.headers["Authorization"] = `Bearer ${accessToken}`;
-
+        const reqHeaders = new Headers(init.headers);
+        reqHeaders.set("Authorization", `Bearer ${accessToken}`);
         return fetch(url, init);
       },
     });
@@ -72,9 +71,8 @@ function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
         title: "Image upload successful",
         description: `You uploaded image: ${response.fileUrl} successfully.`,
       });
-      if (response.fileUrl === undefined) return null;
-      return new Promise<string | null>((resolve) => {
-        resolve(response.fileUrl || null);
+      return new Promise<string>((resolve) => {
+        resolve(response.fileUrl || "");
       });
     } catch (e: unknown) {
       let error: string = "";
@@ -88,8 +86,10 @@ function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
         title: "Couldn't upload image!",
         description: error,
       });
-      return null;
     }
+    return new Promise<string>((resolve) => {
+      resolve("");
+    });
   }
 
   return (

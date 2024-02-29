@@ -58,8 +58,8 @@ function UpdateBlogPost() {
       const client: IClient = new Client(apiUrl, {
         async fetch(url: RequestInfo, init: RequestInit) {
           const accessToken = getCookie();
-          init.headers["Authorization"] = `Bearer ${accessToken}`;
-
+          const reqHeaders = new Headers(init.headers);
+          reqHeaders.set("Authorization", `Bearer ${accessToken}`);
           return fetch(url, init);
         },
       });
@@ -101,8 +101,8 @@ function UpdateBlogPost() {
       const client: IClient = new Client(apiUrl, {
         async fetch(url: RequestInfo, init: RequestInit) {
           const accessToken = getCookie();
-          init.headers["Authorization"] = `Bearer ${accessToken}`;
-
+          const reqHeaders = new Headers(init.headers);
+          reqHeaders.set("Authorization", `Bearer ${accessToken}`);
           return fetch(url, init);
         },
       });
@@ -186,12 +186,11 @@ function UpdateBlogPost() {
       fileName: image.name,
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const client: IClient = new Client(apiUrl, {
       async fetch(url: RequestInfo, init: RequestInit) {
         const accessToken = getCookie();
-        init.headers["Authorization"] = `Bearer ${accessToken}`;
-
+        const reqHeaders = new Headers(init.headers);
+        reqHeaders.set("Authorization", `Bearer ${accessToken}`);
         return fetch(url, init);
       },
     });
