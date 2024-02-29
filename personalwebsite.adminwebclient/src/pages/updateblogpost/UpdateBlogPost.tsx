@@ -13,11 +13,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import UpdateBlogCategories from "@/components/updateblogcategories/UpdateBlogCategories";
 import { AuthContext } from "@/contexts/AuthContext/AuthContext";
 import {
   Client,
   FileParameter,
   IClient,
+  ReturnCategoriesDto,
   UpdateBlogPostDto,
 } from "@/helpers/clients";
 import { apiUrl } from "@/helpers/constants";
@@ -39,11 +41,17 @@ function UpdateBlogPost() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // isSaving is for saving the data
   const [isSaving, setIsSaving] = useState<boolean>(false);
-  // isPublishing
-  const [isPublishing, setIsPublishing] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const { getCookie } = useContext(AuthContext);
   const { toast } = useToast();
+
+  // change Categories for blog post
+  const setCategories = useCallback((categories: ReturnCategoriesDto[]) => {
+    setBlogPostDto((prevState) => ({
+      ...prevState,
+      categories: [...categories],
+    }));
+  }, []);
 
   useEffect(() => {
     async function fetchBlog(blogId: number) {
@@ -259,6 +267,11 @@ function UpdateBlogPost() {
             />
           </div>
 
+          <UpdateBlogCategories
+            setCategories={setCategories}
+            categories={blogPostDto.categories}
+          />
+
           <div className="flex justify-end p-5">
             <form name="saveblogpost" onSubmit={submitSaveHandler}>
               <Button
@@ -283,11 +296,6 @@ function UpdateBlogPost() {
                   className="m-1 disabled:opacity-75 disabled:hover:cursor-not-allowed"
                   disabled={isSaving}
                 >
-                  {isPublishing ? (
-                    <ReloadIcon className="animate-spin h-4 w-4 me-2" />
-                  ) : (
-                    <></>
-                  )}
                   {blogPostDto.published ? "Unpublish" : "Publish"}
                 </Button>
               </DialogTrigger>
@@ -314,13 +322,7 @@ function UpdateBlogPost() {
                     <Button
                       type="submit"
                       className="disabled:opacity-75 disabled:hover:cursor-not-allowed"
-                      disabled={isPublishing}
                     >
-                      {isPublishing ? (
-                        <ReloadIcon className="animate-spin h-4 w-4 me-2" />
-                      ) : (
-                        <></>
-                      )}
                       {blogPostDto.published ? "Unpublish" : "Publish"}
                     </Button>
                   </form>

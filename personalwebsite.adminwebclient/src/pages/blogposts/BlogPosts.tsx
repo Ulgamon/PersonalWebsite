@@ -80,6 +80,7 @@ function BlogPosts() {
         setIsLoading(true);
         const response = await client.blogPostsGET(size, page);
         // This needs to be either tested or tried out
+        console.log(response);
         setPaginatedBlogPosts(response);
       } catch (e: unknown) {
         let error: string = "";

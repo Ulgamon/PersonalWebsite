@@ -50,7 +50,7 @@ function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
     setParentValue(markdown);
   }
 
-  async function imageUploadHandler(image: File) {
+  async function imageUploadHandler(image: File): Promise<string | null> {
     // const formData = new FormData();
     const fileData: FileParameter = {
       data: image,
@@ -73,8 +73,8 @@ function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
         description: `You uploaded image: ${response.fileUrl} successfully.`,
       });
       if (response.fileUrl === undefined) return null;
-      return new Promise<string>((resolve) => {
-        resolve(response.fileUrl || "");
+      return new Promise<string | null>((resolve) => {
+        resolve(response.fileUrl || null);
       });
     } catch (e: unknown) {
       let error: string = "";

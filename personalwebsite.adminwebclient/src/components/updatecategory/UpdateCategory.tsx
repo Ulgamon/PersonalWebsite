@@ -12,7 +12,6 @@ import { Button } from "../ui/button";
 import { useContext, useState } from "react";
 import {
   Client,
-  CreateCategoryDto,
   IClient,
   ReturnCategoriesDto,
   UpdateCategoryDto,
@@ -62,7 +61,6 @@ function UpdateCategory({ changeHandler, category }: IUpdateCategory) {
       async fetch(url: RequestInfo, init: RequestInit) {
         const accessToken = getCookie();
         init.headers["Authorization"] = `Bearer ${accessToken}`;
-
         return fetch(url, init);
       },
     });

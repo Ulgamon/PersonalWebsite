@@ -130,7 +130,10 @@ namespace PersonalWebsite.API.Controllers
                 }
                 blogPostDto.Trim();
 
-                BlogPost? blogPost = await _context.BlogPosts.FindAsync(id);
+                BlogPost? blogPost = await _context.BlogPosts
+                    .Where(e => e.Id == id)
+                    .Include(e => e.Categories)
+                    .FirstAsync();
 
                 if (blogPost != null)
                 {
@@ -139,6 +142,30 @@ namespace PersonalWebsite.API.Controllers
                     blogPost.Title = blogPostDto.Title;
                     blogPost.UpdatedDate = DateTime.Now;
                     blogPost.Published = blogPostDto.Published;
+                    for (int i = 0; i < blogPost.Categories.Count; i++)
+                    {
+                        bool check = false;
+                        for (int j = 0; j < blogPostDto.Categories.Count; j++)
+                        {
+                            if (blogPost.Categories.ElementAt(i).Id == blogPostDto.Categories.ElementAt(j).Id)
+                            {
+                                check = true;
+                                blogPostDto.Categories.Remove(blogPostDto.Categories.ElementAt(j));
+                                break;
+                            }
+                                    
+                        }
+                        if (!check)
+                        {
+                            blogPost.Categories.Remove(blogPost.Categories.ElementAt(i));
+                            --i;
+                        }
+                    }
+                    for (int j = 0; j < blogPostDto.Categories.Count; j++)
+                    {
+                        var temp = _mapper.Map<Category>(blogPostDto.Categories.ElementAt(j));
+                        blogPost.Categories.Add(temp);
+                    }
 
                     if (blogPostDto.Published == true)
                     {

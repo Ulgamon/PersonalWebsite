@@ -16,12 +16,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-  Client,
-  IClient,
-  PaginateCategoriesDto,
-  PaginateCommentsDto,
-} from "@/helpers/clients";
+import { Client, IClient, PaginateCommentsDto } from "@/helpers/clients";
 import { useContext, useEffect, useState } from "react";
 import { apiUrl } from "@/helpers/constants";
 import { AuthContext } from "@/contexts/AuthContext/AuthContext";
@@ -46,7 +41,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { SelectGroup } from "@radix-ui/react-select";
-import UpdateCategory from "@/components/updatecategory/UpdateCategory";
 import UpdateComment from "@/components/updatecomment/UpdateComment";
 
 function Comments() {
