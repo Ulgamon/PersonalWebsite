@@ -119,7 +119,7 @@ namespace PersonalWebsite.API.Controllers
                 int blogsCount = await _context.BlogPosts.CountAsync();
 
                 // it is size * page because I need to check one page in advance
-                if (size * page > blogsCount)
+                if (size * page >= blogsCount)
                 {
                     hasNext = false;
                 }

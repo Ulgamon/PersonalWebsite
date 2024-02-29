@@ -40,7 +40,7 @@ namespace PersonalWebsite.API.Controllers
                     .CountAsync();
 
                 // it is size * page because I need to check one page in advance
-                if (size * page > commentsCount)
+                if (size * page >= commentsCount)
                 {
                     hasNext = false;
                 }
@@ -103,7 +103,7 @@ namespace PersonalWebsite.API.Controllers
                     .CountAsync();
 
                 // it is size * page because I need to check one page in advance
-                if (size * page > commentsCount)
+                if (size * page >= commentsCount)
                 {
                     hasNext = false;
                 }

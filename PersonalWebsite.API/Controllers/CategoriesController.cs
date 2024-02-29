@@ -45,7 +45,7 @@ namespace PersonalWebsite.API.Controllers
                 int categoriesCount = await _context.Categories.CountAsync();
 
                 // it is size * page because I need to check one page in advance
-                if (size * page > categoriesCount)
+                if (size * page >= categoriesCount)
                 {
                     hasNext = false;
                 }
