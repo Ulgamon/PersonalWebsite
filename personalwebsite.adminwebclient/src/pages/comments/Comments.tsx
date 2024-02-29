@@ -175,6 +175,8 @@ function Comments() {
             <TableHead className="w-[10%]">Id</TableHead>
             <TableHead className="w-[10%]">Name</TableHead>
             <TableHead className="w-[10%]">Comment</TableHead>
+            <TableHead className="w-[10%]">BlogPostId?</TableHead>
+            <TableHead className="w-[10%]">CommentId?</TableHead>
             <TableHead className="w-[10%]">Delete</TableHead>
             <TableHead className="w-[10%]">Update</TableHead>
           </TableRow>
@@ -185,6 +187,12 @@ function Comments() {
                 <TableCell className="w-[10%]">{el.name}</TableCell>
                 <TableCell className="text-ellipsis overflow-hidden w-[10%]">
                   {el.comment1}
+                </TableCell>
+                <TableCell className="w-[10%]">
+                  {el.blogPostId || "None"}
+                </TableCell>
+                <TableCell className="w-[10%]">
+                  {el.commentId || "None"}
                 </TableCell>
                 <TableCell className="w-[10%] mx-auto">
                   <Dialog>
