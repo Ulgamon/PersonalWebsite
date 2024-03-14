@@ -67,7 +67,7 @@
       "templateDirectory": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "clients.ts",
+      "output": "../../../personalwebsite.webclient/src/helpers/clients.ts",
       "newLineBehavior": "Auto"
     }
   }
