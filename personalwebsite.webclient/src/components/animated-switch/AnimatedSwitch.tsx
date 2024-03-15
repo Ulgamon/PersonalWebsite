@@ -9,7 +9,11 @@ import {
 } from "@react-spring/web";
 import { useState } from "react";
 
-const AnimatedSwitch = () => {
+interface AnimatedSwitchProps {
+  className: string;
+}
+
+const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
   const { setTheme, theme } = useTheme();
   const springApi = useSpringRef();
   const transitionApi = useSpringRef();
@@ -52,7 +56,9 @@ const AnimatedSwitch = () => {
 
   return (
     <button
-      className="w-20 h-9 dark:bg-blue-300 rounded-xl bg-orange-200"
+      className={
+        "w-20 h-9 block dark:bg-blue-300 rounded-xl bg-orange-200 " + className
+      }
       onClick={clickHandler}
     >
       <animated.div style={props} className="h-6 w-min rounded-md mx-2">
