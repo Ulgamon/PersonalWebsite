@@ -7,7 +7,10 @@ interface IBigNavLinkProps {
 
 const BigNavLink = ({ to, children }: IBigNavLinkProps) => {
   return (
-    <NavLink className="font-semibold mx-3 hover:opacity-75" to={to}>
+    <NavLink
+      className="font-semibold mx-3 hover:opacity-75 active:opacity-50"
+      to={to}
+    >
       {children}
     </NavLink>
   );
