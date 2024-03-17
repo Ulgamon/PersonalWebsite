@@ -7,7 +7,7 @@ const AboutSection = () => {
   return (
     <section id="about" className="min-h-screen w-full pt-10">
       <div className="flex w-full mx-auto justify-center">
-        <img className="max-h-[600px] m-5" src={imgUri} alt="picture of me" />
+        <img className="max-h-[600px] hidden md:block m-5" src={imgUri} alt="picture of me" />
         <div className="m-5">
           <h3 className="text-5xl my-4 font-bold">About Me</h3>
           <p className="max-w-[500px] my-4 text-lg">

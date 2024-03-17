@@ -7,7 +7,6 @@ import {
   useSpringRef,
   useChain,
 } from "@react-spring/web";
-import { useState } from "react";
 
 interface AnimatedSwitchProps {
   className: string;
@@ -19,7 +18,7 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
   const transitionApi = useSpringRef();
   let booleanTheme: boolean = theme === "dark" ? false : true;
 
-  const [props, api] = useSpring(
+  const [props, __api] = useSpring(
     () => ({
       ref: springApi,
       x: booleanTheme ? 0 : 40,
@@ -38,7 +37,7 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
       enter: { scale: 1.0 },
       leave: { scale: 0 },
       exitBeforeEnter: true,
-    },
+    }
   );
 
   useChain([transitionApi, springApi], [0, 1], 250);
