@@ -17,13 +17,12 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
   const { setTheme, theme } = useTheme();
   const springApi = useSpringRef();
   const transitionApi = useSpringRef();
-  const [booleanTheme, setBooleanTheme] = useState(
-    theme === "dark" ? false : true
-  );
+  let booleanTheme: boolean = theme === "dark" ? false : true;
+
   const [props, api] = useSpring(
     () => ({
       ref: springApi,
-      x: booleanTheme ? 0 : 42,
+      x: booleanTheme ? 0 : 40,
     }),
     [booleanTheme]
   );
@@ -39,7 +38,7 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
       enter: { scale: 1.0 },
       leave: { scale: 0 },
       exitBeforeEnter: true,
-    }
+    },
   );
 
   useChain([transitionApi, springApi], [0, 1], 250);
@@ -47,10 +46,10 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
   const clickHandler = () => {
     if (theme === "dark") {
       setTheme("light");
-      setBooleanTheme(true);
+      booleanTheme = true;
     } else {
       setTheme("dark");
-      setBooleanTheme(false);
+      booleanTheme = false;
     }
   };
 

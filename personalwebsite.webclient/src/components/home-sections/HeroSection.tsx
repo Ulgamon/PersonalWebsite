@@ -38,8 +38,8 @@ const HeroSection = () => {
         <h5 className="dark:text-blue-300 rounded-xl text-orange-300 font-semibold text-xl">
           HELLO!
         </h5>
-        <h1 className="text-6xl my-3 font-bold">
-          Hi I'm Justin Ilić <br />{" "}
+        <h1 className="text-3xl md:text-6xl my-3 font-bold">
+          I'm Justin Ilić <br />
           <span className="dark:text-blue-300 rounded-xl text-orange-300">
             A Fullstack Developer
           </span>
@@ -48,7 +48,10 @@ const HeroSection = () => {
           <Link to="#works">See My Works</Link>
         </Button>
       </animated.div>
-      <animated.div style={imageProps} className="absolute z-0 end-[10%]">
+      <animated.div
+        style={imageProps}
+        className="absolute z-0 end-[10%] bottom-0"
+      >
         <img alt="image of me" src={heroImage} />
       </animated.div>
     </section>
