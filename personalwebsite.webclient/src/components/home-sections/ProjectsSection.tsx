@@ -1,9 +1,13 @@
-const ProjetsSection = () => {
+import { Element } from "react-scroll";
+
+const ProjectsSection = () => {
   return (
-    <section id="projets" className="min-h-screen">
-      Projets Section
-    </section>
+    <Element name="projects">
+      <section id="projects" className="min-h-screen">
+        Projets Section
+      </section>
+    </Element>
   );
 };
 
-export default ProjetsSection;
+export default ProjectsSection;

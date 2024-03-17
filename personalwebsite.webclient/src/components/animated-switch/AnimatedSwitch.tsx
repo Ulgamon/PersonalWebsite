@@ -7,12 +7,14 @@ import {
   useSpringRef,
   useChain,
 } from "@react-spring/web";
+import { useState } from "react";
 
 interface AnimatedSwitchProps {
   className: string;
 }
 
 const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
+  const [isInAnimation, setIsInAnimation] = useState<boolean>(false);
   const { setTheme, theme } = useTheme();
   const springApi = useSpringRef();
   const transitionApi = useSpringRef();
@@ -29,6 +31,12 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
     from: { scale: 0 },
     enter: { scale: 1.0 },
     leave: { scale: 0 },
+    onChange: () => {
+      setIsInAnimation(true);
+    },
+    onRest: () => {
+      setIsInAnimation(false);
+    },
     exitBeforeEnter: true,
   });
 
@@ -44,8 +52,10 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
 
   return (
     <button
+      disabled={isInAnimation}
       className={
-        "w-20 h-9 block dark:bg-blue-300 rounded-xl bg-orange-200 " + className
+        "w-20 h-9 block dark:bg-blue-300 rounded-xl disabled:cursor-pointer bg-orange-200 " +
+        className
       }
       onClick={clickHandler}
     >

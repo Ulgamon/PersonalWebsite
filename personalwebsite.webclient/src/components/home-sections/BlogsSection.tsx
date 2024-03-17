@@ -1,8 +1,11 @@
+import { Element } from "react-scroll";
 const BlogsSection = () => {
   return (
-    <section id="blogs" className="min-h-screen">
-      Blogs Section
-    </section>
+    <Element name="blogs">
+      <section id="blogs" className="min-h-screen">
+        Blogs Section
+      </section>
+    </Element>
   );
 };
 

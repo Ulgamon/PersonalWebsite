@@ -7,11 +7,7 @@ const useShowNavbar = () => {
     const scrollListener: EventListener = window.addEventListener(
       "scroll",
       () => {
-        if (scrollRef.current < window.scrollY) {
-          setShouldShow(false);
-        } else if (scrollRef.current > window.scrollY) {
-          setShouldShow(window.scrollY > 500 ? true : false);
-        }
+        setShouldShow(window.scrollY > 500 ? true : false);
         scrollRef.current = window.scrollY;
       }
     );
