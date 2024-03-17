@@ -19,7 +19,7 @@ const ResumeCard = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl mb-4">{duration}</CardTitle>
+        <CardTitle className="text-2xl mb-4 text-orange-400 dark:text-blue-300">{duration}</CardTitle>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{institution}</CardDescription>
       </CardHeader>
@@ -28,7 +28,7 @@ const ResumeCard = ({
       </CardContent>
       <CardFooter>
         {link ? (
-          <Button variant="link">
+          <Button className="mx-auto" variant="link">
             <a href={link} target="_blank">
               See Certificate
             </a>

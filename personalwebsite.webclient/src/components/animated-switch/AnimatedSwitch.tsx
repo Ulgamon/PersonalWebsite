@@ -16,39 +16,29 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
   const { setTheme, theme } = useTheme();
   const springApi = useSpringRef();
   const transitionApi = useSpringRef();
-  let booleanTheme: boolean = theme === "dark" ? false : true;
 
   const [props, __api] = useSpring(
     () => ({
       ref: springApi,
-      x: booleanTheme ? 0 : 40,
+      x: theme === "light" ? 0 : 40,
     }),
-    [booleanTheme]
+    [theme]
   );
-  const transitions = useTransition(
-    theme === "light" ? (
-      <IoSunny className="h-5" />
-    ) : (
-      <IoMoon className="h-5" />
-    ),
-    {
-      ref: transitionApi,
-      from: { scale: 0 },
-      enter: { scale: 1.0 },
-      leave: { scale: 0 },
-      exitBeforeEnter: true,
-    }
-  );
+  const transitions = useTransition(theme, {
+    ref: transitionApi,
+    from: { scale: 0 },
+    enter: { scale: 1.0 },
+    leave: { scale: 0 },
+    exitBeforeEnter: true,
+  });
 
   useChain([transitionApi, springApi], [0, 1], 250);
 
   const clickHandler = () => {
     if (theme === "dark") {
       setTheme("light");
-      booleanTheme = true;
     } else {
       setTheme("dark");
-      booleanTheme = false;
     }
   };
 
@@ -62,7 +52,13 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
       <animated.div style={props} className="h-6 w-min rounded-md mx-2">
         <div className="bg-white dark:bg-slate-900 shadow-lg m-0 p-0.5 px-1 rounded-md">
           {transitions((style, item) => (
-            <animated.div style={style}>{item}</animated.div>
+            <animated.div style={style}>
+              {item === "light" ? (
+                <IoSunny className="h-5" />
+              ) : (
+                <IoMoon className="h-5" />
+              )}
+            </animated.div>
           ))}
         </div>
       </animated.div>

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import imgUri from "../../assets/tempimg.png";
 import cv from "../../assets/CV.pdf";
 import { Button } from "../ui/button";
@@ -6,7 +5,7 @@ import { Button } from "../ui/button";
 const AboutSection = () => {
   return (
     <section id="about" className="min-h-screen w-full pt-10">
-      <div className="flex w-full mx-auto justify-center">
+      <div className="flex w-full mx-auto content-center justify-center">
         <img className="max-h-[600px] hidden md:block m-5" src={imgUri} alt="picture of me" />
         <div className="m-5">
           <h3 className="text-5xl my-4 font-bold">About Me</h3>
