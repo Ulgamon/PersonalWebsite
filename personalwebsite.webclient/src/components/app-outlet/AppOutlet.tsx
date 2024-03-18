@@ -171,7 +171,7 @@ const AppOutlet = ({ children }: IAppOutlet) => {
           )
       )}
       {children}
-      <footer></footer>
+      <footer>FOOTER</footer>
     </main>
   );
 };

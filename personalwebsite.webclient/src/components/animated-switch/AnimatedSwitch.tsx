@@ -54,7 +54,7 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
     <button
       disabled={isInAnimation}
       className={
-        "w-20 h-9 block dark:bg-blue-300 rounded-xl disabled:cursor-pointer bg-orange-200 " +
+        "w-20 h-9 block dark:bg-blue-300 rounded-xl disabled:cursor-pointer bg-orange-300 " +
         className
       }
       onClick={clickHandler}

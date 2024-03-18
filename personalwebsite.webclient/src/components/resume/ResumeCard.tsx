@@ -17,7 +17,7 @@ const ResumeCard = ({
   link,
 }: ResumeItem) => {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle className="text-2xl mb-4 text-orange-400 dark:text-blue-300">{duration}</CardTitle>
         <CardTitle>{title}</CardTitle>

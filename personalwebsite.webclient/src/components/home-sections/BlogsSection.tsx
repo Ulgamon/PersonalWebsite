@@ -3,7 +3,8 @@ const BlogsSection = () => {
   return (
     <Element name="blogs">
       <section id="blogs" className="min-h-screen">
-        Blogs Section
+        <h3 className="text-5xl font-bold text-center">My Blogs</h3>
+        <p className="text-center text-lg my-5">Most recent blog posts.</p>
       </section>
     </Element>
   );

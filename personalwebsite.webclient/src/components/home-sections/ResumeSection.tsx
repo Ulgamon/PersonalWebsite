@@ -1,5 +1,7 @@
 import ResumeList from "../resume/ResumeList";
+import cv from "../../assets/CV.pdf";
 import { Element } from "react-scroll";
+import { Button } from "../ui/button";
 
 const ResumeSection = () => {
   return (
@@ -12,6 +14,11 @@ const ResumeSection = () => {
           roasted parts of sentences fly into your mouth.
         </p>
         <ResumeList />
+        <Button className="w-fit mx-auto block my-5">
+          <a href={cv} download>
+            Download CV
+          </a>
+        </Button>
       </section>
     </Element>
   );

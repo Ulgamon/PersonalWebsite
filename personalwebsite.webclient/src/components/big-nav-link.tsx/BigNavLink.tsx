@@ -14,6 +14,10 @@ const BigNavLink = ({ to, children }: IBigNavLinkProps) => {
     from: { scale: 0 },
     enter: { scale: 1 },
     leave: { scale: 0 },
+    config: {
+      mass: 5,
+      friction: 50,
+    },
   });
   return (
     <Link
