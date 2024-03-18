@@ -137,10 +137,15 @@ const ContactSection = () => {
           <IoLogoLinkedin />
         </ContactLink>
       </ul>
-      <section id="contact" className="min-h-screen">
+      <section id="contact" className="mb-10">
         <Card className="md:mx-16 overflow-clip bg-orange-300 dark:bg-sky-300 flex flex-row shadow-none border-0">
           <div className="hidden md:flex justify-center items-center md:w-1/2">
-            <IoMailOpenOutline className="text-7xl dark:text-orange-500 animate-bounce" />
+            <IoMailOpenOutline
+              className={
+                "text-7xl dark:text-orange-500 " +
+                (messageSent ? "" : "animate-bounce")
+              }
+            />
           </div>
           <Card className="w-full md:w-1/2 overflow-clip md:max-w-[700px] mx-auto">
             {messageSent ? (
