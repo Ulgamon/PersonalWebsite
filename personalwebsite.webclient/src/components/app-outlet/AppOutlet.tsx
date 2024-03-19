@@ -26,8 +26,8 @@ const AppOutlet = ({ children }: IAppOutlet) => {
     leave: { y: -100 },
   });
   return (
-    <main className="w-full mx-auto min-h-screen text-slate-900 dark:text-neutral-200">
-      <nav className="w-full z-50 pb-3">
+    <main className="w-full mx-auto min-h-screen absolute z-50 text-slate-900 dark:text-neutral-200">
+      <nav className="w-full bg-transparent relative z-50 pb-3">
         <div className="max-w-[1400px] mx-auto flex justify-between sm:justify-around content-center">
           <Logo />
           <ul className="hidden lg:flex content-center items-center mt-3">
@@ -175,7 +175,7 @@ const AppOutlet = ({ children }: IAppOutlet) => {
             </animated.div>
           )
       )}
-      <div className="max-w-[1400px] mx-auto">{children}</div>
+      {children}
 
       <Footer />
     </main>
