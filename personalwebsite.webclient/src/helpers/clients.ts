@@ -119,6 +119,12 @@ export interface IClient {
     commentsDELETE(id: number): Promise<void>;
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    search(body: GetSearchDto | undefined): Promise<PaginateBlogPostsDto>;
+
+    /**
      * @param formFile (optional) 
      * @return Success
      */
@@ -874,6 +880,47 @@ export class Client implements IClient {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    search(body: GetSearchDto | undefined): Promise<PaginateBlogPostsDto> {
+        let url_ = this.baseUrl + "/api/Search";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/plain"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSearch(_response);
+        });
+    }
+
+    protected processSearch(response: Response): Promise<PaginateBlogPostsDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as PaginateBlogPostsDto;
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<PaginateBlogPostsDto>(null as any);
+    }
+
+    /**
      * @param formFile (optional) 
      * @return Success
      */
@@ -947,6 +994,11 @@ export interface CreateCommentDto {
     comment1: string;
     blogPostId?: number | undefined;
     commentId?: number | undefined;
+}
+
+export interface GetSearchDto {
+    categories?: ReturnCategoriesDto[] | undefined;
+    search?: string | undefined;
 }
 
 export interface ImageUploadResponseDto {

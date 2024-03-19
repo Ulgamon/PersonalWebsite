@@ -54,8 +54,8 @@ namespace PersonalWebsite.API.Controllers
 
 
 
-                    blogs = blogs.Where(e => e.Published && Compare(e.Title, search) ||
-                            Compare(e.BlogMdText, search)).ToList();
+                    blogs = blogs.Where(e => e.Published == true && (Compare(e.Title, search) ||
+                            Compare(e.BlogMdText, search))).ToList();
                         
                 } else
                 {
