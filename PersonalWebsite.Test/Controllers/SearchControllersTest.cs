@@ -283,5 +283,61 @@ namespace PersonalWebsite.Test.Controllers
             Assert.False(model.HasNext);
             Assert.False(model.HasPrev);
         }
+
+        [Fact]
+        public async void GET_BlogPosts_Search_With_Specific_Valid_String_Parameter()
+        {
+            // Arrange
+            PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
+            SearchController controller = new SearchController(context, _logger, _mapper);
+
+            // Act
+            // Will create With empty parameters to 
+            GetSearchDto param = new GetSearchDto { Search = "blogpost 4" };
+
+            ActionResult<PaginateBlogPostsDto> response = await controller.SearchBlogPosts(param);
+
+            // Assert
+            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
+            PaginateBlogPostsDto model = Assert.IsType<PaginateBlogPostsDto>(okObjectResult.Value);
+            Assert.NotNull(model);
+            Assert.Single(model.BlogPostsDtos);
+            Assert.Equal(1, model.NumberOfElements);
+            Assert.False(model.HasNext);
+            Assert.False(model.HasPrev);
+        }
+
+        [Fact]
+        public async void GET_BlogPosts_Search_With_Specific_Valid_Parameters()
+        {
+            // Arrange
+            PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
+            SearchController controller = new SearchController(context, _logger, _mapper);
+
+            // Act
+            // Will create With empty parameters to 
+            GetSearchDto param = new GetSearchDto { Search = "blogpost 4", 
+                Categories = new List<ReturnCategoriesDto>{
+                    new ReturnCategoriesDto {
+                        Id = 4,
+                        // These fields aren't important
+                        CategoryName = "Non Existent Category",
+                        Description = "------",
+                        NumberOfBlogPosts = 10
+                    },
+                }
+            };
+
+            ActionResult<PaginateBlogPostsDto> response = await controller.SearchBlogPosts(param);
+
+            // Assert
+            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
+            PaginateBlogPostsDto model = Assert.IsType<PaginateBlogPostsDto>(okObjectResult.Value);
+            Assert.NotNull(model);
+            Assert.Single(model.BlogPostsDtos);
+            Assert.Equal(1, model.NumberOfElements);
+            Assert.False(model.HasNext);
+            Assert.False(model.HasPrev);
+        }
     }
 }

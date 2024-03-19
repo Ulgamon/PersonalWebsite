@@ -45,7 +45,13 @@ namespace PersonalWebsite.API.Controllers
                     blogs = await _context.BlogPosts
                         .Include(e => e.Categories)
                         .OrderByDescending(b => b.PublishedDate)
-                        .Where(e => (e.Title.Contains(search) || e.BlogMdText.Contains(search)) && e.Published == true)
+                        .Where(e => (
+                            e.Title
+                                .Contains(
+                                    search, StringComparison.OrdinalIgnoreCase) 
+                                    || e.BlogMdText.Contains(search, StringComparison.OrdinalIgnoreCase)
+                                )  && e.Published == true
+                         )
                         .ToListAsync();
                 } else
                 {
