@@ -25,7 +25,13 @@ namespace PersonalWebsite.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        public static bool Compare(string main, string substring)
+        {
+            StringComparison comp = StringComparison.OrdinalIgnoreCase;
+            return main.IndexOf(substring, comp) >= 0;
+        }
+
+        [HttpPost]
         public async Task<ActionResult<PaginateBlogPostsDto>> SearchBlogPosts(GetSearchDto searchDto)
         {
             const int size = 10;
@@ -35,24 +41,22 @@ namespace PersonalWebsite.API.Controllers
                 bool hasNext = true;
                 bool hasPrev = page > 1;
 
-               
-
                 List<BlogPost> blogs;
 
                 if (searchDto.Search != null)
                 {
+                    StringComparison comp = StringComparison.OrdinalIgnoreCase;
                     string search = searchDto.Search;
                     blogs = await _context.BlogPosts
                         .Include(e => e.Categories)
                         .OrderByDescending(b => b.PublishedDate)
-                        .Where(e => (
-                            e.Title
-                                .Contains(
-                                    search, StringComparison.OrdinalIgnoreCase) 
-                                    || e.BlogMdText.Contains(search, StringComparison.OrdinalIgnoreCase)
-                                )  && e.Published == true
-                         )
                         .ToListAsync();
+
+
+
+                    blogs = blogs.Where(e => e.Published && Compare(e.Title, search) ||
+                            Compare(e.BlogMdText, search)).ToList();
+                        
                 } else
                 {
                     blogs = await _context.BlogPosts

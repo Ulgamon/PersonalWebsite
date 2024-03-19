@@ -143,7 +143,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void GET_BlogPosts_Search_With_Valid_Parameters()
+        public async void POST_BlogPosts_Search_With_Valid_Parameters()
         {
             // Arrange
             PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
@@ -165,7 +165,7 @@ namespace PersonalWebsite.Test.Controllers
             Assert.False(model.HasPrev);
         }
         [Fact]
-        public async void GET_BlogPosts_Search_With_NonExistent_Search_Parameter()
+        public async void POST_BlogPosts_Search_With_NonExistent_Search_Parameter()
         {
             // Arrange
             PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
@@ -188,7 +188,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void GET_BlogPosts_Search_With_NonExistent_Category_Parameter()
+        public async void POST_BlogPosts_Search_With_NonExistent_Category_Parameter()
         {
             // Arrange
             PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
@@ -220,7 +220,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void GET_BlogPosts_Search_With_Valid_Category_Parameter()
+        public async void POST_BlogPosts_Search_With_Valid_Category_Parameter()
         {
             // Arrange
             PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
@@ -262,7 +262,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void GET_BlogPosts_Search_With_Valid_String_Parameter()
+        public async void POST_BlogPosts_Search_With_Valid_String_Parameter()
         {
             // Arrange
             PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
@@ -285,7 +285,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void GET_BlogPosts_Search_With_Specific_Valid_String_Parameter()
+        public async void POST_BlogPosts_Search_With_Specific_Valid_String_Parameter()
         {
             // Arrange
             PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
@@ -308,7 +308,7 @@ namespace PersonalWebsite.Test.Controllers
         }
 
         [Fact]
-        public async void GET_BlogPosts_Search_With_Specific_Valid_Parameters()
+        public async void POST_BlogPosts_Search_With_Specific_Valid_Parameters()
         {
             // Arrange
             PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
@@ -339,5 +339,39 @@ namespace PersonalWebsite.Test.Controllers
             Assert.False(model.HasNext);
             Assert.False(model.HasPrev);
         }
+        [Fact]
+        public async void POST_BlogPosts_Search_With_Invalid_Parameters()
+        {
+            // Arrange
+            PersonalWebsiteDevelopmentDbContext context = await GetDatabaseContext();
+            SearchController controller = new SearchController(context, _logger, _mapper);
+
+            // Act
+            // Will create With empty parameters to 
+            GetSearchDto param = new GetSearchDto { Search = "fdjslkafjdlksafjlkdsjfsl;ajfld;kaj",
+                Categories = new List<ReturnCategoriesDto>{
+                    new ReturnCategoriesDto
+                    {
+                        Id = 50,
+                        // These fields aren't important
+                        CategoryName = "Non Existent Category",
+                        Description = "------",
+                        NumberOfBlogPosts = 10
+                    },
+                }
+            };
+
+            ActionResult<PaginateBlogPostsDto> response = await controller.SearchBlogPosts(param);
+
+            // Assert
+            OkObjectResult okObjectResult = Assert.IsType<OkObjectResult>(response.Result);
+            PaginateBlogPostsDto model = Assert.IsType<PaginateBlogPostsDto>(okObjectResult.Value);
+            Assert.NotNull(model);
+            Assert.Empty(model.BlogPostsDtos);
+            Assert.Equal(0, model.NumberOfElements);
+            Assert.False(model.HasNext);
+            Assert.False(model.HasPrev);
+        }
+
     }
 }
