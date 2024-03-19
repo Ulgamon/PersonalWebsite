@@ -76,12 +76,11 @@ const ContactSection = () => {
         throw new Error("Something went wrong.");
       }
       const data = await response.json();
-      console.log(data, "Data from inside the sendEmail function.");
+      if (data === undefined) throw new Error("Something went wrong.");
       setIsLoading(false);
       return data;
     } catch (err) {
       setError(true);
-      console.log(err);
     } finally {
       setIsLoading(false);
     }
@@ -97,7 +96,6 @@ const ContactSection = () => {
       return;
     }
     const data = await sendEmail(name, email, message);
-    console.log(data, "from inside the submithandler", error);
     if (data?.success === "false") {
       setError(true);
       return;
@@ -117,7 +115,7 @@ const ContactSection = () => {
   return (
     <Element name="contact">
       <h3 className="text-5xl font-bold text-center mb-10">Contact</h3>
-      <ul className="grid sm:grid-cols-2 gap-2 lg:gap-5 max-w-[500px] md:grid-cols-4 md:max-w-[900px] mx-auto px-16 mb-12">
+      <ul className="grid sm:grid-cols-2 gap-2 lg:gap-5 max-w-[500px] md:grid-cols-4 md:max-w-[900px] mx-auto px-16 mb-20">
         <ContactLink text="Ulgamon" to="https://github.com/Ulgamon">
           <IoLogoGithub />
         </ContactLink>
@@ -137,8 +135,8 @@ const ContactSection = () => {
           <IoLogoLinkedin />
         </ContactLink>
       </ul>
-      <section id="contact" className="mb-10">
-        <Card className="md:mx-16 overflow-clip bg-orange-300 dark:bg-sky-300 flex flex-row shadow-none border-0">
+      <section id="contact" className="mb-20">
+        <Card className="md:mx-16 overflow-clip bg-themeOrange dark:bg-themeBlue flex flex-row shadow-none border-0">
           <div className="hidden md:flex justify-center items-center md:w-1/2">
             <IoMailOpenOutline
               className={

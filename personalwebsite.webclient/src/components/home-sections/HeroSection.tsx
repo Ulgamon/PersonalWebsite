@@ -40,12 +40,12 @@ const HeroSection = () => {
           style={textProps}
           className="absolute z-10 top-1/4 start-[10%]"
         >
-          <h5 className="dark:text-blue-300 rounded-xl text-orange-300 font-semibold text-xl">
+          <h5 className="dark:text-themeBlue rounded-xl text-themeOrange font-semibold text-xl">
             HELLO!
           </h5>
           <h1 className="text-3xl md:text-6xl my-3 font-bold">
             I'm Justin Ilić <br />
-            <span className="dark:text-blue-300 rounded-xl text-orange-300">
+            <span className="dark:text-themeBlue rounded-xl text-themeOrange">
               A Fullstack Developer
             </span>
           </h1>

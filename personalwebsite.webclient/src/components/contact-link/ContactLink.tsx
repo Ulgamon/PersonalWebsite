@@ -15,9 +15,7 @@ const ContactLink = ({ to, text, children }: IContactLinkProps) => {
           <CardContent>
             <div className="text-7xl flex justify-center mt-7">{children}</div>
             <Button variant="link" className="px-0 flex mx-auto">
-              <a className="" target="_blank" href={to}>
-                {text}
-              </a>
+              {text}
             </Button>
           </CardContent>
         </Card>

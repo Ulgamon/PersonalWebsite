@@ -22,7 +22,7 @@ const BigNavLink = ({ to, children }: IBigNavLinkProps) => {
   return (
     <Link
       className={"font-semibold relative cursor-pointer mx-3 hover:opacity-75"}
-      activeClass=" text-orange-400 dark:text-blue-300"
+      activeClass=" text-themeOrange dark:text-themeBlue"
       to={to}
       smooth={true}
       spy={true}
@@ -37,7 +37,7 @@ const BigNavLink = ({ to, children }: IBigNavLinkProps) => {
           item && (
             <animated.div
               style={style}
-              className="w-full mx-auto h-0.5 absolute block dark:bg-blue-300 bg-orange-400 ms-3 px-4"
+              className="w-full mx-auto h-0.5 absolute block dark:bg-themeBlue bg-themeOrange ms-3 px-4"
             />
           )
       )}

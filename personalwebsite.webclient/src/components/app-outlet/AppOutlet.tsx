@@ -102,7 +102,7 @@ const AppOutlet = ({ children }: IAppOutlet) => {
           show && (
             <animated.div
               style={style}
-              className="bg-white dark:bg-slate-950 top-0 z-50 p-0 m-0 w-full shadow-sm dark:shadow-neutral-600 fixed"
+              className="bg-white dark:bg-slate-950 top-0 z-50 p-0 m-0 w-full shadow-sm dark:shadow-slate-800 fixed"
             >
               <div className="max-w-[1400px] mx-auto w-ful pb-1 flex justify-between sm:justify-around content-center">
                 <Logo />

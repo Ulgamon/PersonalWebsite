@@ -19,7 +19,9 @@ const ResumeCard = ({
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle className="text-2xl mb-4 text-orange-400 dark:text-blue-300">{duration}</CardTitle>
+        <CardTitle className="text-2xl mb-4 text-themeOrange dark:text-themeBlue">
+          {duration}
+        </CardTitle>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{institution}</CardDescription>
       </CardHeader>
