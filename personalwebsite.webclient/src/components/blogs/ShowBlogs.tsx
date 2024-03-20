@@ -27,6 +27,7 @@ import { Button } from "../ui/button";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Search from "../search/Search";
 import Categories from "./Categories";
+import { CiCalendarDate } from "react-icons/ci";
 
 const ShowBlogs = () => {
   const [data, setData] = useState<PaginateBlogPostsDto>({
@@ -75,8 +76,8 @@ const ShowBlogs = () => {
   }
 
   return (
-    <div className="w-full my-16 mx-auto grid grid-cols-3">
-      <ul className="grid w-full gap-3 col-span-2">
+    <div className="w-full my-16 mx-auto grid lg:grid-cols-3">
+      <ul className="grid order-last lg:order-first w-full gap-3 col-span-2">
         {isLoading ? (
           <>
             <BlogCardSkeleton />
@@ -143,7 +144,7 @@ const ShowBlogs = () => {
           </PaginationContent>
         </Pagination>
       </ul>
-      <div className="col-span-1">
+      <div className="col-span-2 lg:col-span-1 w-full">
         <Search />
         <Categories />
       </div>
@@ -162,10 +163,10 @@ const BlogCard = ({
 }: ReturnBlogPostsDto) => {
   return (
     <Link to={"/blog/" + id}>
-      <Card className="overflow-clip max-w-[800px] mx-auto">
-        <div className="flex">
+      <Card className="overflow-clip mx-1">
+        <div className="flex flex-col md:flex-row">
           <img
-            className="w-1/3 max-w-[300px] object-cover"
+            className="w-full aspect-video md:aspect-[4/3] md:w-1/3 md:max-w-[300px] object-cover"
             src={imgUrl}
             alt={title}
           />
@@ -178,6 +179,7 @@ const BlogCard = ({
             </CardContent>
             <CardFooter>
               <p className="opacity-50 text-sm">
+                <CiCalendarDate className="inline mb-1 me-1" />
                 {returnDateTime(publishedDate)}
               </p>
             </CardFooter>

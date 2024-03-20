@@ -3,7 +3,7 @@ import { IoArrowForward } from "react-icons/io5";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-amber-800 dark:bg-green-500">
+    <footer className="w-full bg-orange-300 dark:bg-slate-900">
       <div className="max-w-[1400px] mx-auto md:px-16 py-10">
         <ul className="grid grid-cols-3 ">
           <li className="">

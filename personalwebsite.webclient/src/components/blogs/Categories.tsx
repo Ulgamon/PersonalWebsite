@@ -47,8 +47,8 @@ const Categories = () => {
   }
 
   return (
-    <div className="w-full mx-5 my-5">
-      <h5 className="text-xl font-semibold">Categories</h5>
+    <div className="w-full max-w-[400px] mx-auto my-5">
+      <h5 className="text-xl mx-2 font-semibold">Categories</h5>
       <ul className="my-3">
         {isLoading ? (
           <>
@@ -58,9 +58,10 @@ const Categories = () => {
           </>
         ) : (
           data.categories?.map((el) => (
-            <li className="" key={el.id}>
-              <Button variant="link">
-                {el.categoryName}({el.numberOfBlogPosts})
+            <li className="w-full px-2" key={el.id}>
+              <Button className="w-full mx-0 px-0" variant="link">
+                {el.categoryName}
+                <p className="ms-auto">({el.numberOfBlogPosts})</p>
               </Button>
             </li>
           ))
