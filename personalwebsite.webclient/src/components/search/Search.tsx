@@ -171,7 +171,7 @@ function highlightMatchingTitle(text: string, search: string): string {
 
 function escapeCharactersForRegExp(str: string): string {
   // mathches every literal character
-  const chReg = new RegExp("[[*+?{.()^$|]");
+  const chReg = new RegExp("[[*+?{.()^$|]", "g");
   return str.replace(chReg, "\\$&");
 }
 
