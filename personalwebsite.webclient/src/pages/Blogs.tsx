@@ -74,7 +74,7 @@ const Blogs = () => {
             </Breadcrumb>
           </div>
         </div>
-        <div className="max-w-[1400px] min-h-screen">
+        <div className="max-w-[1000px] mx-auto min-h-screen">
           <ShowBlogs />
         </div>
       </div>

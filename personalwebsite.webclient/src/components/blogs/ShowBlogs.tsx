@@ -15,6 +15,18 @@ import {
 } from "../ui/card";
 import { Link } from "react-router-dom";
 import { Skeleton } from "../ui/skeleton";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+} from "../ui/pagination";
+import { Label } from "../ui/label";
+import { IoWarningOutline } from "react-icons/io5";
+import { Button } from "../ui/button";
+import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
+import Search from "../search/Search";
+import Categories from "./Categories";
 
 const ShowBlogs = () => {
   const [data, setData] = useState<PaginateBlogPostsDto>({
@@ -47,11 +59,24 @@ const ShowBlogs = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [page]);
+
+  const addToPage = (num: number) => {
+    setPage((prevState) => prevState + num);
+  };
+
+  if (error.length > 0) {
+    return (
+      <Label className="text-red-400 mx-auto mt-3 block">
+        <IoWarningOutline className="inline text-2xl mb-1.5 me-1" />
+        Something went wrong! Please try again.
+      </Label>
+    );
+  }
 
   return (
-    <div className="w-full my-16 mx-auto">
-      <ul className="grid w-full gap-3">
+    <div className="w-full my-16 mx-auto grid grid-cols-3">
+      <ul className="grid w-full gap-3 col-span-2">
         {isLoading ? (
           <>
             <BlogCardSkeleton />
@@ -71,7 +96,57 @@ const ShowBlogs = () => {
             </li>
           ))
         )}
+        <Pagination className="my-10">
+          <PaginationContent>
+            <PaginationItem className="flex">
+              <Button
+                onClick={() => addToPage(-1)}
+                disabled={data.hasPrev === true ? false : data.hasPrev}
+                variant="ghost"
+                className="disabled:opacity-40"
+              >
+                <SlArrowLeft className="p-0 me-1 text-sm" />
+                Previous
+              </Button>
+            </PaginationItem>
+            {data.hasPrev && (
+              <PaginationItem>
+                <Button onClick={() => addToPage(-1)} variant="ghost">
+                  {page - 1}
+                </Button>
+              </PaginationItem>
+            )}
+            <PaginationItem>
+              <Button variant="outline">{page}</Button>
+            </PaginationItem>
+            {data.hasNext && (
+              <PaginationItem>
+                <Button onClick={() => addToPage(1)} variant="ghost">
+                  {page + 1}
+                </Button>
+              </PaginationItem>
+            )}
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <Button
+                onClick={() => addToPage(1)}
+                disabled={data.hasNext === true ? false : data.hasNext}
+                variant="ghost"
+                className="disabled:opacity-40"
+              >
+                Next
+                <SlArrowRight className="p-0 ms-1 text-sm" />
+              </Button>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </ul>
+      <div className="col-span-1">
+        <Search />
+        <Categories />
+      </div>
     </div>
   );
 };
@@ -89,7 +164,11 @@ const BlogCard = ({
     <Link to={"/blog/" + id}>
       <Card className="overflow-clip max-w-[800px] mx-auto">
         <div className="flex">
-          <img className="w-1/3 max-w-[300px] object-cover" src={imgUrl} alt={title} />
+          <img
+            className="w-1/3 max-w-[300px] object-cover"
+            src={imgUrl}
+            alt={title}
+          />
           <div className="w-full">
             <CardHeader>
               <CardTitle className="text-2xl">{title}</CardTitle>
@@ -98,7 +177,9 @@ const BlogCard = ({
               <p>{blogMdText?.slice(0, 200)}</p>
             </CardContent>
             <CardFooter>
-              <p className="opacity-50 text-sm">{returnDateTime(publishedDate)}</p>
+              <p className="opacity-50 text-sm">
+                {returnDateTime(publishedDate)}
+              </p>
             </CardFooter>
           </div>
         </div>
@@ -109,19 +190,19 @@ const BlogCard = ({
 
 const BlogCardSkeleton = () => {
   return (
-    <Card>
+    <Card className="w-full max-w-[800px] mx-auto">
       <div className="flex">
-        <Skeleton className="w-1/3 h-full" />
+        <Skeleton className="w-1/3 h-max" />
         <div className="w-full">
           <CardHeader>
-            <Skeleton className="w-full rounded-lg h-6" />
+            <Skeleton className="w-full rounded-lg h-4" />
           </CardHeader>
           <CardContent>
-            <Skeleton className="w-full rounded-lg h-6" />
-            <Skeleton className="w-full rounded-lg h-6" />
+            <Skeleton className="w-full my-4 rounded-lg h-4" />
+            <Skeleton className="w-full rounded-lg h-4" />
           </CardContent>
           <CardFooter>
-            <Skeleton className="w-full rounded-lg h-6" />
+            <Skeleton className="w-full rounded-lg h-4" />
           </CardFooter>
         </div>
       </div>
