@@ -1,4 +1,6 @@
 import AppOutlet from "@/components/app-outlet/AppOutlet";
+import Search from "@/components/search/Search";
+import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,10 +12,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Client, IClient, ReturnBlogPostDto } from "@/helpers/clients";
-import { apiUrl } from "@/helpers/constants";
+import { apiUrl, returnDateTime } from "@/helpers/constants";
 import { useEffect, useState } from "react";
+import { CiCalendarDate } from "react-icons/ci";
 import { IoWarningOutline } from "react-icons/io5";
 import { useParams } from "react-router-dom";
+import Markdown from "react-markdown";
 
 const Blog = () => {
   const [data, setData] = useState<ReturnBlogPostDto>({
@@ -69,12 +73,13 @@ const Blog = () => {
           style={{
             backgroundImage: `url("${data.imgUrl}")`,
             backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
+            backgroundSize: "contain",
+            backgroundPosition: "center",
           }}
-          className="w-full flex justify-center transition will-change-transform items-end mx-auto h-screen object-cover text-black text-4xl m-0 dark:text-white"
+          className="w-full flex justify-center transition will-change-transform items-end mx-auto h-screen object-contain text-black text-4xl m-0 dark:text-white"
         >
           <div className="w-fit mx-auto mb-24">
-            <h1 className="font-bold text-7xl">Blog Posts</h1>
+            <h1 className="font-bold text-7xl">{data.title}</h1>
             <Breadcrumb className="text-xl font-semibold mx-1 my-2">
               <BreadcrumbList>
                 <BreadcrumbItem className="text-lg">
@@ -84,6 +89,7 @@ const Blog = () => {
                 <BreadcrumbItem className="text-lg">
                   <BreadcrumbLink href="/blog">Blog</BreadcrumbLink>
                 </BreadcrumbItem>
+                <BreadcrumbSeparator className="text-lg" />
                 <BreadcrumbItem className="text-lg">
                   <BreadcrumbLink>{data.id}</BreadcrumbLink>
                 </BreadcrumbItem>
@@ -92,10 +98,15 @@ const Blog = () => {
           </div>
         </div>
         <div className="max-w-[1000px] mx-auto min-h-screen">
-          <div className="grid">
-            <section>{isLoading ? <BlogDataSkeleton /> : <></>}</section>
-            <aside></aside>
-          </div>
+          {isLoading ? (
+            <BlogDataSkeleton />
+          ) : (
+            <BlogData
+              blogMdText={data.blogMdText || ""}
+              categories={data.categories}
+              publishedDate={data.publishedDate || ""}
+            />
+          )}
         </div>
       </div>
     </AppOutlet>
@@ -103,6 +114,40 @@ const Blog = () => {
 };
 
 export default Blog;
+
+const BlogData = ({
+  blogMdText,
+  categories,
+  publishedDate,
+}: ReturnBlogPostDto) => {
+  return (
+    <div className="grid">
+      <section>
+        <ul className="flex">
+          {categories?.map((el) => (
+            <li className="me-0.5" key={el.id}>
+              <Badge variant="secondary">{el.categoryName}</Badge>
+            </li>
+          ))}
+        </ul>
+        <div>
+          <p className="opacity-75 text-sm">
+            <CiCalendarDate className="inline mb-1 me-1" />
+            {returnDateTime(publishedDate)}
+          </p>
+        </div>
+        <div>
+          <Markdown className="prose w-full dark:prose-invert max-w-none">
+            {blogMdText}
+          </Markdown>
+        </div>
+      </section>
+      <aside>
+        <Search />
+      </aside>
+    </div>
+  );
+};
 
 const BlogDataSkeleton = () => {
   return (

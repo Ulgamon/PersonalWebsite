@@ -97,7 +97,7 @@ function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
       <MDXEditor
         onChange={changeHandler}
         className=" px-5 dark-theme rounded-none flex flex-col dark-editor"
-        contentEditableClassName="prose"
+        contentEditableClassName="prose max-w-none"
         markdown={value}
         plugins={[
           codeBlockPlugin({ defaultCodeBlockLanguage: "tsx" }),
@@ -106,7 +106,7 @@ function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
               js: "JavaScript",
               css: "CSS",
               ts: "TypeScript",
-              tsx: "TypeScript (React)",
+              tsx: "TypeScript(React)",
               csharp: "CSharp",
               sql: "SQL",
               golang: "GOLANG",

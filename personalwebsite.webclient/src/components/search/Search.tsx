@@ -28,6 +28,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import Markdown from "react-markdown";
 
 const Search = () => {
   const [open, setOpen] = useState(false);
@@ -193,8 +194,15 @@ const SearchItem = ({
           </CardHeader>
           <CardContent
             className="text-xs [&>span]:bg-yellow-400 dark:[&>span]:bg-yellow-500"
-            dangerouslySetInnerHTML={{ __html: blogMdText }}
-          ></CardContent>
+            // dangerouslySetInnerHTML={{ __html: blogMdText }}
+          >
+            <Markdown
+              disallowedElements={["img", "a", "code"]}
+            //   allowElement={<span />}
+            >
+              {blogMdText}
+            </Markdown>
+          </CardContent>
           <CardFooter>
             <p className="opacity-50 text-sm">
               <CiCalendarDate className="inline mb-1 me-1" />
