@@ -118,15 +118,25 @@ const Search = () => {
             <>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup heading="search results">
-                {data.blogPostsDtos?.map((el) => (
-                  <SearchItem
-                    key={el.id}
-                    id={el.id}
-                    blogMdText={el.blogMdText}
-                    publishedDate={el.publishedDate}
-                    title={el.title}
-                  />
-                ))}
+                {data.blogPostsDtos?.map((el) => {
+                  const highlightedMdText = highlightMatchingMdText(
+                    el.blogMdText,
+                    search
+                  );
+                  const highlightedTitle = highlightMatchingTitle(
+                    el.title,
+                    search
+                  );
+                  return (
+                    <SearchItem
+                      key={el.id}
+                      id={el.id}
+                      blogMdText={highlightedMdText}
+                      publishedDate={el.publishedDate}
+                      title={highlightedTitle}
+                    />
+                  );
+                })}
               </CommandGroup>
             </>
           )}
@@ -138,11 +148,32 @@ const Search = () => {
 
 export default Search;
 
-// function highlightMatchingText(markdown: string, search: string) {
-//   // title should always stay intact and if it has a match i will replace it
-//   const myRegExp = new RegExp(search, "i");
+function highlightMatchingMdText(text: string, search: string): string {
+  // title should always stay intact and if it has a match i will replace it
+  if (search.trim().length > 0) {
+    const myRegExp = new RegExp(escapeCharactersForRegExp(search), "ig");
+    return text.replace(
+      myRegExp,
+      `<span className="bg-yellow-400 rounded-md">$&</span>`
+    );
+  }
+  return text;
+}
 
-// }
+function highlightMatchingTitle(text: string, search: string): string {
+  // title should always stay intact and if it has a match i will replace it
+  if (search.trim().length > 0) {
+    const myRegExp = new RegExp(escapeCharactersForRegExp(search), "ig");
+    return text.replace(myRegExp, `<span>$&</span>`);
+  }
+  return text;
+}
+
+function escapeCharactersForRegExp(str: string): string {
+  // mathches every literal character
+  const chReg = new RegExp("[[*+?{.()^$|]");
+  return str.replace(chReg, "\\$&");
+}
 
 const SearchItem = ({
   id,
@@ -155,9 +186,15 @@ const SearchItem = ({
       <CommandItem value={title + " " + blogMdText}>
         <Card className="rounded-md p-0 m-0 w-full">
           <CardHeader>
-            <CardTitle>{title}</CardTitle>
+            <CardTitle
+              className="[&>span]:bg-yellow-400 dark:[&>span]:bg-yellow-500"
+              dangerouslySetInnerHTML={{ __html: title }}
+            ></CardTitle>
           </CardHeader>
-          <CardContent className="text-xs">{blogMdText}</CardContent>
+          <CardContent
+            className="text-xs [&>span]:bg-yellow-400 dark:[&>span]:bg-yellow-500"
+            dangerouslySetInnerHTML={{ __html: blogMdText }}
+          ></CardContent>
           <CardFooter>
             <p className="opacity-50 text-sm">
               <CiCalendarDate className="inline mb-1 me-1" />
