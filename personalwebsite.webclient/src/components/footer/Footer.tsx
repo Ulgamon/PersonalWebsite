@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { IoArrowForward } from "react-icons/io5";
 
@@ -35,9 +36,9 @@ interface FooterNavLinkProps {
 }
 const FooterNavLink = ({ to, text }: FooterNavLinkProps) => {
   return (
-    <Button className="text-lg flex px-2" variant="link">
+    <Button className="text-sm flex px-2" variant="link">
       <IoArrowForward className="me-1" />
-      <a href={to}>{text}</a>
+      <Link to={to}>{text}</Link>
     </Button>
   );
 };

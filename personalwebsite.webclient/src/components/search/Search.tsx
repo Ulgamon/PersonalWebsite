@@ -29,9 +29,8 @@ import {
   CardTitle,
 } from "../ui/card";
 import Markdown from "react-markdown";
-import { Span } from "../customcomponents/custom-components";
 import rehypeRaw from "rehype-raw";
-// import rehypeRaw from "rehype-raw"
+import remarkGfm from "remark-gfm";
 
 const Search = () => {
   const [open, setOpen] = useState(false);
@@ -201,9 +200,8 @@ const SearchItem = ({
             <Markdown
               className="[&>span]:bg-yellow-400 dark:[&>span]:bg-yellow-500"
               disallowedElements={["img", "a", "code"]}
-              //   components={{span(props) => }}
               rehypePlugins={[rehypeRaw]}
-              // allowElement={}
+              remarkPlugins={[remarkGfm]}
             >
               {blogMdText}
             </Markdown>

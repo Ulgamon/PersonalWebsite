@@ -6,7 +6,10 @@ import { Element } from "react-scroll";
 const AboutSection = () => {
   return (
     <Element name="about">
-      <section id="about" className="min-h-screen w-full pt-10">
+      <section
+        id="about"
+        className="min-h-screen max-w-screen-customMaxWidth w-full pt-10"
+      >
         <div className="flex w-full mx-auto content-center justify-center">
           <img
             className="max-h-[600px] hidden md:block m-5"

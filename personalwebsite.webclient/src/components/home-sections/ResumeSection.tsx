@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 
 const ResumeSection = () => {
   return (
-    <Element name="resume">
+    <Element className="max-w-screen-customMaxWidth mx-auto" name="resume">
       <section id="resume" className="mx-auto w-full">
         <h3 className="text-5xl w-fit my-4 font-bold mx-auto">Resume</h3>
         <p className="text-lg max-w-[600px] mx-auto mt-4 mb-10">

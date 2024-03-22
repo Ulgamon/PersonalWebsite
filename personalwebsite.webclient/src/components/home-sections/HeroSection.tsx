@@ -34,7 +34,7 @@ const HeroSection = () => {
     <Element name="home">
       <section
         id="home"
-        className="min-h-screen relative w-full overflow-hidden"
+        className="min-h-screen max-w-screen-customMaxWidth mx-auto relative w-full overflow-hidden"
       >
         <animated.div
           style={textProps}
