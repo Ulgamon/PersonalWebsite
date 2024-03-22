@@ -18,6 +18,8 @@ import { CiCalendarDate } from "react-icons/ci";
 import { IoWarningOutline } from "react-icons/io5";
 import { useParams } from "react-router-dom";
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 const Blog = () => {
   const [data, setData] = useState<ReturnBlogPostDto>({
@@ -137,7 +139,11 @@ const BlogData = ({
           </p>
         </div>
         <div>
-          <Markdown className="prose w-full dark:prose-invert max-w-none">
+          <Markdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
+            className="prose w-full dark:prose-invert max-w-none"
+          >
             {blogMdText}
           </Markdown>
         </div>

@@ -29,6 +29,9 @@ import {
   CardTitle,
 } from "../ui/card";
 import Markdown from "react-markdown";
+import { Span } from "../customcomponents/custom-components";
+import rehypeRaw from "rehype-raw";
+// import rehypeRaw from "rehype-raw"
 
 const Search = () => {
   const [open, setOpen] = useState(false);
@@ -121,11 +124,11 @@ const Search = () => {
               <CommandGroup heading="search results">
                 {data.blogPostsDtos?.map((el) => {
                   const highlightedMdText = highlightMatchingMdText(
-                    el.blogMdText,
+                    el.blogMdText || "",
                     search
                   );
                   const highlightedTitle = highlightMatchingTitle(
-                    el.title,
+                    el.title || "",
                     search
                   );
                   return (
@@ -155,7 +158,7 @@ function highlightMatchingMdText(text: string, search: string): string {
     const myRegExp = new RegExp(escapeCharactersForRegExp(search), "ig");
     return text.replace(
       myRegExp,
-      `<span className="bg-yellow-400 rounded-md">$&</span>`
+      `<span className="bg-yellow-400 dark:bg-yellow-500">$&</span>`
     );
   }
   return text;
@@ -189,16 +192,18 @@ const SearchItem = ({
           <CardHeader>
             <CardTitle
               className="[&>span]:bg-yellow-400 dark:[&>span]:bg-yellow-500"
-              dangerouslySetInnerHTML={{ __html: title }}
+              dangerouslySetInnerHTML={{ __html: title || "" }}
             ></CardTitle>
           </CardHeader>
           <CardContent
-            className="text-xs [&>span]:bg-yellow-400 dark:[&>span]:bg-yellow-500"
-            // dangerouslySetInnerHTML={{ __html: blogMdText }}
+          // dangerouslySetInnerHTML={{ __html: blogMdText }}
           >
             <Markdown
+              className="[&>span]:bg-yellow-400 dark:[&>span]:bg-yellow-500"
               disallowedElements={["img", "a", "code"]}
-            //   allowElement={<span />}
+              //   components={{span(props) => }}
+              rehypePlugins={[rehypeRaw]}
+              // allowElement={}
             >
               {blogMdText}
             </Markdown>
