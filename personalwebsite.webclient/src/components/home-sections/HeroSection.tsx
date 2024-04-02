@@ -7,10 +7,12 @@ import { Element } from "react-scroll";
 const HeroSection = () => {
   const textProps = useSpring({
     from: {
-      x: -200,
+      y: 100,
+      opacity: 1,
     },
     to: {
-      x: 0,
+      y: 0,
+      opacity: 1,
     },
     config: {
       mass: 5,
@@ -20,10 +22,12 @@ const HeroSection = () => {
 
   const imageProps = useSpring({
     from: {
-      x: 200,
+      y: 100,
+      opacity: 0,
     },
     to: {
-      x: 0,
+      y: 0,
+      opacity: 1,
     },
     config: {
       mass: 5,
