@@ -20,6 +20,7 @@ import { IoWarningOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { useSpring, animated } from "@react-spring/web";
+import useImageScale from "@/hooks/useImageScale";
 const BlogsSection = () => {
   return (
     <Element
@@ -105,21 +106,7 @@ interface BlogsCardProps {
   data: ReturnBlogPostsDto;
 }
 const BlogsCard = ({ data }: BlogsCardProps) => {
-  const [{ scale }, api] = useSpring(() => ({
-    scale: 1,
-  }));
-
-  const handleMouseEnter = () => {
-    api.start({
-      scale: 1.2,
-    });
-  };
-
-  const handleMouseLeave = () => {
-    api.start({
-      scale: 1,
-    });
-  };
+  const { scale, handleMouseEnter, handleMouseLeave } = useImageScale();
 
   return (
     <Link
