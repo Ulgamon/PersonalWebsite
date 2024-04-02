@@ -7,6 +7,21 @@ const hourInMs: number = 3600000;
 const dayInMs: number = 86400000;
 const weekInMs: number = 604800000;
 
+const months: string[] = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 export const returnDateTime = (date: string | undefined): string => {
   if (date === undefined) return "something went wrong";
   const dateTime = new Date(date);
@@ -23,12 +38,11 @@ export const returnDateTime = (date: string | undefined): string => {
     return "less than a week ago";
   else {
     return (
-      dateTime.getDay() +
-      "." +
-      dateTime.getMonth() +
-      "." +
-      dateTime.getFullYear() +
-      "."
+      dateTime.getDay().toString().padStart(2, "0") +
+      "-" +
+      months[dateTime.getMonth()] +
+      "-" +
+      dateTime.getFullYear().toString()
     );
   }
 };

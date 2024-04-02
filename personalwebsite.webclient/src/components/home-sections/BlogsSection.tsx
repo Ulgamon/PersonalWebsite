@@ -106,7 +106,7 @@ const BlogsCard = ({ data }: BlogsCardProps) => {
       <Card className="overflow-clip h-full">
         <img
           src={data.imgUrl}
-          className="w-full aspect-square object-contain"
+          className="w-full aspect-video object-cover"
         />
         <CardHeader>
           <CardTitle className="text-lg">{data.title}</CardTitle>
@@ -127,7 +127,7 @@ const BlogsCard = ({ data }: BlogsCardProps) => {
 const BlogsSkeleton = () => {
   return (
     <Card className="overflow-clip h-full">
-      <Skeleton className="w-full aspect-square" />
+      <Skeleton className="w-full aspect-video" />
 
       <CardHeader>
         <CardTitle>
