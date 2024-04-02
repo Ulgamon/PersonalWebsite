@@ -19,9 +19,13 @@ import { Label } from "@radix-ui/react-label";
 import { IoWarningOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import { useSpring, animated } from "@react-spring/web";
 const BlogsSection = () => {
   return (
-    <Element className="max-w-screen-customMaxWidth mx-auto w-full" name="blogs">
+    <Element
+      className="max-w-screen-customMaxWidth mx-auto w-full"
+      name="blogs"
+    >
       <section id="blogs" className="my-10 mb-16">
         <h3 className="text-5xl font-bold text-center">My Blog</h3>
         <p className="text-center text-lg my-5">Most recent blog posts.</p>
@@ -101,13 +105,37 @@ interface BlogsCardProps {
   data: ReturnBlogPostsDto;
 }
 const BlogsCard = ({ data }: BlogsCardProps) => {
+  const [{ scale }, api] = useSpring(() => ({
+    scale: 1,
+  }));
+
+  const handleMouseEnter = () => {
+    api.start({
+      scale: 1.2,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    api.start({
+      scale: 1,
+    });
+  };
+
   return (
-    <Link to={"/blog/" + data.id}>
+    <Link
+      to={"/blog/" + data.id}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <Card className="overflow-clip h-full">
-        <img
-          src={data.imgUrl}
-          className="w-full aspect-video object-cover"
-        />
+        <div className="overflow-clip">
+          <animated.div className="aspect-video" style={{ scale: scale }}>
+            <img
+              src={data.imgUrl}
+              className="w-full aspect-video object-cover"
+            />
+          </animated.div>
+        </div>
         <CardHeader>
           <CardTitle className="text-lg">{data.title}</CardTitle>
         </CardHeader>
