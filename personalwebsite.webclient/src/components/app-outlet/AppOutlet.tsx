@@ -67,7 +67,7 @@ const AppOutlet = ({ children }: IAppOutlet) => {
                   <AnimatedSwitch className="mx-auto" />
                 </SheetTitle>
               </SheetHeader>
-              <ul>
+              <ul className="my-2">
                 <li>
                   <SheetNavLink to="home">Home</SheetNavLink>{" "}
                 </li>

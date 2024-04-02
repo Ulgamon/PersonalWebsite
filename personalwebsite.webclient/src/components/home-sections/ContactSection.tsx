@@ -135,6 +135,7 @@ const ContactSection = () => {
           <IoLogoLinkedin />
         </ContactLink>
       </ul>
+      <h3 className="text-5xl font-bold text-center mb-10">Send Me Email</h3>
       <section id="contact" className="mb-20">
         <Card className="md:mx-16 overflow-clip bg-themeOrange dark:bg-themeBlue flex flex-row shadow-none border-0">
           <div className="hidden md:flex justify-center items-center md:w-1/2">
@@ -147,7 +148,7 @@ const ContactSection = () => {
           </div>
           <Card className="w-full md:w-1/2 overflow-clip md:max-w-[700px] mx-auto">
             {messageSent ? (
-              <div className="w-full bg-green-400 dark:bg-green-500 flex flex-col justify-center content-center">
+              <div className="w-full bg-green-500 dark:bg-green-500 flex flex-col justify-center content-center">
                 <CardHeader>
                   <CardTitle className="text-center text-2xl text-white">
                     Message Sent Successfully!
