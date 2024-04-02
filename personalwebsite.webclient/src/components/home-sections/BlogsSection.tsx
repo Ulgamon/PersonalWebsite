@@ -21,6 +21,9 @@ import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { useSpring, animated } from "@react-spring/web";
 import useImageScale from "@/hooks/useImageScale";
+import Markdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
 const BlogsSection = () => {
   return (
     <Element
@@ -127,7 +130,14 @@ const BlogsCard = ({ data }: BlogsCardProps) => {
           <CardTitle className="text-lg">{data.title}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm">{data.blogMdText?.slice(0, 100)}...</p>
+          <Markdown
+            className="text-sm"
+            disallowedElements={["img", "a", "code"]}
+            rehypePlugins={[rehypeRaw]}
+            remarkPlugins={[remarkGfm]}
+          >
+            {data.blogMdText?.slice(0, 100) + "..."}
+          </Markdown>
         </CardContent>
         <CardFooter>
           <p className="opacity-50 ms-auto text-sm">
