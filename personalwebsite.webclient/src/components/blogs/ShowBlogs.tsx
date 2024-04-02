@@ -76,7 +76,7 @@ const ShowBlogs = () => {
   }
 
   return (
-    <div className="w-full my-16 mx-auto grid lg:grid-cols-3">
+    <div className="w-full my-16 mx-auto grid gap-x-10 lg:grid-cols-3">
       <ul className="grid order-last lg:order-first w-full gap-3 col-span-2">
         {isLoading ? (
           <>
@@ -102,7 +102,7 @@ const ShowBlogs = () => {
             <PaginationItem className="flex">
               <Button
                 onClick={() => addToPage(-1)}
-                disabled={data.hasPrev === true ? false : data.hasPrev}
+                disabled={data.hasPrev === true ? false : true}
                 variant="ghost"
                 className="disabled:opacity-40"
               >
@@ -133,7 +133,7 @@ const ShowBlogs = () => {
             <PaginationItem>
               <Button
                 onClick={() => addToPage(1)}
-                disabled={data.hasNext === true ? false : data.hasNext}
+                disabled={data.hasNext === true ? false : true}
                 variant="ghost"
                 className="disabled:opacity-40"
               >

@@ -14,7 +14,7 @@ import { useTransition, animated } from "@react-spring/web";
 
 const Blogs = () => {
   const { theme } = useTheme();
-  const transition = useTransition(theme === "dark" ? false : true, {
+  const transition = useTransition(theme === "dark" ? dark : light, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
@@ -26,12 +26,12 @@ const Blogs = () => {
         {transition((style, show) => (
           <animated.div
             style={{
-              backgroundImage: `url("${show ? light : dark}")`,
+              backgroundImage: `url("${show}")`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
               ...style,
             }}
-            className="w-full flex justify-center transition will-change-transform items-end mx-auto h-screen object-cover text-black text-4xl m-0 dark:text-white"
+            className="w-full flex bg-bottom justify-center transition will-change-transform items-end mx-auto h-screen object-cover text-black text-4xl m-0 dark:text-white"
           >
             <div className="w-fit mx-auto mb-24">
               <h1 className="font-bold text-7xl">Blog Posts</h1>
@@ -49,7 +49,7 @@ const Blogs = () => {
             </div>
           </animated.div>
         ))}
-        <div className="max-w-[1000px] mx-auto min-h-screen">
+        <div className="max-w-[1200px] mx-auto min-h-screen">
           <ShowBlogs />
         </div>
       </div>
