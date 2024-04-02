@@ -20,7 +20,6 @@ import { Link, useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
-import { Button } from "@/components/ui/button";
 
 const Blog = () => {
   const [data, setData] = useState<ReturnBlogPostDto>({
@@ -71,7 +70,7 @@ const Blog = () => {
 
   return (
     <AppOutlet>
-      <div className="w-full mx-auto relative -top-16 z-0">
+      <div className="w-full mx-auto relative z-0">
         <div
           style={{
             backgroundImage: `url("${data.imgUrl}")`,
@@ -79,32 +78,38 @@ const Blog = () => {
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
-          className="w-full flex justify-center transition will-change-transform items-end mx-auto h-screen text-black text-4xl m-0 dark:text-white"
+          className="w-full flex justify-center items-end mx-auto h-screen text-black text-4xl m-0 dark:text-white"
         >
-          <div className="w-full text-white p-5 mx-auto backdrop-blur">
+          <div className="w-full text-white p-5 mx-auto">
             <div className="w-fit mx-auto">
-              <h1 className="font-bold text-7xl">{data.title}</h1>
-              <Breadcrumb className="text-xl font-semibold mx-1 my-2">
-                <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <Button className="text-lg text-white" variant="link">
-                      <Link to="/">Home</Link>
-                    </Button>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator className="text-lg" />
-                  <BreadcrumbItem className="text-lg">
-                    <Button className="text-lg text-white" variant="link">
-                      <Link to="/blog">Blog</Link>
-                    </Button>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator className="text-lg" />
-                  <BreadcrumbItem className="text-lg">
-                    <Button className="text-lg text-white" variant="link">
-                      {data.id}
-                    </Button>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
+              <Card>
+                <CardHeader>
+                  <CardTitle>
+                    <h1 className="font-bold text-7xl">{data.title}</h1>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Breadcrumb className="text-xl font-semibold mx-1 my-2">
+                    <BreadcrumbList>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink className="text-lg">
+                          <Link to="/">Home</Link>
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator className="text-lg" />
+                      <BreadcrumbItem className="text-lg">
+                        <BreadcrumbLink>
+                          <Link to="/blog">Blog</Link>
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator className="text-lg" />
+                      <BreadcrumbItem className="text-lg">
+                        <BreadcrumbLink>{data.id}</BreadcrumbLink>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
@@ -132,9 +137,12 @@ const BlogData = ({
   publishedDate,
 }: ReturnBlogPostDto) => {
   return (
-    <div className="grid">
+    <div className="">
+      <aside className="my-10">
+        <Search />
+      </aside>
       <section>
-        <ul className="flex">
+        <ul className="flex my-10">
           {categories?.map((el) => (
             <li className="me-0.5" key={el.id}>
               <Badge variant="secondary">{el.categoryName}</Badge>
@@ -142,7 +150,7 @@ const BlogData = ({
           ))}
         </ul>
         <div>
-          <p className="opacity-75 text-sm">
+          <p className="opacity-75 my-10 text-sm">
             <CiCalendarDate className="inline mb-1 me-1" />
             {returnDateTime(publishedDate)}
           </p>
@@ -157,16 +165,13 @@ const BlogData = ({
           </Markdown>
         </div>
       </section>
-      <aside>
-        <Search />
-      </aside>
     </div>
   );
 };
 
 const BlogDataSkeleton = () => {
   return (
-    <Card>
+    <Card className="my-20">
       <CardHeader>
         <CardTitle>
           <Skeleton className="h-10 w-full rounded-lg mt-5 mb-10" />

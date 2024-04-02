@@ -28,6 +28,9 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Search from "../search/Search";
 import Categories from "./Categories";
 import { CiCalendarDate } from "react-icons/ci";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 const ShowBlogs = () => {
   const [data, setData] = useState<PaginateBlogPostsDto>({
@@ -175,7 +178,9 @@ const BlogCard = ({
               <CardTitle className="text-2xl">{title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>{blogMdText?.slice(0, 200)}</p>
+              <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                {blogMdText?.slice(0, 200) + "..."}
+              </Markdown>
             </CardContent>
             <CardFooter>
               <p className="opacity-50 text-sm">
