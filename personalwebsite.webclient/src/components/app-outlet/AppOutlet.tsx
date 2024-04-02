@@ -27,8 +27,8 @@ const AppOutlet = ({ children }: IAppOutlet) => {
   });
   return (
     <main className="w-full mx-auto min-h-screen absolute z-50 text-slate-900 dark:text-neutral-200">
-      <nav className="w-full bg-transparent relative z-50 pb-3">
-        <div className="max-w-[1400px] mx-auto flex justify-between sm:justify-around content-center">
+      <nav className="w-full backdrop-blur-sm  relative z-50 pb-3">
+        <div className="max-w-screen-customMaxWidth mx-auto flex justify-between sm:justify-around content-center">
           <Logo />
           <ul className="hidden lg:flex content-center items-center mt-3">
             <li>

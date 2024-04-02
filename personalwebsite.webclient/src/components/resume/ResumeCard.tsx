@@ -10,6 +10,7 @@ import {
 import { Button } from "../ui/button";
 
 const ResumeCard = ({
+  image,
   duration,
   description,
   institution,
@@ -17,7 +18,8 @@ const ResumeCard = ({
   link,
 }: ResumeItem) => {
   return (
-    <Card className="h-full">
+    <Card className="h-full overflow-clip">
+      <img className="w-full aspect-video" src={image} alt="Description image of the institution." />
       <CardHeader>
         <CardTitle className="text-2xl mb-4 text-themeOrange dark:text-themeBlue">
           {duration}

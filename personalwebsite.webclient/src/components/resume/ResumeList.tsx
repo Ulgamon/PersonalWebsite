@@ -10,6 +10,7 @@ const ResumeList = () => {
       {resumeData.map((el) => (
         <li className="place-items-stretch" key={el.title}>
           <ResumeCard
+            image={el.image}
             description={el.description}
             duration={el.duration}
             institution={el.institution}

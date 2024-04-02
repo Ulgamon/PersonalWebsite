@@ -21,7 +21,7 @@ const BigNavLink = ({ to, children }: IBigNavLinkProps) => {
   });
   return (
     <Link
-      className={"font-semibold relative cursor-pointer mx-3 hover:opacity-75"}
+      className={"font-semibold relative cursor-pointer mx-3"}
       activeClass=" text-themeOrange dark:text-themeBlue"
       to={to}
       smooth={true}

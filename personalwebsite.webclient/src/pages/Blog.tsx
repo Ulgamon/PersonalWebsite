@@ -16,10 +16,11 @@ import { apiUrl, returnDateTime } from "@/helpers/constants";
 import { useEffect, useState } from "react";
 import { CiCalendarDate } from "react-icons/ci";
 import { IoWarningOutline } from "react-icons/io5";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
+import { Button } from "@/components/ui/button";
 
 const Blog = () => {
   const [data, setData] = useState<ReturnBlogPostDto>({
@@ -75,28 +76,36 @@ const Blog = () => {
           style={{
             backgroundImage: `url("${data.imgUrl}")`,
             backgroundRepeat: "no-repeat",
-            backgroundSize: "contain",
+            backgroundSize: "cover",
             backgroundPosition: "center",
           }}
-          className="w-full flex justify-center transition will-change-transform items-end mx-auto h-screen object-contain text-black text-4xl m-0 dark:text-white"
+          className="w-full flex justify-center transition will-change-transform items-end mx-auto h-screen text-black text-4xl m-0 dark:text-white"
         >
-          <div className="w-fit mx-auto mb-24">
-            <h1 className="font-bold text-7xl">{data.title}</h1>
-            <Breadcrumb className="text-xl font-semibold mx-1 my-2">
-              <BreadcrumbList>
-                <BreadcrumbItem className="text-lg">
-                  <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="text-lg" />
-                <BreadcrumbItem className="text-lg">
-                  <BreadcrumbLink href="/blog">Blog</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="text-lg" />
-                <BreadcrumbItem className="text-lg">
-                  <BreadcrumbLink>{data.id}</BreadcrumbLink>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
+          <div className="w-full text-white p-5 mx-auto backdrop-blur">
+            <div className="w-fit mx-auto">
+              <h1 className="font-bold text-7xl">{data.title}</h1>
+              <Breadcrumb className="text-xl font-semibold mx-1 my-2">
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <Button className="text-lg text-white" variant="link">
+                      <Link to="/">Home</Link>
+                    </Button>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator className="text-lg" />
+                  <BreadcrumbItem className="text-lg">
+                    <Button className="text-lg text-white" variant="link">
+                      <Link to="/blog">Blog</Link>
+                    </Button>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator className="text-lg" />
+                  <BreadcrumbItem className="text-lg">
+                    <Button className="text-lg text-white" variant="link">
+                      {data.id}
+                    </Button>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+            </div>
           </div>
         </div>
         <div className="max-w-[1000px] mx-auto min-h-screen">
