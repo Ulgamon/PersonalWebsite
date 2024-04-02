@@ -1,5 +1,7 @@
+import useImageScale from "@/hooks/useImageScale";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
+import { animated } from "@react-spring/web";
 
 interface IContactLinkProps {
   to: string;
@@ -8,18 +10,28 @@ interface IContactLinkProps {
 }
 
 const ContactLink = ({ to, text, children }: IContactLinkProps) => {
+  const { scale, handleMouseEnter, handleMouseLeave } = useImageScale();
   return (
     <li className="mx-auto w-full">
-      <a href={to} target="_blank">
-        <Card className="px-0">
-          <CardContent>
-            <div className="text-7xl flex justify-center mt-7">{children}</div>
-            <Button variant="link" className="px-0 flex mx-auto">
-              {text}
-            </Button>
-          </CardContent>
-        </Card>
-      </a>
+      <animated.div style={{ scale }}>
+        <a href={to} target="_blank">
+          <Card
+            className="px-0"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <CardContent>
+              <div className="text-7xl flex justify-center mt-7">
+                {children}
+              </div>
+
+              <Button variant="link" className="px-0 flex mx-auto">
+                {text}
+              </Button>
+            </CardContent>
+          </Card>
+        </a>
+      </animated.div>
     </li>
   );
 };

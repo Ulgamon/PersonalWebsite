@@ -19,7 +19,7 @@ import { Label } from "@radix-ui/react-label";
 import { IoWarningOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
-import { useSpring, animated } from "@react-spring/web";
+import { animated } from "@react-spring/web";
 import useImageScale from "@/hooks/useImageScale";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
