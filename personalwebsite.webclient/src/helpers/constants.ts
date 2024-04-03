@@ -46,3 +46,13 @@ export const returnDateTime = (date: string | undefined): string => {
     );
   }
 };
+
+export const returnTime = (date: string | undefined): string => {
+  if (date === undefined) return "something went wrong";
+  const dateTime = new Date(date);
+  return (
+    dateTime.getHours().toString().padStart(2, "0") +
+    ":" +
+    dateTime.getMinutes().toString().padStart(2, "0")
+  );
+};

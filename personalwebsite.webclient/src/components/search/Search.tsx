@@ -84,7 +84,6 @@ const Search = () => {
   }, [search]);
 
   const inputHandler = (event: FormEvent<HTMLInputElement>) => {
-    console.log(event.currentTarget.value, "JEBEM TI SVE");
     setSearch(event.currentTarget.value);
   };
 
