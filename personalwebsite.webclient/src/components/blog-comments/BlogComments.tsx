@@ -1,4 +1,4 @@
-import { IoWarningOutline } from "react-icons/io5";
+import { IoClose, IoWarningOutline } from "react-icons/io5";
 import {
   Card,
   CardContent,
@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Label } from "../ui/label";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Client,
   IClient,
@@ -19,10 +19,8 @@ import { CiCalendarDate } from "react-icons/ci";
 import { LuCornerDownRight, LuWatch } from "react-icons/lu";
 import { Button } from "../ui/button";
 import { HiOutlineReply } from "react-icons/hi";
-import { Input } from "../ui/input";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import useInput from "@/hooks/useInput";
-import { Textarea } from "../ui/textarea";
+import CommentForm from "./CommentForm";
+import { animated, useTransition } from "@react-spring/web";
 
 interface IBlogComments {
   blogId: number;
@@ -67,7 +65,7 @@ const BlogComments = ({ blogId }: IBlogComments) => {
   }, [page, blogId]);
 
   return (
-    <Card className="my-10">
+    <Card className="my-10 rounded-md">
       <CardHeader>
         <CardTitle>Comments</CardTitle>
       </CardHeader>
@@ -107,32 +105,47 @@ const Comment = ({ comment, toggle, children }: IComment) => {
   };
 
   return (
-    <Card className="w-full my-1 mx-1">
-      <CardHeader className="flex flex-row items-center">
-        <h4 className="text-lg mt-0.5 font-semibold inline">{comment.name}</h4>
-        <p className="opacity-75 my-10 text-xs ms-2">
-          <CiCalendarDate className="inline mb-1" />
-          {returnDateTime(comment.createdDate)}
-        </p>
-        <p className="opacity-75 my-10 text-xs ms-2">
-          <LuWatch className="inline mb-1" />
-          {returnTime(comment.createdDate)}
-        </p>
-      </CardHeader>
-      <CardContent>{comment.comment1}</CardContent>
-      <CardFooter>
-        <Button
-          onClick={toggleOpen}
-          className="font-normal px-2 h-8 text-sx"
-          variant="secondary"
-        >
-          <HiOutlineReply className="me-2" />
-          Reply
-        </Button>
-      </CardFooter>
+    <>
+      <Card className="w-full my-1 mx-1 rounded-md">
+        <CardHeader className="flex flex-row items-center">
+          <h4 className="text-lg mt-0.5 font-semibold inline">
+            {comment.name}
+          </h4>
+          <p className="opacity-75 my-10 text-xs ms-2">
+            <CiCalendarDate className="inline mb-1" />
+            {returnDateTime(comment.createdDate)}
+          </p>
+          <p className="opacity-75 my-10 text-xs ms-2">
+            <LuWatch className="inline mb-1" />
+            {returnTime(comment.createdDate)}
+          </p>
+        </CardHeader>
+        <CardContent>{comment.comment1}</CardContent>
+        <CardFooter>
+          <Button
+            onClick={toggleOpen}
+            className="font-normal px-2 h-8 text-sx"
+            variant="secondary"
+          >
+            {open ? (
+              <>
+                <IoClose className="me-1" />
+                Close
+              </>
+            ) : (
+              <>
+                <HiOutlineReply className="me-1" />
+                Reply
+              </>
+            )}
+          </Button>
+        </CardFooter>
 
-      {children}
-    </Card>
+        {children}
+
+        <CommentForm commentId={comment.id} open={open} />
+      </Card>
+    </>
   );
 };
 
