@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Label } from "../ui/label";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import {
   Client,
   IClient,
@@ -17,6 +17,12 @@ import {
 import { apiUrl, returnDateTime, returnTime } from "@/helpers/constants";
 import { CiCalendarDate } from "react-icons/ci";
 import { LuCornerDownRight, LuWatch } from "react-icons/lu";
+import { Button } from "../ui/button";
+import { HiOutlineReply } from "react-icons/hi";
+import { Input } from "../ui/input";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import useInput from "@/hooks/useInput";
+import { Textarea } from "../ui/textarea";
 
 interface IBlogComments {
   blogId: number;
@@ -51,7 +57,7 @@ const BlogComments = ({ blogId }: IBlogComments) => {
         if (typeof e === "string") {
           setError(e);
         } else if (e instanceof Error) {
-          setError(e.message);
+          setError(e.comment);
         }
       } finally {
         setIsLoading(false);
@@ -94,21 +100,37 @@ interface IComment {
 }
 
 const Comment = ({ comment, toggle, children }: IComment) => {
+  const [open, setOpen] = useState<boolean>(false);
+
+  const toggleOpen = () => {
+    setOpen((pr) => !pr);
+  };
+
   return (
-    <Card className="w-full">
+    <Card className="w-full my-1 mx-1">
       <CardHeader className="flex flex-row items-center">
-        <h4 className="text-sm font-bold inline">{comment.name}</h4>
-        <p className="opacity-75 my-10 text-xs pb-1 ms-2">
+        <h4 className="text-lg mt-0.5 font-semibold inline">{comment.name}</h4>
+        <p className="opacity-75 my-10 text-xs ms-2">
           <CiCalendarDate className="inline mb-1" />
           {returnDateTime(comment.createdDate)}
         </p>
-        <p className="opacity-75 my-10 text-xs pb-1 ms-2">
+        <p className="opacity-75 my-10 text-xs ms-2">
           <LuWatch className="inline mb-1" />
           {returnTime(comment.createdDate)}
         </p>
       </CardHeader>
       <CardContent>{comment.comment1}</CardContent>
-      <CardFooter></CardFooter>
+      <CardFooter>
+        <Button
+          onClick={toggleOpen}
+          className="font-normal px-2 h-8 text-sx"
+          variant="secondary"
+        >
+          <HiOutlineReply className="me-2" />
+          Reply
+        </Button>
+      </CardFooter>
+
       {children}
     </Card>
   );
