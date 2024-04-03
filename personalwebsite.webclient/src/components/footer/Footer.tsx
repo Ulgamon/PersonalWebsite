@@ -14,7 +14,6 @@ const Footer = () => {
   return (
     <footer className="w-full bg-orange-400 dark:bg-slate-900">
       <div className="max-w-[1400px] mx-auto md:px-16 pt-12 pb-16">
-        
         <ul className="grid sm:grid-cols-2 ">
           <li className="flex flex-wrap justify-center items-center">
             <FooterNavLink to="home" text="HOME" />
@@ -52,7 +51,9 @@ const FooterNavLink = ({ to, text }: FooterNavLinkProps) => {
   return (
     <Button className="text-sm flex mx-1" variant="link">
       <IoArrowForward className="me-0.5" />
-      <Link to={to}>{text}</Link>
+      <Link to={to} offset={-90}>
+        {text}
+      </Link>
     </Button>
   );
 };

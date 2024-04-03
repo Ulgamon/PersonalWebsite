@@ -20,6 +20,7 @@ import { Link, useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
+import BlogComments from "@/components/blog-comments/BlogComments";
 
 const Blog = () => {
   const [data, setData] = useState<ReturnBlogPostDto>({
@@ -44,7 +45,6 @@ const Blog = () => {
       try {
         setIsLoading(true);
         const response = await client.blogPostsGET4(parseInt(blogId || ""));
-        console.log(response);
         setData(response);
       } catch (e: unknown) {
         if (typeof e === "string") {
@@ -123,6 +123,7 @@ const Blog = () => {
               publishedDate={data.publishedDate || ""}
             />
           )}
+          <BlogComments blogId={parseInt(blogId || "")} />
         </div>
       </div>
     </AppOutlet>

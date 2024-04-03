@@ -98,7 +98,7 @@ const AppOutlet = ({ children }: IAppOutlet) => {
               style={style}
               className="bg-white dark:bg-slate-950 top-0 z-50 p-0 m-0 w-full shadow-sm dark:shadow-slate-800 fixed"
             >
-              <div className="max-w-screen-customMaxWidth mx-auto w-full pb-1 flex justify-between sm:justify-around content-center">
+              <div className="max-w-screen-customMaxWidth mx-auto w-full pb-3 flex justify-between sm:justify-around content-center">
                 <Logo />
                 <ul className="hidden lg:flex content-center items-center my-3">
                   <li>
@@ -127,7 +127,7 @@ const AppOutlet = ({ children }: IAppOutlet) => {
                 <AnimatedSwitch className="hidden lg:block m-3" />
                 <Sheet>
                   <SheetTrigger asChild>
-                    <IoMenu className="flex lg:hidden text-4xl mt-3 me-4" />
+                    <IoMenu className="flex lg:hidden text-4xl mt-3.5 me-4" />
                   </SheetTrigger>
                   <SheetContent side="right">
                     <SheetHeader>
