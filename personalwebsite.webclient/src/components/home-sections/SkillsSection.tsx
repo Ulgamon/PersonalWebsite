@@ -20,7 +20,7 @@ const SkillsSection = () => {
   return (
     <Element className="max-w-screen-customMaxWidth mx-auto" name="skills">
       <section id="skills" className="">
-        <h3 className="text-5xl font-bold text-center mb-10">Skills</h3>
+        <h3 className="text-3xl sm:text-5xl font-bold text-center mb-10">Skills</h3>
         <ul className="grid grid-cols-2 gap-2 lg:gap-5 max-w-[500px] md:grid-cols-4 md:max-w-[900px] mx-auto sm:px-16 mb-20">
           <SkillsCard className="text-purple-800" text="ASP.NET">
             <SiDotnet />
@@ -37,7 +37,7 @@ const SkillsSection = () => {
           <SkillsCard className="text-neutral-400" text="MS SQL Server">
             <SiMicrosoftsqlserver />
           </SkillsCard>
-          <SkillsCard text="Amazon Web Services">
+          <SkillsCard text="AWS">
             <SiAmazonaws />
           </SkillsCard>
           <SkillsCard className="text-yellow-400" text="JavaScript">

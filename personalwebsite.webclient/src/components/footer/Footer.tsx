@@ -15,8 +15,8 @@ const Footer = () => {
     <footer className="w-full bg-orange-400 dark:bg-slate-900">
       <div className="max-w-[1400px] mx-auto md:px-16 pt-12 pb-16">
         
-        <ul className="grid grid-cols-2 ">
-          <li className="flex justify-center items-center">
+        <ul className="grid sm:grid-cols-2 ">
+          <li className="flex flex-wrap justify-center items-center">
             <FooterNavLink to="home" text="HOME" />
             <FooterNavLink to="about" text="ABOUT" />
             <FooterNavLink to="services" text="SERVICES" />

@@ -31,7 +31,7 @@ const BlogsSection = () => {
       name="blogs"
     >
       <section id="blogs" className="my-10 mb-16">
-        <h3 className="text-5xl font-bold text-center">My Blog</h3>
+        <h3 className="text-3xl sm:text-5xl font-bold text-center">My Blog</h3>
         <p className="text-center text-lg my-5">Most recent blog posts.</p>
         <BlogsList />
         <Button className="mx-auto my-5 block">

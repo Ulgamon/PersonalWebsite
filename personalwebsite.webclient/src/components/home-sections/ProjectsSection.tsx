@@ -30,7 +30,7 @@ const ProjectsSection = () => {
   return (
     <Element className="max-w-screen-customMaxWidth mx-auto" name="projects">
       <section id="projects" className="">
-        <h3 className="text-5xl font-bold text-center">My Projects</h3>
+        <h3 className="text-3xl sm:text-5xl font-bold text-center">My Projects</h3>
         <p className="text-center text-lg my-5">Most recent projects.</p>
       </section>
       <ProjectList />

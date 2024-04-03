@@ -114,7 +114,7 @@ const ContactSection = () => {
 
   return (
     <Element className="max-w-screen-customMaxWidth w-full mx-auto" name="contact">
-      <h3 className="text-5xl font-bold text-center mb-10">Contact</h3>
+      <h3 className="text-3xl sm:text-5xl font-bold text-center mb-10">Contact</h3>
       <ul className="grid sm:grid-cols-2 gap-2 lg:gap-5 max-w-[500px] md:grid-cols-4 md:max-w-[900px] mx-auto px-16 mb-20">
         <ContactLink text="Ulgamon" to="https://github.com/Ulgamon">
           <IoLogoGithub />
@@ -135,7 +135,7 @@ const ContactSection = () => {
           <IoLogoLinkedin />
         </ContactLink>
       </ul>
-      <h3 className="text-5xl font-bold text-center mb-10">Send Me Email</h3>
+      <h3 className="text-3xl sm:text-5xl font-bold text-center mb-10">Send Me Email</h3>
       <section id="contact" className="mb-20">
         <Card className="md:mx-16 overflow-clip bg-themeOrange dark:bg-themeBlue flex flex-row shadow-none border-0">
           <div className="hidden md:flex justify-center items-center md:w-1/2">
