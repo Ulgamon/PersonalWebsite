@@ -41,9 +41,6 @@ const AppOutlet = ({ children }: IAppOutlet) => {
               <BigNavLink to="resume">Resume</BigNavLink>{" "}
             </li>
             <li>
-              <BigNavLink to="services">Services</BigNavLink>{" "}
-            </li>
-            <li>
               <BigNavLink to="skills">Skills</BigNavLink>{" "}
             </li>
             <li>
@@ -76,9 +73,6 @@ const AppOutlet = ({ children }: IAppOutlet) => {
                 </li>
                 <li>
                   <SheetNavLink to="resume">Resume</SheetNavLink>{" "}
-                </li>
-                <li>
-                  <SheetNavLink to="services">Services</SheetNavLink>{" "}
                 </li>
                 <li>
                   <SheetNavLink to="skills">Skills</SheetNavLink>{" "}
@@ -116,9 +110,7 @@ const AppOutlet = ({ children }: IAppOutlet) => {
                   <li>
                     <BigNavLink to="resume">Resume</BigNavLink>{" "}
                   </li>
-                  <li>
-                    <BigNavLink to="services">Services</BigNavLink>{" "}
-                  </li>
+
                   <li>
                     <BigNavLink to="skills">Skills</BigNavLink>{" "}
                   </li>
@@ -152,9 +144,6 @@ const AppOutlet = ({ children }: IAppOutlet) => {
                       </li>
                       <li>
                         <SheetNavLink to="resume">Resume</SheetNavLink>{" "}
-                      </li>
-                      <li>
-                        <SheetNavLink to="services">Services</SheetNavLink>{" "}
                       </li>
                       <li>
                         <SheetNavLink to="skills">Skills</SheetNavLink>{" "}

@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import heroImage from "../../assets/tempimg.png";
 import { useSpring, animated } from "@react-spring/web";
-import { Element } from "react-scroll";
+import { Element, Link } from "react-scroll";
 
 const HeroSection = () => {
   const textProps = useSpring({
@@ -54,7 +53,15 @@ const HeroSection = () => {
             </span>
           </h1>
           <Button className="mt-3" variant="default">
-            <Link to="#works">See My Works</Link>
+            <Link
+              to="projects"
+              smooth={true}
+              spy={true}
+              offset={-90}
+              duration={400}
+            >
+              See My Work
+            </Link>
           </Button>
         </animated.div>
         <animated.div

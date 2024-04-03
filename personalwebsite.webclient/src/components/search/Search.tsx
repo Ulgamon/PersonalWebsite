@@ -102,10 +102,10 @@ const Search = () => {
       <Button
         onClick={() => setOpen(true)}
         variant="outline"
-        className="flex text-sm w-fit mx-auto"
+        className="flex text-md h-10 w-fit mx-auto"
       >
-        <CiSearch className="me-1 text-md" />
-        <p className="font-normal text-neutral-500 me-2">Quick Search...</p>
+        <CiSearch className="me-5 text-md" />
+        <p className="font-normal text-neutral-500 me-5">Quick Search...</p>
         <p className="font-semibold">Ctrl K</p>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>

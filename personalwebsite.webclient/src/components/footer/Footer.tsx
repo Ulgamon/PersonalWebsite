@@ -9,15 +9,12 @@ import {
 } from "react-icons/io5";
 import useImageScale from "@/hooks/useImageScale";
 import { animated } from "@react-spring/web";
-import Search from "../search/Search";
 
 const Footer = () => {
   return (
     <footer className="w-full bg-orange-400 dark:bg-slate-900">
-      <div className="max-w-[1400px] mx-auto md:px-16 py-16">
-        <div className="mb-6">
-          <Search />
-        </div>
+      <div className="max-w-[1400px] mx-auto md:px-16 pt-12 pb-16">
+        
         <ul className="grid grid-cols-2 ">
           <li className="flex justify-center items-center">
             <FooterNavLink to="home" text="HOME" />
