@@ -32,10 +32,10 @@ namespace PersonalWebsite.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<PaginateBlogPostsDto>> SearchBlogPosts(GetSearchDto searchDto)
+        public async Task<ActionResult<PaginateBlogPostsDto>> SearchBlogPosts(GetSearchDto searchDto, int page = 1, int size = 3)
         {
-            const int size = 10;
-            const int page = 1;
+            if (size < 1 || page < 1)
+                return BadRequest("Invalid size and/or page params should be size >= 1 and page >= 1.");
             try
             {
                 bool hasNext = true;
@@ -96,13 +96,13 @@ namespace PersonalWebsite.API.Controllers
                     });
                 if (blogs.Count >= 10)
                 {
-                    blogs = blogs.GetRange(0, size);
+                    blogs = blogs.Skip(howManyToSkip).Take(size).ToList();
                 }
 
                 PaginateBlogPostsDto result = new PaginateBlogPostsDto
                 {
                     BlogPostsDtos = _mapper.Map<ICollection<ReturnBlogPostsDto>>(blogs),
-                    CurrentPage = 1,
+                    CurrentPage = page,
                     HasNext = hasNext,
                     HasPrev = hasPrev,
                     NumberOfElements = blogsCount,
