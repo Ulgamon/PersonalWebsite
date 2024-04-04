@@ -15,9 +15,10 @@ interface ICommentForm {
   commentId?: number;
   blogId?: number;
   open: boolean;
+  toggle: () => void;
 }
 
-const CommentForm = ({ commentId, blogId, open }: ICommentForm) => {
+const CommentForm = ({ commentId, blogId, open, toggle }: ICommentForm) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const ref = useRef(null);
@@ -69,7 +70,9 @@ const CommentForm = ({ commentId, blogId, open }: ICommentForm) => {
     invalidInput: commentInvalidInput,
     valueIsValid: commentIsValid,
     reset: resetComment,
-  } = useInput((value) => (value.trim() ? true : false));
+  } = useInput((value) =>
+    value.trim().length >= 3 && value.trim().length <= 100 ? true : false
+  );
 
   const canSubmitForm = nameIsValid && emailIsValid && commentIsValid;
 
@@ -112,6 +115,7 @@ const CommentForm = ({ commentId, blogId, open }: ICommentForm) => {
       resetName();
       resetEmail();
       resetComment();
+      toggle();
     }
   };
 
@@ -119,11 +123,11 @@ const CommentForm = ({ commentId, blogId, open }: ICommentForm) => {
     <animated.div className="h-full" style={{ overflow: "hidden", ...props }}>
       <Card
         ref={ref}
-        className="m-2 mb-10 rounded-md bg-orange-50 h-auto dark:bg-slate-900"
+        className="m-2 mb-10 rounded-md bg-blue-50 h-auto dark:bg-slate-900"
       >
         <CardContent>
           <form onSubmit={submitHandler}>
-            <div className="flex flex-col mt-10 mb-4">
+            <div className="flex flex-col mt-5 mb-4">
               <Label className="mb-0.5">
                 Full Name:{" "}
                 <p className="inline text-red-400">
@@ -159,9 +163,13 @@ const CommentForm = ({ commentId, blogId, open }: ICommentForm) => {
             <div className="flex flex-col mb-4">
               <Label className="mb-0.5">
                 Comment:{" "}
-                <p className="inline text-red-400">
-                  {commentInvalidInput ? "*(cannot leave empty)" : ""}
-                </p>
+                {commentInvalidInput ? (
+                  <p className="inline text-red-400">
+                    {`(${comment.length}/100)*(length must be 3 to 100 characters)`}{" "}
+                  </p>
+                ) : (
+                  `(${comment.length}/100)`
+                )}
               </Label>
               <Textarea
                 placeholder="Your comment"

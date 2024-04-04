@@ -20,7 +20,7 @@ import { LuCornerDownRight, LuWatch } from "react-icons/lu";
 import { Button } from "../ui/button";
 import { HiOutlineReply } from "react-icons/hi";
 import CommentForm from "./CommentForm";
-import { animated, useTransition } from "@react-spring/web";
+import { Skeleton } from "../ui/skeleton";
 
 interface IBlogComments {
   blogId: number;
@@ -55,14 +55,14 @@ const BlogComments = ({ blogId }: IBlogComments) => {
         if (typeof e === "string") {
           setError(e);
         } else if (e instanceof Error) {
-          setError(e.comment);
+          setError(e.message);
         }
       } finally {
         setIsLoading(false);
       }
     };
     fetchData();
-  }, [page, blogId]);
+  }, [page, blogId, change]);
 
   return (
     <Card className="my-10 rounded-md">
@@ -70,7 +70,7 @@ const BlogComments = ({ blogId }: IBlogComments) => {
         <CardTitle>Comments</CardTitle>
       </CardHeader>
       {isLoading ? (
-        <>Loading...</>
+        <LoadingSkeleton />
       ) : error.length > 0 ? (
         <Label className="text-red-400 m-5 mx-auto mt-3 block">
           <IoWarningOutline className="inline ms-10 text-2xl mb-1.5 me-1" />
@@ -93,11 +93,12 @@ export default BlogComments;
 
 interface IComment {
   comment: ReturnCommentsDto;
-  toggle?: () => void;
+  toggle: () => void;
   children?: JSX.Element | JSX.Element[] | string;
+  level: number;
 }
 
-const Comment = ({ comment, toggle, children }: IComment) => {
+const Comment = ({ comment, toggle, children, level }: IComment) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const toggleOpen = () => {
@@ -112,7 +113,7 @@ const Comment = ({ comment, toggle, children }: IComment) => {
             {comment.name}
           </h4>
           <p className="opacity-75 my-10 text-xs ms-2">
-            <CiCalendarDate className="inline mb-1" />
+            <CiCalendarDate className="inline me-1 mb-1" />
             {returnDateTime(comment.createdDate)}
           </p>
           <p className="opacity-75 my-10 text-xs ms-2">
@@ -121,29 +122,37 @@ const Comment = ({ comment, toggle, children }: IComment) => {
           </p>
         </CardHeader>
         <CardContent>{comment.comment1}</CardContent>
-        <CardFooter>
-          <Button
-            onClick={toggleOpen}
-            className="font-normal px-2 h-8 text-sx"
-            variant="secondary"
-          >
-            {open ? (
-              <>
-                <IoClose className="me-1" />
-                Close
-              </>
-            ) : (
-              <>
-                <HiOutlineReply className="me-1" />
-                Reply
-              </>
-            )}
-          </Button>
-        </CardFooter>
+        {level > 0 ? (
+          <></>
+        ) : (
+          <CardFooter>
+            <Button
+              onClick={toggleOpen}
+              className="font-normal px-2 h-8 text-sx"
+              variant="secondary"
+            >
+              {open ? (
+                <>
+                  <IoClose className="me-1" />
+                  Close
+                </>
+              ) : (
+                <>
+                  <HiOutlineReply className="me-1" />
+                  Reply
+                </>
+              )}
+            </Button>
+          </CardFooter>
+        )}
 
         {children}
 
-        <CommentForm commentId={comment.id} open={open} />
+        {level > 0 ? (
+          <></>
+        ) : (
+          <CommentForm toggle={toggle} commentId={comment.id} open={open} />
+        )}
       </Card>
     </>
   );
@@ -158,9 +167,14 @@ function recursiveComments(
   if (temp.length > 0) {
     const el: JSX.Element = (
       <>
-        <div className="flex">
-          {level > 0 ? <LuCornerDownRight className="text-2xl" /> : <></>}
-          <Comment key={comment.id} comment={comment} toggle={toggle} />
+        <div className="flex flex-row">
+          {level > 0 ? <LuCornerDownRight className="ms-10" /> : <></>}
+          <Comment
+            level={level}
+            key={comment.id}
+            comment={comment}
+            toggle={toggle}
+          />
         </div>
         {temp.map((el) => (
           <div key={el.id}>{recursiveComments(el, toggle, level + 1)}</div>
@@ -170,10 +184,60 @@ function recursiveComments(
     return el;
   }
   return (
-    <div className="flex">
-      {level > 0 ? <LuCornerDownRight className="text-2xl" /> : <></>}
+    <div className="flex content-center items-center">
+      {level > 0 ? <LuCornerDownRight className="ms-10" /> : <></>}
 
-      <Comment key={comment.id} comment={comment} toggle={toggle} />
+      <Comment
+        level={level}
+        key={comment.id}
+        comment={comment}
+        toggle={toggle}
+      />
     </div>
   );
 }
+
+const LoadingSkeleton = () => {
+  return (
+    <Card className="my-10 rounded-md">
+      <CardHeader>
+        <CardTitle>Comments</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Card>
+          <CardHeader>
+            <Skeleton className="w-full h-5 rounded-md" />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="w-full my-1 h-5 rounded-md" />
+            <Skeleton className="w-full my-1 h-5 rounded-md" />
+            <Skeleton className="w-full my-1 h-5 rounded-md" />
+            <Skeleton className="w-full my-1 h-5 rounded-md" />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <Skeleton className="w-full h-5 rounded-md" />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="w-full my-1 h-5 rounded-md" />
+            <Skeleton className="w-full my-1 h-5 rounded-md" />
+            <Skeleton className="w-full my-1 h-5 rounded-md" />
+            <Skeleton className="w-full my-1 h-5 rounded-md" />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <Skeleton className="w-full h-5 rounded-md" />
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="w-full my-1 h-5 rounded-md" />
+            <Skeleton className="w-full my-1 h-5 rounded-md" />
+            <Skeleton className="w-full my-1 h-5 rounded-md" />
+            <Skeleton className="w-full my-1 h-5 rounded-md" />
+          </CardContent>
+        </Card>
+      </CardContent>
+    </Card>
+  );
+};
