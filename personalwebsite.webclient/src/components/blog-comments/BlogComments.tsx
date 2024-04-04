@@ -21,6 +21,8 @@ import { Button } from "../ui/button";
 import { HiOutlineReply } from "react-icons/hi";
 import CommentForm from "./CommentForm";
 import { Skeleton } from "../ui/skeleton";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { FaRegCommentAlt } from "react-icons/fa";
 
 interface IBlogComments {
   blogId: number;
@@ -37,7 +39,7 @@ const BlogComments = ({ blogId }: IBlogComments) => {
     hasPrev: false,
   });
   const [change, setChange] = useState<boolean>(false);
-
+  const [open, setOpen] = useState<boolean>(false);
   const toggleChange = () => {
     setChange((prev) => !prev);
   };
@@ -50,7 +52,20 @@ const BlogComments = ({ blogId }: IBlogComments) => {
       try {
         setIsLoading(true);
         const response = await client.commentsGET2(blogId, size, page);
-        setData(response);
+        setData((prev) => {
+          if ((prev.currentPage || 0) < (response.currentPage || 0)) {
+            return {
+              currentPage: response.currentPage,
+              hasNext: response.hasNext,
+              hasPrev: response.hasPrev,
+              comments: prev.comments?.concat(response?.comments || []),
+            };
+          }
+          if ((prev.currentPage || 0) === (response.currentPage || 0)) {
+            return response;
+          }
+          return prev;
+        });
       } catch (e: unknown) {
         if (typeof e === "string") {
           setError(e);
@@ -67,14 +82,34 @@ const BlogComments = ({ blogId }: IBlogComments) => {
   return (
     <Card className="my-10 rounded-md">
       <CardHeader>
-        <CardTitle>Comments</CardTitle>
+        <CardTitle className="text-xl">Comments</CardTitle>
+        <Button
+          onClick={() => {
+            setOpen((pr) => !pr);
+          }}
+          className="font-normal w-fit px-2 h-8 text-sx"
+          variant="secondary"
+        >
+          {open ? (
+            <>
+              <IoClose className="me-1" />
+              Close
+            </>
+          ) : (
+            <>
+              <FaRegCommentAlt className="me-1 mt-0.5" />
+              Comment
+            </>
+          )}
+        </Button>
+        <CommentForm open={open} toggle={toggleChange} blogId={blogId} />
       </CardHeader>
       {isLoading ? (
-        <LoadingSkeleton />
+        <></>
       ) : error.length > 0 ? (
-        <Label className="text-red-400 m-5 mx-auto mt-3 block">
+        <Label className="text-yellow-500 m-5 mx-auto mt-3 block">
           <IoWarningOutline className="inline ms-10 text-2xl mb-1.5 me-1" />
-          Something went wrong! Please try again.
+          There are no comments currently.
         </Label>
       ) : (
         <CardContent>
@@ -85,6 +120,24 @@ const BlogComments = ({ blogId }: IBlogComments) => {
           })}
         </CardContent>
       )}
+      <CardFooter>
+        <Button
+          disabled={data.hasNext ? false : true}
+          className="disabled:opacity-75 mx-auto disabled:cursor-not-allowed"
+          onClick={() => {
+            setPage((pr) => pr + 1);
+          }}
+        >
+          {isLoading ? (
+            <div className="flex">
+              <AiOutlineLoading3Quarters className="me-2 text-xl animate-spin" />
+              Loading
+            </div>
+          ) : (
+            <>Load More</>
+          )}
+        </Button>
+      </CardFooter>
     </Card>
   );
 };
@@ -196,48 +249,3 @@ function recursiveComments(
     </div>
   );
 }
-
-const LoadingSkeleton = () => {
-  return (
-    <Card className="my-10 rounded-md">
-      <CardHeader>
-        <CardTitle>Comments</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Card>
-          <CardHeader>
-            <Skeleton className="w-full h-5 rounded-md" />
-          </CardHeader>
-          <CardContent>
-            <Skeleton className="w-full my-1 h-5 rounded-md" />
-            <Skeleton className="w-full my-1 h-5 rounded-md" />
-            <Skeleton className="w-full my-1 h-5 rounded-md" />
-            <Skeleton className="w-full my-1 h-5 rounded-md" />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <Skeleton className="w-full h-5 rounded-md" />
-          </CardHeader>
-          <CardContent>
-            <Skeleton className="w-full my-1 h-5 rounded-md" />
-            <Skeleton className="w-full my-1 h-5 rounded-md" />
-            <Skeleton className="w-full my-1 h-5 rounded-md" />
-            <Skeleton className="w-full my-1 h-5 rounded-md" />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <Skeleton className="w-full h-5 rounded-md" />
-          </CardHeader>
-          <CardContent>
-            <Skeleton className="w-full my-1 h-5 rounded-md" />
-            <Skeleton className="w-full my-1 h-5 rounded-md" />
-            <Skeleton className="w-full my-1 h-5 rounded-md" />
-            <Skeleton className="w-full my-1 h-5 rounded-md" />
-          </CardContent>
-        </Card>
-      </CardContent>
-    </Card>
-  );
-};
