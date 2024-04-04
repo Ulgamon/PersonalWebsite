@@ -10,11 +10,12 @@ import {
 import { useEffect, useState } from "react";
 import {
   Client,
+  GetSearchDto,
   IClient,
   PaginateBlogPostsDto,
   ReturnBlogPostsDto,
 } from "@/helpers/clients";
-import { apiUrl, returnDateTime } from "@/helpers/constants";
+import { apiUrl, projectCategoryId, returnDateTime } from "@/helpers/constants";
 import { Skeleton } from "../ui/skeleton";
 import { Label } from "@radix-ui/react-label";
 import { IoWarningOutline } from "react-icons/io5";
@@ -30,7 +31,9 @@ const ProjectsSection = () => {
   return (
     <Element className="max-w-screen-customMaxWidth mx-auto" name="projects">
       <section id="projects" className="">
-        <h3 className="text-3xl sm:text-5xl font-bold text-center">My Projects</h3>
+        <h3 className="text-3xl sm:text-5xl font-bold text-center">
+          My Projects
+        </h3>
         <p className="text-center text-lg my-5">Most recent projects.</p>
       </section>
       <ProjectList />
@@ -57,9 +60,18 @@ const ProjectList = () => {
     const fetchData = async () => {
       setError("");
       const client: IClient = new Client(apiUrl);
+      const getSearch: GetSearchDto = {
+        categories: [
+          {
+            id: projectCategoryId,
+            categoryName: "Projects",
+            description: "Something",
+          },
+        ],
+      };
       try {
         setIsLoading(true);
-        const response = await client.blogPostsGET3(3, 1);
+        const response = await client.search(getSearch);
         setData(response);
       } catch (e: unknown) {
         if (typeof e === "string") {
