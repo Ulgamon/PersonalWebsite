@@ -66,7 +66,7 @@ const Search = () => {
       };
       try {
         setIsLoading(true);
-        const response = await client.search(searchDto);
+        const response = await client.search(1, 6, searchDto);
         setData(response);
       } catch (e: unknown) {
         if (typeof e === "string") {
@@ -154,12 +154,33 @@ function highlightMatchingMdText(text: string, search: string): string {
   // title should always stay intact and if it has a match i will replace it
   if (search.trim().length > 0) {
     const myRegExp = new RegExp(escapeCharactersForRegExp(search), "ig");
-    return text.replace(
-      myRegExp,
-      `<span className="bg-yellow-400 dark:bg-yellow-500">$&</span>`
-    );
+    const idx = text.search(myRegExp);
+    if (idx >= 0) {
+      const txt = text.slice(idx - 50, idx + 50);
+      if (txt.length > 0) {
+        return (
+          "..." +
+          txt.replace(
+            myRegExp,
+            `<span className="bg-yellow-400 dark:bg-yellow-500">$&</span>`
+          ) +
+          "..."
+        );
+      } else {
+        return (
+          text
+            .replace(
+              myRegExp,
+              `<span className="bg-yellow-400 dark:bg-yellow-500">$&</span>`
+            )
+            .slice(0, 50) + "..."
+        );
+      }
+    } else {
+      return text.slice(0, 50) + "...";
+    }
   }
-  return text;
+  return text.slice(0, 50) + "...";
 }
 
 function highlightMatchingTitle(text: string, search: string): string {
