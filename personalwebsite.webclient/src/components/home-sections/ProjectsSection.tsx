@@ -37,7 +37,9 @@ const ProjectsSection = () => {
         <p className="text-center text-lg my-5">Most recent projects.</p>
       </section>
       <ProjectList />
-      <Button className="mx-auto my-5 block">Load More</Button>
+      <Button className="mx-auto my-5 block">
+        <Link to={"/blog"}>See More</Link>
+      </Button>
     </Element>
   );
 };
@@ -71,7 +73,7 @@ const ProjectList = () => {
       };
       try {
         setIsLoading(true);
-        const response = await client.search(getSearch);
+        const response = await client.search(1, 3, getSearch);
         setData(response);
       } catch (e: unknown) {
         if (typeof e === "string") {
