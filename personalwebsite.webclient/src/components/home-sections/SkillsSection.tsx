@@ -20,7 +20,9 @@ const SkillsSection = () => {
   return (
     <Element className="max-w-screen-customMaxWidth mx-auto px-1" name="skills">
       <section id="skills" className="">
-        <h3 className="text-3xl sm:text-5xl font-bold text-center mb-10">Skills</h3>
+        <h3 className="text-3xl sm:text-5xl font-bold text-center mb-10">
+          Skills
+        </h3>
         <ul className="grid grid-cols-2 gap-2 lg:gap-5 max-w-[500px] md:grid-cols-4 md:max-w-[900px] mx-auto sm:px-16 mb-20">
           <SkillsCard className="text-purple-800" text="ASP.NET">
             <SiDotnet />
@@ -78,9 +80,9 @@ const SkillsCard = ({ className, text, children }: ISkillsCardProps) => {
       <Card className={"px-0 " + className}>
         <CardContent>
           <div className="text-7xl flex justify-center mt-7">{children}</div>
-          <Button variant="link" className="px-0 flex mx-auto">
+          <div className="px-0 flex w-fit mt-2 mx-auto text-sm font-semibold text-black dark:text-white">
             {text}
-          </Button>
+          </div>
         </CardContent>
       </Card>
     </li>
