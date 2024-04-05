@@ -83,7 +83,7 @@ const Blog = () => {
           <div className="w-full text-white p-5 mx-auto">
             <div className="w-fit mx-auto">
               <Card className="rounded-md">
-                <CardHeader>
+                <CardHeader className="py-3">
                   <CardTitle>
                     <h1 className="font-bold text-themeOrange dark:text-themeBlue text-3xl md:text-6xl">
                       {data.title}
@@ -91,7 +91,7 @@ const Blog = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Breadcrumb className="text-xl font-semibold mx-1 my-2">
+                  <Breadcrumb className="text-xl font-semibold mx-1">
                     <BreadcrumbList>
                       <BreadcrumbItem>
                         <BreadcrumbLink className="text-lg">

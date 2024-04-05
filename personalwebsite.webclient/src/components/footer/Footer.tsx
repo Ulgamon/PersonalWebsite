@@ -18,10 +18,11 @@ const Footer = () => {
       <div className="max-w-[1400px] mx-auto md:px-16 pt-12 pb-12">
         <ul>
           <li className="flex mb-5 flex-wrap justify-center items-center">
-            <FooterNavLink to="home" text="HOME" />
-            <FooterNavLink to="about" text="ABOUT" />
-            <FooterNavLink to="projects" text="PROJECTS" />
-            <FooterNavLink to="contact" text="CONTACT" />
+            <FooterNavLink to="home" text="home" />
+            <FooterNavLink to="about" text="about" />
+            <FooterNavLink to="projects" text="projects" />
+            <FooterNavLink to="blog" text="blog" />
+            <FooterNavLink to="contact" text="contact" />
           </li>
           <li className="flex justify-center">
             <SMIcons to="https://github.com/Ulgamon">
@@ -52,10 +53,10 @@ const FooterNavLink = ({ to, text }: FooterNavLinkProps) => {
   const location = useLocation();
 
   return (
-    <Button className="text-sm p-0 flex mx-2" variant="link">
+    <Button className="text-sm p-0 flex mx-2 uppercase" variant="link">
       <IoArrowForward className="me-0.5" />
       {location.pathname !== "/" ? (
-        <NavLink to="/">{text}</NavLink>
+        <NavLink to={"/#" + text}>{text}</NavLink>
       ) : (
         <Link to={to} offset={-90}>
           {text}

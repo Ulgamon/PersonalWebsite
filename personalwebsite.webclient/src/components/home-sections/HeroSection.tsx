@@ -37,11 +37,11 @@ const HeroSection = () => {
     <Element name="home">
       <section
         id="home"
-        className="min-h-screen max-w-screen-customMaxWidth mx-auto relative w-full overflow-hidden"
+        className="h-[calc(100vh-4rem)] max-w-screen-customMaxWidth mx-auto relative w-full overflow-hidden"
       >
         <animated.div
           style={textProps}
-          className="absolute z-10 top-1/4 start-[10%]"
+          className="absolute z-10 top-[10%] sm:top-1/4 start-[10%]"
         >
           <h5 className="dark:text-themeBlue rounded-xl text-themeOrange font-semibold text-xl">
             HELLO!
@@ -66,9 +66,9 @@ const HeroSection = () => {
         </animated.div>
         <animated.div
           style={imageProps}
-          className="absolute z-0 end-[10%] bottom-0"
+          className="absolute z-0 end-[10%] -bottom-16"
         >
-          <img alt="image of me" src={heroImage} />
+          <img className="bg-" alt="image of me" src={heroImage} />
         </animated.div>
       </section>
     </Element>
