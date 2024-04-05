@@ -12,8 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // DbContext Configuration
+//builder.Services.AddDbContext<PersonalWebsiteDevelopmentDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+//);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<PersonalWebsiteDevelopmentDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
 // Configure Identity Service

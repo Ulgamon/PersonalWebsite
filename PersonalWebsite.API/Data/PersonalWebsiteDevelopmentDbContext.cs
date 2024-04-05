@@ -32,12 +32,12 @@ public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext<App
 
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.BlogMdText).HasColumnType("text");
-            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(CURRENT_TIMESTAMP())");
             entity.Property(e => e.ImgUrl).HasMaxLength(250);
             entity.Property(e => e.Title).HasMaxLength(50);
-            entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(CURRENT_TIMESTAMP())");
             entity.Property(e => e.UserId).HasMaxLength(450);
-            entity.Property(e => e.PublishedDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.PublishedDate).HasDefaultValueSql("(CURRENT_TIMESTAMP())");
             entity.Property(e => e.Published);
 
             entity.HasOne(d => d.User).WithMany(p => p.BlogPosts)
@@ -94,7 +94,7 @@ public partial class PersonalWebsiteDevelopmentDbContext : IdentityDbContext<App
             entity.Property(e => e.Comment1)
                 .HasMaxLength(500)
                 .HasColumnName("Comment");
-            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(CURRENT_TIMESTAMP())");
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.Name).HasMaxLength(100);
 
