@@ -60,11 +60,13 @@ export const returnTime = (date: string | undefined): string => {
 
 export function highlightMatchingMdText(text: string, search: string): string {
   // title should always stay intact and if it has a match i will replace it
-  if (search.trim().length > 0) {
+  const len = 100;
+  search = search.trim();
+  if (search.length > 0) {
     const myRegExp = new RegExp(escapeCharactersForRegExp(search), "ig");
     const idx = text.search(myRegExp);
     if (idx >= 0) {
-      const txt = text.slice(idx - 50, idx + 50);
+      const txt = text.slice(idx - len, idx + len);
       if (txt.length > 0) {
         return (
           "..." +
@@ -81,19 +83,20 @@ export function highlightMatchingMdText(text: string, search: string): string {
               myRegExp,
               `<span className="bg-yellow-400 dark:bg-yellow-500">$&</span>`
             )
-            .slice(0, 50) + "..."
+            .slice(0, len) + "..."
         );
       }
     } else {
-      return text.slice(0, 50) + "...";
+      return text.slice(0, len) + "...";
     }
   }
-  return text.slice(0, 50) + "...";
+  return text.slice(0, len) + "...";
 }
 
 export function highlightMatchingTitle(text: string, search: string): string {
   // title should always stay intact and if it has a match i will replace it
-  if (search.trim().length > 0) {
+  search = search.trim();
+  if (search.length > 0) {
     const myRegExp = new RegExp(escapeCharactersForRegExp(search), "ig");
     return text.replace(myRegExp, `<span>$&</span>`);
   }

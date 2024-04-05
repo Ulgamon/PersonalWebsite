@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Blogs from "./pages/Blogs";
 import Blog from "./pages/Blog";
 import ScrollToTop from "./helpers/ScrollToTop";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
               <Route path="blog" element={<Blogs />} />
               <Route path="blog/:blogId" element={<Blog />} />
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </ScrollToTop>
       </BrowserRouter>
