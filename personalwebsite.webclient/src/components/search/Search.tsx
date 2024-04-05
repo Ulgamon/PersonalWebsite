@@ -17,7 +17,12 @@ import {
   ReturnBlogPostsDto,
 } from "@/helpers/clients";
 import { Link } from "react-router-dom";
-import { apiUrl, returnDateTime } from "@/helpers/constants";
+import {
+  apiUrl,
+  highlightMatchingMdText,
+  highlightMatchingTitle,
+  returnDateTime,
+} from "@/helpers/constants";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoWarningOutline } from "react-icons/io5";
 import { Label } from "../ui/label";
@@ -149,54 +154,6 @@ const Search = () => {
 };
 
 export default Search;
-
-function highlightMatchingMdText(text: string, search: string): string {
-  // title should always stay intact and if it has a match i will replace it
-  if (search.trim().length > 0) {
-    const myRegExp = new RegExp(escapeCharactersForRegExp(search), "ig");
-    const idx = text.search(myRegExp);
-    if (idx >= 0) {
-      const txt = text.slice(idx - 50, idx + 50);
-      if (txt.length > 0) {
-        return (
-          "..." +
-          txt.replace(
-            myRegExp,
-            `<span className="bg-yellow-400 dark:bg-yellow-500">$&</span>`
-          ) +
-          "..."
-        );
-      } else {
-        return (
-          text
-            .replace(
-              myRegExp,
-              `<span className="bg-yellow-400 dark:bg-yellow-500">$&</span>`
-            )
-            .slice(0, 50) + "..."
-        );
-      }
-    } else {
-      return text.slice(0, 50) + "...";
-    }
-  }
-  return text.slice(0, 50) + "...";
-}
-
-function highlightMatchingTitle(text: string, search: string): string {
-  // title should always stay intact and if it has a match i will replace it
-  if (search.trim().length > 0) {
-    const myRegExp = new RegExp(escapeCharactersForRegExp(search), "ig");
-    return text.replace(myRegExp, `<span>$&</span>`);
-  }
-  return text;
-}
-
-function escapeCharactersForRegExp(str: string): string {
-  // mathches every literal character
-  const chReg = new RegExp("[[*+?{.()^$|]", "g");
-  return str.replace(chReg, "\\$&");
-}
 
 const SearchItem = ({
   id,

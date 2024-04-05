@@ -13,12 +13,11 @@ import { animated } from "@react-spring/web";
 const Footer = () => {
   return (
     <footer className="w-full bg-orange-400 dark:bg-slate-900">
-      <div className="max-w-[1400px] mx-auto md:px-16 pt-12 pb-16">
-        <ul className="grid sm:grid-cols-2 ">
-          <li className="flex flex-wrap justify-center items-center">
+      <div className="max-w-[1400px] mx-auto md:px-16 pt-12 pb-12">
+        <ul>
+          <li className="flex mb-5 flex-wrap justify-center items-center">
             <FooterNavLink to="home" text="HOME" />
             <FooterNavLink to="about" text="ABOUT" />
-            <FooterNavLink to="services" text="SERVICES" />
             <FooterNavLink to="projects" text="PROJECTS" />
             <FooterNavLink to="contact" text="CONTACT" />
           </li>
@@ -49,7 +48,7 @@ interface FooterNavLinkProps {
 }
 const FooterNavLink = ({ to, text }: FooterNavLinkProps) => {
   return (
-    <Button className="text-sm flex mx-1" variant="link">
+    <Button className="text-sm p-0 flex mx-2" variant="link">
       <IoArrowForward className="me-0.5" />
       <Link to={to} offset={-90}>
         {text}

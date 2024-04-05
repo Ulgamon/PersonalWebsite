@@ -136,7 +136,7 @@ const ContactSection = () => {
         </ContactLink>
       </ul>
       <h3 className="text-3xl sm:text-5xl font-bold text-center mb-10">Send Me Email</h3>
-      <section id="contact" className="mb-20">
+      <section id="contact" className="mb-20 mx-1">
         <Card className="md:mx-16 overflow-clip bg-themeOrange dark:bg-themeBlue flex flex-row shadow-none border-0">
           <div className="hidden md:flex justify-center items-center md:w-1/2">
             <IoMailOpenOutline

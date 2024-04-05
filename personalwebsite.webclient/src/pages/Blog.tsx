@@ -78,14 +78,16 @@ const Blog = () => {
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
-          className="w-full flex justify-center items-end mx-auto h-screen text-black text-4xl m-0 dark:text-white"
+          className="w-full flex justify-center items-end mx-auto h-[calc(100vh-4rem)] text-black text-4xl m-0 dark:text-white"
         >
           <div className="w-full text-white p-5 mx-auto">
             <div className="w-fit mx-auto">
-              <Card>
+              <Card className="rounded-md">
                 <CardHeader>
                   <CardTitle>
-                    <h1 className="font-bold text-7xl">{data.title}</h1>
+                    <h1 className="font-bold text-themeOrange dark:text-themeBlue text-3xl md:text-6xl">
+                      {data.title}
+                    </h1>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>

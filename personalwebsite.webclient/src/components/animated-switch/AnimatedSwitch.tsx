@@ -19,7 +19,7 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
   const springApi = useSpringRef();
   const transitionApi = useSpringRef();
 
-  const [props, __api] = useSpring(
+  const [props] = useSpring(
     () => ({
       ref: springApi,
       x: theme === "light" ? 0 : 40,
@@ -30,7 +30,7 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
     ref: transitionApi,
     from: { scale: 0 },
     enter: { scale: 1.0 },
-    leave: { scale: 0 },
+    leave: { scale: 0 },  
     onChange: () => {
       setIsInAnimation(true);
     },
@@ -64,9 +64,9 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
           {transitions((style, item) => (
             <animated.div style={style}>
               {item === "light" ? (
-                <IoSunny className="h-5" />
+                <IoSunny className="h-5 text-base" />
               ) : (
-                <IoMoon className="h-5" />
+                <IoMoon className="h-5 text-base" />
               )}
             </animated.div>
           ))}

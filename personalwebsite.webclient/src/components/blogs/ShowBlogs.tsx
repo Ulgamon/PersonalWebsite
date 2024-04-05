@@ -1,8 +1,11 @@
 import {
   Client,
+  GetSearchDto,
   IClient,
   PaginateBlogPostsDto,
+  PaginateCategoriesDto,
   ReturnBlogPostsDto,
+  ReturnCategoriesDto,
 } from "@/helpers/clients";
 import { apiUrl, returnDateTime } from "@/helpers/constants";
 import { useEffect, useState } from "react";
@@ -31,6 +34,9 @@ import { CiCalendarDate } from "react-icons/ci";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
+import useImageScale from "@/hooks/useImageScale";
+import { animated } from "@react-spring/web";
+import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
 
 const ShowBlogs = () => {
   const [data, setData] = useState<PaginateBlogPostsDto>({
@@ -41,16 +47,28 @@ const ShowBlogs = () => {
     numberOfElements: 0,
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading2, setIsLoading2] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [page, setPage] = useState<number>(1);
+  const [fetchedCategories, setFetchedCategories] =
+    useState<PaginateCategoriesDto>({
+      categories: [],
+      currentPage: 0,
+      hasNext: false,
+      hasPrev: false,
+    });
+  const [categories, setCategories] = useState<ReturnCategoriesDto[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       setError("");
       const client: IClient = new Client(apiUrl);
+      const searchDto: GetSearchDto = {
+        categories: categories,
+      };
       try {
         setIsLoading(true);
-        const response = await client.blogPostsGET3(10, page);
+        const response = await client.search(page, 10, searchDto);
         setData(response);
       } catch (e: unknown) {
         if (typeof e === "string") {
@@ -63,10 +81,43 @@ const ShowBlogs = () => {
       }
     };
     fetchData();
-  }, [page]);
+  }, [page, categories]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setError("");
+      const client: IClient = new Client(apiUrl);
+      try {
+        setIsLoading2(true);
+        const response = await client.categoriesGET(20, 1);
+        setFetchedCategories(response);
+      } catch (e: unknown) {
+        if (typeof e === "string") {
+          setError(e);
+        } else if (e instanceof Error) {
+          setError(e.message);
+        }
+      } finally {
+        setIsLoading2(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   const addToPage = (num: number) => {
     setPage((prevState) => prevState + num);
+  };
+
+  const clickOnToggleGroup = (id: number) => {
+    if (categories.filter((el) => el.id === id).length > 0) {
+      setCategories((pr) => pr.filter((el) => el.id !== id));
+    } else {
+      setCategories((pr) => [
+        ...pr,
+        { id: id, categoryName: "S", description: "S" },
+      ]);
+    }
+    setPage(1);
   };
 
   if (error.length > 0) {
@@ -77,9 +128,8 @@ const ShowBlogs = () => {
       </Label>
     );
   }
-
   return (
-    <div className="w-full my-16 mx-auto grid gap-x-10 lg:grid-cols-3">
+    <div className="w-full my-16 mx-auto grid gap-x-10 lg:grid-cols-3 items-start">
       <ul className="grid order-last lg:order-first w-full gap-3 col-span-2">
         {isLoading ? (
           <>
@@ -87,7 +137,7 @@ const ShowBlogs = () => {
             <BlogCardSkeleton />
             <BlogCardSkeleton />
           </>
-        ) : (
+        ) : (data.blogPostsDtos?.length || 0) > 0 ? (
           data.blogPostsDtos?.map((el) => (
             <li key={el.id}>
               <BlogCard
@@ -99,6 +149,11 @@ const ShowBlogs = () => {
               />
             </li>
           ))
+        ) : (
+          <Label className="text-red-400 mx-auto mt-3 block">
+            <IoWarningOutline className="inline text-2xl mb-1.5 me-1" />
+            Couldn't find results for your search.
+          </Label>
         )}
         <Pagination className="my-10">
           <PaginationContent>
@@ -147,9 +202,28 @@ const ShowBlogs = () => {
           </PaginationContent>
         </Pagination>
       </ul>
-      <div className="col-span-2 lg:col-span-1 w-full">
+      <div className="col-span-2 lg:col-span-1 w-full lg:sticky lg:top-20 lg:mb-32">
         <Search />
-        <Categories />
+        {isLoading2 ? (
+          <p>Loading</p>
+        ) : (
+          <div className="w-full">
+            <h4 className="text-center my-5 text-2xl font-semibold">Categories</h4>
+            <ToggleGroup type="multiple" className="flex flex-col my-2 ms-1 items-start">
+              {fetchedCategories.categories &&
+                fetchedCategories.categories.map((el) => (
+                  <ToggleGroupItem
+                    onClick={() => clickOnToggleGroup(el.id || 0)}
+                    key={el.id}
+                    value={el.id?.toString() || ""}
+                    variant="outline"
+                  >
+                    {el.categoryName} ({el.numberOfBlogPosts})
+                  </ToggleGroupItem>
+                ))}
+            </ToggleGroup>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -164,20 +238,30 @@ const BlogCard = ({
   publishedDate,
   title,
 }: ReturnBlogPostsDto) => {
+  const { scale, handleMouseEnter, handleMouseLeave } = useImageScale();
+
   return (
     <Link to={"/blog/" + id}>
-      <Card className="overflow-clip mx-1">
+      <Card
+        className="overflow-clip mx-1"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <div className="flex flex-col md:flex-row">
-          <img
-            className="w-full aspect-video md:aspect-[4/3] md:w-1/3 md:max-w-[300px] object-cover"
-            src={imgUrl}
-            alt={title}
-          />
+          <div className="overflow-clip w-full md:w-1/3 flex items-stretch md:max-w-[300px]">
+            <animated.div style={{ scale: scale }}>
+              <img
+                className="w-full h-full aspect-video md:aspect-[4/3] object-cover"
+                src={imgUrl}
+                alt={title}
+              />
+            </animated.div>
+          </div>
           <div className="w-full">
             <CardHeader>
               <CardTitle className="text-2xl">{title}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="text-sm w-full">
               <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
                 {blogMdText?.slice(0, 200) + "..."}
               </Markdown>

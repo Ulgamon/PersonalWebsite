@@ -31,18 +31,18 @@ const Blogs = () => {
               backgroundSize: "cover",
               ...style,
             }}
-            className="w-full flex bg-bottom justify-center transition will-change-transform items-end mx-auto h-screen object-cover text-black text-4xl m-0 dark:text-white"
+            className="w-full flex bg-center justify-center transition will-change-transform items-end mx-auto h-screen object-cover text-black text-4xl m-0 dark:text-white"
           >
             <div className="w-fit mx-auto mb-24">
-              <h1 className="font-bold text-7xl">Blog Posts</h1>
+              <h1 className="font-bold text-3xl md:text-6xl">Blog Posts</h1>
               <Breadcrumb className="text-xl font-semibold mx-1 my-2">
                 <BreadcrumbList>
                   <BreadcrumbItem className="text-lg">
-                    <BreadcrumbLink href="/">Home</BreadcrumbLink>
+                    <BreadcrumbLink>Home</BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="text-lg" />
                   <BreadcrumbItem className="text-lg">
-                    <BreadcrumbLink href="/blog">Blog</BreadcrumbLink>
+                    <BreadcrumbLink>Blog</BreadcrumbLink>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>

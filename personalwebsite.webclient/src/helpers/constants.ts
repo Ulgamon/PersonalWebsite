@@ -57,3 +57,51 @@ export const returnTime = (date: string | undefined): string => {
     dateTime.getMinutes().toString().padStart(2, "0")
   );
 };
+
+export function highlightMatchingMdText(text: string, search: string): string {
+  // title should always stay intact and if it has a match i will replace it
+  if (search.trim().length > 0) {
+    const myRegExp = new RegExp(escapeCharactersForRegExp(search), "ig");
+    const idx = text.search(myRegExp);
+    if (idx >= 0) {
+      const txt = text.slice(idx - 50, idx + 50);
+      if (txt.length > 0) {
+        return (
+          "..." +
+          txt.replace(
+            myRegExp,
+            `<span className="bg-yellow-400 dark:bg-yellow-500">$&</span>`
+          ) +
+          "..."
+        );
+      } else {
+        return (
+          text
+            .replace(
+              myRegExp,
+              `<span className="bg-yellow-400 dark:bg-yellow-500">$&</span>`
+            )
+            .slice(0, 50) + "..."
+        );
+      }
+    } else {
+      return text.slice(0, 50) + "...";
+    }
+  }
+  return text.slice(0, 50) + "...";
+}
+
+export function highlightMatchingTitle(text: string, search: string): string {
+  // title should always stay intact and if it has a match i will replace it
+  if (search.trim().length > 0) {
+    const myRegExp = new RegExp(escapeCharactersForRegExp(search), "ig");
+    return text.replace(myRegExp, `<span>$&</span>`);
+  }
+  return text;
+}
+
+export function escapeCharactersForRegExp(str: string): string {
+  // mathches every literal character
+  const chReg = new RegExp("[[*+?{.()^$|]", "g");
+  return str.replace(chReg, "\\$&");
+}
