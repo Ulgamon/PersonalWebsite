@@ -121,89 +121,88 @@ const CommentForm = ({ commentId, blogId, open, toggle }: ICommentForm) => {
 
   return (
     <animated.div className="h-full" style={{ overflow: "hidden", ...props }}>
-      <Card
-        ref={ref}
-        className="m-2 mb-10 rounded-md bg-blue-50 h-auto dark:bg-slate-900"
-      >
-        <CardContent>
-          <form onSubmit={submitHandler}>
-            <div className="flex flex-col mt-5 mb-4">
-              <Label className="mb-0.5">
-                Full Name:{" "}
-                <p className="inline text-red-400">
-                  {nameInvalidInput ? "*(cannot leave empty)" : ""}
-                </p>
-              </Label>
-              <Input
-                type="text"
-                value={name}
-                placeholder="Your Name"
-                onChange={changeNameInputHandler}
-                onBlur={blurNameInputHandler}
-                className={`w-full`}
-              />
-            </div>
-            <div className="flex flex-col mb-4">
-              <Label className="mb-0.5">
-                Email:{" "}
-                <p className="inline text-red-400">
-                  {emailInvalidInput ? "*(cannot leave empty)" : ""}
-                </p>
-              </Label>
-              <Input
-                type="text"
-                name="email"
-                value={email}
-                onChange={changeEmailInputHandler}
-                onBlur={blurEmailInputHandler}
-                className={`w-full rounded-md `}
-                placeholder="Email Address"
-              />
-            </div>
-            <div className="flex flex-col mb-4">
-              <Label className="mb-0.5">
-                Comment:{" "}
-                {commentInvalidInput ? (
+      <div ref={ref}>
+        <Card className="m-2 mb-10 rounded-md bg-blue-50 h-auto dark:bg-slate-900">
+          <CardContent>
+            <form onSubmit={submitHandler}>
+              <div className="flex flex-col mt-5 mb-4">
+                <Label className="mb-0.5">
+                  Full Name:{" "}
                   <p className="inline text-red-400">
-                    {`(${comment.length}/100)*(length must be 3 to 100 characters)`}{" "}
+                    {nameInvalidInput ? "*(cannot leave empty)" : ""}
                   </p>
+                </Label>
+                <Input
+                  type="text"
+                  value={name}
+                  placeholder="Your Name"
+                  onChange={changeNameInputHandler}
+                  onBlur={blurNameInputHandler}
+                  className={`w-full`}
+                />
+              </div>
+              <div className="flex flex-col mb-4">
+                <Label className="mb-0.5">
+                  Email:{" "}
+                  <p className="inline text-red-400">
+                    {emailInvalidInput ? "*(cannot leave empty)" : ""}
+                  </p>
+                </Label>
+                <Input
+                  type="text"
+                  name="email"
+                  value={email}
+                  onChange={changeEmailInputHandler}
+                  onBlur={blurEmailInputHandler}
+                  className={`w-full rounded-md `}
+                  placeholder="Email Address"
+                />
+              </div>
+              <div className="flex flex-col mb-4">
+                <Label className="mb-0.5">
+                  Comment:{" "}
+                  {commentInvalidInput ? (
+                    <p className="inline text-red-400">
+                      {`(${comment.length}/100)*(length must be 3 to 100 characters)`}{" "}
+                    </p>
+                  ) : (
+                    `(${comment.length}/100)`
+                  )}
+                </Label>
+                <Textarea
+                  placeholder="Your comment"
+                  value={comment}
+                  onChange={changeCommentInputHandler}
+                  onBlur={blurCommentInputHandler}
+                  className={`w-full `}
+                  name="comment"
+                  rows={5}
+                ></Textarea>
+              </div>
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="disabled:opacity-75 disabled:cursor-not-allowed"
+              >
+                {isLoading ? (
+                  <div className="flex">
+                    <AiOutlineLoading3Quarters className="me-2 text-xl animate-spin" />
+                    Sending
+                  </div>
                 ) : (
-                  `(${comment.length}/100)`
+                  <div className="flex">Comment</div>
                 )}
-              </Label>
-              <Textarea
-                placeholder="Your comment"
-                value={comment}
-                onChange={changeCommentInputHandler}
-                onBlur={blurCommentInputHandler}
-                className={`w-full `}
-                name="comment"
-                rows={5}
-              ></Textarea>
-            </div>
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="disabled:opacity-75 disabled:cursor-not-allowed"
-            >
-              {isLoading ? (
-                <div className="flex">
-                  <AiOutlineLoading3Quarters className="me-2 text-xl animate-spin" />
-                  Sending
-                </div>
-              ) : (
-                <div className="flex">Comment</div>
+              </Button>
+              {error && (
+                <Label className="text-red-400 mt-3 block">
+                  <IoWarningOutline className="inline text-2xl mb-1.5 me-1" />
+                  Something went wrong! Please try again.
+                </Label>
               )}
-            </Button>
-            {error && (
-              <Label className="text-red-400 mt-3 block">
-                <IoWarningOutline className="inline text-2xl mb-1.5 me-1" />
-                Something went wrong! Please try again.
-              </Label>
-            )}
-          </form>
-        </CardContent>
-      </Card>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
     </animated.div>
   );
 };
