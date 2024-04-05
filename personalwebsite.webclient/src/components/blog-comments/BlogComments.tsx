@@ -112,7 +112,7 @@ const BlogComments = ({ blogId }: IBlogComments) => {
           There are no comments currently.
         </Label>
       ) : (
-        <CardContent>
+        <CardContent className="m-0 p-0">
           {data.comments?.map((el) => {
             return (
               <div key={el.id}>{recursiveComments(el, toggleChange, 0)}</div>
@@ -161,8 +161,8 @@ const Comment = ({ comment, toggle, children, level }: IComment) => {
   return (
     <>
       <Card className="w-full my-1 mx-1 rounded-md">
-        <CardHeader className="flex flex-row items-center">
-          <h4 className="text-lg mt-0.5 font-semibold inline">
+        <CardHeader className="flex flex-row flex-wrap items-center">
+          <h4 className="sm:text-lg mt-0.5 font-semibold inline">
             {comment.name}
           </h4>
           <p className="opacity-75 my-10 text-xs ms-2">
@@ -221,7 +221,7 @@ function recursiveComments(
     const el: JSX.Element = (
       <>
         <div className="flex flex-row">
-          {level > 0 ? <LuCornerDownRight className="ms-10" /> : <></>}
+          {level > 0 ? <LuCornerDownRight className="ms-2 sm:ms-5" /> : <></>}
           <Comment
             level={level}
             key={comment.id}
@@ -238,7 +238,7 @@ function recursiveComments(
   }
   return (
     <div className="flex content-center items-center">
-      {level > 0 ? <LuCornerDownRight className="ms-10" /> : <></>}
+      {level > 0 ? <LuCornerDownRight className="ms-2 sm:ms-5" /> : <></>}
 
       <Comment
         level={level}
