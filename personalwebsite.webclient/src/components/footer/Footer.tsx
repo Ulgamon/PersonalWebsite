@@ -1,4 +1,5 @@
 import { Link } from "react-scroll";
+import { NavLink } from "react-router-dom";
 import { Button } from "../ui/button";
 import {
   IoArrowForward,
@@ -9,6 +10,7 @@ import {
 } from "react-icons/io5";
 import useImageScale from "@/hooks/useImageScale";
 import { animated } from "@react-spring/web";
+import { useLocation } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -47,12 +49,18 @@ interface FooterNavLinkProps {
   text: string;
 }
 const FooterNavLink = ({ to, text }: FooterNavLinkProps) => {
+  const location = useLocation();
+
   return (
     <Button className="text-sm p-0 flex mx-2" variant="link">
       <IoArrowForward className="me-0.5" />
-      <Link to={to} offset={-90}>
-        {text}
-      </Link>
+      {location.pathname !== "/" ? (
+        <NavLink to="/">{text}</NavLink>
+      ) : (
+        <Link to={to} offset={-90}>
+          {text}
+        </Link>
+      )}
     </Button>
   );
 };

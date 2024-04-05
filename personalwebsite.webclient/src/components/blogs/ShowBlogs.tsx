@@ -247,8 +247,8 @@ const BlogCard = ({
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <div className="flex flex-col md:flex-row">
-          <div className="overflow-clip w-full md:w-1/3 flex items-stretch md:max-w-[300px]">
+        <div className="flex justify-stretch items-stretch flex-col md:flex-row">
+          <div className="overflow-clip w-full md:w-2/3 flex items-stretch">
             <animated.div style={{ scale: scale }}>
               <img
                 className="w-full h-full aspect-video md:aspect-[4/3] object-cover"
