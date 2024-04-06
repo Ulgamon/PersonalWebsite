@@ -261,8 +261,8 @@ const BlogCard = ({
             <CardHeader>
               <CardTitle className="text-2xl">{title}</CardTitle>
             </CardHeader>
-            <CardContent className="text-sm w-full">
-              <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+            <CardContent className="text-sm w-52 sm:w-full">
+              <Markdown className="w-full" remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
                 {blogMdText?.slice(0, 200) + "..."}
               </Markdown>
             </CardContent>

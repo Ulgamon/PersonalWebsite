@@ -20,6 +20,8 @@ const Footer = () => {
           <li className="flex mb-5 flex-wrap justify-center items-center">
             <FooterNavLink to="home" text="home" />
             <FooterNavLink to="about" text="about" />
+            <FooterNavLink to="resume" text="resume" />
+            <FooterNavLink to="skills" text="skills" />
             <FooterNavLink to="projects" text="projects" />
             <FooterNavLink to="blog" text="blog" />
             <FooterNavLink to="contact" text="contact" />

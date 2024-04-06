@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/PersonalWebsite.API/aws-lambda-tools-defaults.json
+/PersonalWebsite.API/appsettings.json

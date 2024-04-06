@@ -11,6 +11,7 @@ import light from "../assets/lightbg.jpg";
 import dark from "../assets/darkbg.jpg";
 import ShowBlogs from "@/components/blogs/ShowBlogs";
 import { useTransition, animated } from "@react-spring/web";
+import { Link } from "react-router-dom";
 
 const Blogs = () => {
   const { theme } = useTheme();
@@ -38,7 +39,9 @@ const Blogs = () => {
               <Breadcrumb className="text-xl font-semibold mx-1 my-2">
                 <BreadcrumbList>
                   <BreadcrumbItem className="text-lg">
-                    <BreadcrumbLink>Home</BreadcrumbLink>
+                    <BreadcrumbLink className="text-lg">
+                      <Link to="/">Home</Link>
+                    </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="text-lg" />
                   <BreadcrumbItem className="text-lg">

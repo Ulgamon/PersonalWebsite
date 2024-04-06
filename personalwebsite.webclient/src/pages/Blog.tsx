@@ -21,6 +21,16 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import BlogComments from "@/components/blog-comments/BlogComments";
+import { Prism as ReactSyntaxHighlighter } from "react-syntax-highlighter";
+import {
+  coldarkCold,
+  coldarkDark,
+} from "react-syntax-highlighter/dist/esm/styles/prism";
+import { useTheme } from "@/context/theme-provider";
+import { Button } from "@/components/ui/button";
+import { FaRegCopy } from "react-icons/fa";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { FaCheck } from "react-icons/fa6";
 
 const Blog = () => {
   const [data, setData] = useState<ReturnBlogPostDto>({
@@ -115,7 +125,7 @@ const Blog = () => {
             </div>
           </div>
         </div>
-        <div className="max-w-[1000px] mx-auto min-h-screen">
+        <div className="max-w-[1000px] mx-auto px-1 min-h-screen">
           {isLoading ? (
             <BlogDataSkeleton />
           ) : (
@@ -139,6 +149,7 @@ const BlogData = ({
   categories,
   publishedDate,
 }: ReturnBlogPostDto) => {
+  const { theme } = useTheme();
   return (
     <div className="">
       <aside className="my-10">
@@ -162,6 +173,29 @@ const BlogData = ({
           <Markdown
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeRaw]}
+            components={{
+              code(props) {
+                const { children, className, node, ...rest } = props;
+                const match = /language-(\w+)/.exec(className || "");
+                return match ? (
+                  <>
+                    <CopyButton text={children} />
+                    <ReactSyntaxHighlighter
+                      {...rest}
+                      PreTag="div"
+                      children={String(children).replace(/\n$/, "")}
+                      language={match[1]}
+                      className="rounded-md"
+                      style={theme === "light" ? coldarkCold : coldarkDark}
+                    />
+                  </>
+                ) : (
+                  <code {...rest} className={className}>
+                    {children}
+                  </code>
+                );
+              },
+            }}
             className="prose w-full dark:prose-invert max-w-none"
           >
             {blogMdText}
@@ -193,5 +227,50 @@ const BlogDataSkeleton = () => {
         </CardContent>
       </CardHeader>
     </Card>
+  );
+};
+
+interface ICopyButton {
+  text: React.ReactNode;
+}
+const CopyButton = ({ text }: ICopyButton) => {
+  const [copied, setCopied] = useState<boolean>(false);
+
+  const toggleCopied = () => {
+    setCopied((pr) => !pr);
+  };
+
+  useEffect(() => {
+    let toggle: NodeJS.Timeout;
+    if (copied === true) {
+      toggle = setTimeout(toggleCopied, 3000);
+    } else {
+      toggle = setTimeout(() => {}, 3000);
+    }
+    return () => {
+      clearTimeout(toggle);
+    };
+  }, [copied]);
+
+  return (
+    <CopyToClipboard text={text} onCopy={toggleCopied}>
+      <Button
+        variant="ghost"
+        // onClick={toggleCopied}
+        className="font-semibold flex ms-auto font-mono"
+      >
+        {copied ? (
+          <>
+            <FaCheck className="text-base me-1" />
+            Copied
+          </>
+        ) : (
+          <>
+            <FaRegCopy className="text-base me-1" />
+            Copy
+          </>
+        )}
+      </Button>
+    </CopyToClipboard>
   );
 };

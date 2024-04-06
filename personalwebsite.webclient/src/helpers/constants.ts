@@ -1,5 +1,5 @@
 export const apiUrl = import.meta.env.API_URL || "https://localhost:7002";
-export const projectCategoryId = import.meta.env.PROJECT_ID || 14;
+export const projectCategoryId = import.meta.env.PROJECT_ID || 5;
 
 const oneMinute: number = 60000;
 const fiveMinutes: number = 300000;
