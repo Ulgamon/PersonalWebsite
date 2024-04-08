@@ -31,6 +31,16 @@ import { Button } from "@/components/ui/button";
 import { FaRegCopy } from "react-icons/fa";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaCheck } from "react-icons/fa6";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 const Blog = () => {
   const [data, setData] = useState<ReturnBlogPostDto>({
@@ -152,19 +162,20 @@ const BlogData = ({
   const { theme } = useTheme();
   return (
     <div className="">
-      <aside className="my-10">
+      <aside className="mt-10">
         <Search />
       </aside>
       <section>
-        <ul className="flex my-10">
+        <ul className="flex mt-5">
           {categories?.map((el) => (
             <li className="me-0.5" key={el.id}>
               <Badge variant="secondary">{el.categoryName}</Badge>
             </li>
           ))}
         </ul>
+        <ShareLink />
         <div>
-          <p className="opacity-75 my-10 text-sm">
+          <p className="opacity-75 mb-10 text-sm">
             <CiCalendarDate className="inline mb-1 me-1" />
             {returnDateTime(publishedDate)}
           </p>
@@ -175,13 +186,12 @@ const BlogData = ({
             rehypePlugins={[rehypeRaw]}
             components={{
               code(props) {
-                const { children, className, node, ...rest } = props;
+                const { children, className, ...rest } = props;
                 const match = /language-(\w+)/.exec(className || "");
                 return match ? (
                   <>
                     <CopyButton text={children} />
                     <ReactSyntaxHighlighter
-                      {...rest}
                       PreTag="div"
                       children={String(children).replace(/\n$/, "")}
                       language={match[1]}
@@ -237,13 +247,15 @@ const CopyButton = ({ text }: ICopyButton) => {
   const [copied, setCopied] = useState<boolean>(false);
 
   const toggleCopied = () => {
-    setCopied((pr) => !pr);
+    if (copied === false) {
+      setCopied(true);
+    }
   };
 
   useEffect(() => {
     let toggle: NodeJS.Timeout;
     if (copied === true) {
-      toggle = setTimeout(toggleCopied, 3000);
+      toggle = setTimeout(() => setCopied(false), 3000);
     } else {
       toggle = setTimeout(() => {}, 3000);
     }
@@ -253,7 +265,7 @@ const CopyButton = ({ text }: ICopyButton) => {
   }, [copied]);
 
   return (
-    <CopyToClipboard text={text} onCopy={toggleCopied}>
+    <CopyToClipboard text={text?.toString() || ""} onCopy={toggleCopied}>
       <Button
         variant="ghost"
         // onClick={toggleCopied}
@@ -272,5 +284,67 @@ const CopyButton = ({ text }: ICopyButton) => {
         )}
       </Button>
     </CopyToClipboard>
+  );
+};
+
+const ShareLink = () => {
+  const [copied, setCopied] = useState<boolean>(false);
+
+  const toggleCopied = () => {
+    if (copied === false) {
+      setCopied(true);
+    }
+  };
+
+  useEffect(() => {
+    let toggle: NodeJS.Timeout;
+    if (copied === true) {
+      toggle = setTimeout(() => setCopied(false), 3000);
+    } else {
+      toggle = setTimeout(() => {}, 3000);
+    }
+    return () => {
+      clearTimeout(toggle);
+    };
+  }, [copied]);
+
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline" className="my-3">
+          Share
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Share link</DialogTitle>
+        </DialogHeader>
+        <div className="flex items-center space-x-2">
+          <div className="grid flex-1 gap-2">
+            <Label htmlFor="link" className="sr-only">
+              Link
+            </Label>
+            <Input id="link" defaultValue={window.location.href} readOnly />
+          </div>
+          <CopyToClipboard text={window.location.href} onCopy={toggleCopied}>
+            <Button type="submit" size="sm" className="px-3">
+              <span className="sr-only">Copy</span>
+              {copied ? (
+                <FaCheck className="h-4 w-4" />
+              ) : (
+                <FaRegCopy className="h-4 w-4" />
+              )}
+            </Button>
+          </CopyToClipboard>
+        </div>
+        <DialogFooter className="sm:justify-start">
+          <DialogClose asChild>
+            <Button type="button" variant="secondary">
+              Close
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };

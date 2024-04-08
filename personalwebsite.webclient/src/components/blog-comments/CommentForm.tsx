@@ -21,7 +21,7 @@ interface ICommentForm {
 const CommentForm = ({ commentId, blogId, open, toggle }: ICommentForm) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [props, api] = useSpring(() => ({
     from: {
       height: 0,
@@ -35,11 +35,11 @@ const CommentForm = ({ commentId, blogId, open, toggle }: ICommentForm) => {
     if (open) {
       api.start({
         from: { height: 0 },
-        to: { height: ref.current?.offsetHeight + 16 || null },
+        to: { height: (ref.current?.offsetHeight || 0) + 16 || null },
       });
     } else {
       api.start({
-        from: { height: ref.current?.offsetHeight + 16 || null },
+        from: { height: (ref.current?.offsetHeight || 0) + 16 || null },
         to: { height: 0 },
       });
     }

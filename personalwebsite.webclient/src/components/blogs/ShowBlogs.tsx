@@ -29,7 +29,6 @@ import { IoWarningOutline } from "react-icons/io5";
 import { Button } from "../ui/button";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import Search from "../search/Search";
-import Categories from "./Categories";
 import { CiCalendarDate } from "react-icons/ci";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
