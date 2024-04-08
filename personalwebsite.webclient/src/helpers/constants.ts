@@ -1,5 +1,5 @@
-export const apiUrl = import.meta.env.API_URL || "https://localhost:7002";
-export const projectCategoryId = import.meta.env.PROJECT_ID || 5;
+export const apiUrl = import.meta.env.VITE_API_URL || "https://localhost:7002";
+export const projectCategoryId = import.meta.env.VITE_PROJECT_ID || 5;
 
 const oneMinute: number = 60000;
 const fiveMinutes: number = 300000;
@@ -107,4 +107,9 @@ export function escapeCharactersForRegExp(str: string): string {
   // mathches every literal character
   const chReg = new RegExp("[[*+?{.()^$|]", "g");
   return str.replace(chReg, "\\$&");
+}
+
+export interface AnimateLink {
+  active: boolean;
+  animate: boolean;
 }

@@ -1,1 +1,1 @@
-export const apiUrl = import.meta.env.API_URL || "https://localhost:7002";
+export const apiUrl = import.meta.env.VITE_API_URL || "https://localhost:7002";

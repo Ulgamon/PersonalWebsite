@@ -1,3 +1,4 @@
+import { AnimateLink } from "@/helpers/constants";
 import { useTransition, animated } from "@react-spring/web";
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
@@ -11,24 +12,34 @@ interface IBigNavLinkProps {
 const BigNavLink = ({ to, children }: IBigNavLinkProps) => {
   // const [props, api] =
   const location = useLocation();
-  const [show, setShow] = useState<boolean>(false);
+  const [show, setShow] = useState<AnimateLink>({
+    active: false,
+    animate: false,
+  });
   const transition = useTransition(show, {
     from: { scale: 0 },
     enter: { scale: 1 },
     leave: { scale: 0 },
-    config: {
-      mass: 5,
-      friction: 50,
-    },
+    // config: {
+    //   mass: 5,
+    //   friction: 50,
+    // },
   });
 
   const mouseEnterHandler = () => {
-    setShow(true);
+    if (show.active === false) {
+      setShow((pr) => ({ active: pr.active, animate: true }));
+    }
   };
 
   const mouseLeaveHandler = () => {
-    setShow(false);
-  }
+    if (show.active === false) {
+      setShow({
+        active: false,
+        animate: false,
+      });
+    }
+  };
 
   if (location.pathname === "/") {
     return (
@@ -40,15 +51,15 @@ const BigNavLink = ({ to, children }: IBigNavLinkProps) => {
         spy={true}
         offset={-90}
         duration={400}
-        onSetActive={() => setShow(true)}
-        onSetInactive={() => setShow(false)}
+        onSetActive={() => setShow({ active: true, animate: true })}
+        onSetInactive={() => setShow({ active: false, animate: false })}
         onMouseEnter={mouseEnterHandler}
         onMouseLeave={mouseLeaveHandler}
       >
         {children}
         {transition(
           (style, item) =>
-            item && (
+            item.animate && (
               <animated.div
                 style={style}
                 className="w-full mx-auto h-0.5 absolute block dark:bg-themeBlue bg-themeOrange ms-3 px-4"

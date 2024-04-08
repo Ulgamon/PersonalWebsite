@@ -106,6 +106,7 @@ function MdxComponent({ defaultValue, setParentValue }: IMdxComponentProps) {
               js: "JavaScript",
               css: "CSS",
               ts: "TypeScript",
+              tsx: "TypeScript(React)",
               csharp: "CSharp",
               sql: "SQL",
               golang: "GOLANG",
