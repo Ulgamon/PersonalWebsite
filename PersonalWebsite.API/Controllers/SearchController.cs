@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using PersonalWebsite.API.Data;
 using PersonalWebsite.API.Models.BlogPosts;
 using PersonalWebsite.API.Models.Searches;

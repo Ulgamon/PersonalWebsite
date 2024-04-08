@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PersonalWebsite.API.Data;
+﻿namespace PersonalWebsite.API.Data;
 
 public partial class Category
 {

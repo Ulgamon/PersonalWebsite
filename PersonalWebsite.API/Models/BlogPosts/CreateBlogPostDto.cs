@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
-using PersonalWebsite.API.Models.Categories;
+﻿using PersonalWebsite.API.Models.Categories;
 using System.ComponentModel.DataAnnotations;
 
 namespace PersonalWebsite.API.Models.BlogPosts

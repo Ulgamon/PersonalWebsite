@@ -1,5 +1,4 @@
-﻿using PersonalWebsite.API.Data;
-using PersonalWebsite.API.Models.Categories;
+﻿using PersonalWebsite.API.Models.Categories;
 
 namespace PersonalWebsite.API.Models.BlogPosts
 {

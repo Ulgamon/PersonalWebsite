@@ -1,6 +1,4 @@
-﻿using PersonalWebsite.API.Models.BlogPosts;
-
-namespace PersonalWebsite.API.Models.Categories
+﻿namespace PersonalWebsite.API.Models.Categories
 {
     public class ReturnCategoryDto
     {

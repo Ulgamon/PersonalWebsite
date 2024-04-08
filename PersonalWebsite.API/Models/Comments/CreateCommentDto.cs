@@ -1,5 +1,4 @@
-﻿using PersonalWebsite.API.Data;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PersonalWebsite.API.Models.Comments
 {

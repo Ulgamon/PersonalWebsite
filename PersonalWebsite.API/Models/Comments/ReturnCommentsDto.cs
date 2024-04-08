@@ -1,6 +1,4 @@
-﻿using PersonalWebsite.API.Data;
-
-namespace PersonalWebsite.API.Models.Comments
+﻿namespace PersonalWebsite.API.Models.Comments
 {
     public class ReturnCommentsDto
     {

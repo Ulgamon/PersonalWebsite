@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PersonalWebsite.API.Data;
 using PersonalWebsite.API.Models.BlogPosts;
-using PersonalWebsite.API.Models.Categories;
 
 namespace PersonalWebsite.API.Controllers
 {
