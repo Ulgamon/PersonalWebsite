@@ -80,7 +80,7 @@ const BigNavLink = ({ to, children }: IBigNavLinkProps) => {
       {children}
       {transition(
         (style, item) =>
-          item && (
+          item.animate && (
             <animated.div
               style={style}
               className="w-full mx-auto h-0.5 absolute block dark:bg-themeBlue bg-themeOrange ms-3 px-4"

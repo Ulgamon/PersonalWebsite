@@ -205,11 +205,16 @@ const ShowBlogs = () => {
       <div className="col-span-2 lg:col-span-1 w-full lg:sticky lg:top-20 lg:mb-32">
         <Search />
         {isLoading2 ? (
-          <p>Loading</p>
+          <CategoriesSkeleton />
         ) : (
           <div className="w-full">
-            <h4 className="text-center my-5 text-2xl font-semibold">Categories</h4>
-            <ToggleGroup type="multiple" className="flex flex-col my-2 ms-1 items-start">
+            <h4 className="text-center my-5 text-2xl font-semibold">
+              Categories
+            </h4>
+            <ToggleGroup
+              type="multiple"
+              className="flex flex-col my-2 ms-1 items-start"
+            >
               {fetchedCategories.categories &&
                 fetchedCategories.categories.map((el) => (
                   <ToggleGroupItem
@@ -262,7 +267,11 @@ const BlogCard = ({
               <CardTitle className="text-2xl">{title}</CardTitle>
             </CardHeader>
             <CardContent className="text-sm w-52 sm:w-full">
-              <Markdown className="w-full" remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+              <Markdown
+                className="w-full"
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+              >
                 {blogMdText?.slice(0, 200) + "..."}
               </Markdown>
             </CardContent>
@@ -298,5 +307,16 @@ const BlogCardSkeleton = () => {
         </div>
       </div>
     </Card>
+  );
+};
+
+const CategoriesSkeleton = () => {
+  return (
+    <div>
+      <Skeleton className="w-24 h-8 m-1" />
+      <Skeleton className="w-24 h-8 m-1" />
+      <Skeleton className="w-24 h-8 m-1" />
+      <Skeleton className="w-24 h-8 m-1" />
+    </div>
   );
 };

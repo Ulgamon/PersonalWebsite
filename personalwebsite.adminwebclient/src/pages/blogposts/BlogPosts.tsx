@@ -17,7 +17,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { Client, IClient, PaginateBlogPostsDto } from "@/helpers/clients";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { apiUrl } from "@/helpers/constants";
 import { AuthContext } from "@/contexts/AuthContext/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
@@ -71,6 +71,7 @@ function BlogPosts() {
       const client: IClient = new Client(apiUrl, {
         async fetch(url: RequestInfo, init: RequestInit) {
           const accessToken = getCookie();
+          init.headers = {} as { [key: string]: string };
           init.headers["Authorization"] = `Bearer ${accessToken}`;
 
           return fetch(url, init);
@@ -112,6 +113,7 @@ function BlogPosts() {
     const client: IClient = new Client(apiUrl, {
       async fetch(url: RequestInfo, init: RequestInit) {
         const accessToken = getCookie();
+        init.headers = {} as { [key: string]: string };
         init.headers["Authorization"] = `Bearer ${accessToken}`;
 
         return fetch(url, init);

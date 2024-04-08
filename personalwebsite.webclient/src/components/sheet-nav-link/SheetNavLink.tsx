@@ -74,7 +74,7 @@ const SheetNavLink = ({ to, children }: ISheetNavLinkProps) => {
     <NavLink
       to={"/"}
       className={
-        "font-semibold w-full relative cursor-pointer py-2 ps-4 block my-1 rounded-xl hover:bg-themeOrange hover:dark:bg-themeBlue"
+        "font-semibold w-full relative cursor-pointer py-2 ps-4 block my-1 rounded-xl"
       }
       onMouseEnter={mouseEnterHandler}
       onMouseLeave={mouseLeaveHandler}
@@ -85,7 +85,7 @@ const SheetNavLink = ({ to, children }: ISheetNavLinkProps) => {
           item.animate && (
             <animated.div
               style={style}
-              className="w-full top-0 start-0 rounded-xl z-0 mx-auto h-full absolute block dark:bg-themeBlue bg-themeOrange ms-3 px-4"
+              className="w-full top-0 start-0 rounded-xl ps-4 -z-10 mx-auto h-full absolute block dark:bg-themeBlue bg-themeOrange"
             />
           )
       )}
