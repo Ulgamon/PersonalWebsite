@@ -1,6 +1,6 @@
-import imgUri from "../../assets/tempimg.png";
+import imgUri from "../../assets/tempimg.webp";
 import cv from "../../assets/CV.pdf";
-import { Button } from "../ui/button";
+import { Button } from "../ui/button.tsx";
 import { Element } from "react-scroll";
 
 const AboutSection = () => {
@@ -18,15 +18,32 @@ const AboutSection = () => {
           />
           <div className="m-5">
             <h3 className="text-3xl sm:text-5xl my-4 font-bold">About Me</h3>
-            <p className="max-w-[500px] my-4 text-lg">
-              A small river named Duden flows by their place and supplies it
-              with the necessary regelialia.
+            <p className="max-w-[500px] my-4">
+              Welcome to my personal website! I'm Justin Ilic, a full stack
+              developer based in Serbia. I have a deep love for playing guitar,
+              basketball, programming, and calisthenics.
             </p>
-            <Button>
-              <a href={cv} download>
-                Download CV
-              </a>
-            </Button>
+            <p className="max-w-[500px] my-4">
+              I believe in the power of continuous learning and innovation, and
+              I'm passionate about creating impactful solutions that make a
+              difference. Whether I'm crafting code, strumming chords on my
+              guitar, shooting hoops on the basketball court, or challenging
+              myself with calisthenics routines, I'm always seeking to improve
+              and grow.
+            </p>
+            <p className="max-w-[500px] my-4">
+              Through my work as a full stack developer, I aim to build
+              user-friendly applications that enhance people's lives and
+              experiences. When I'm not immersed in coding, you can find me
+              exploring new places or enjoying quality time with friends and
+              family.
+            </p>
+            <p className="max-w-[500px] my-4">
+              Let's connect and explore the world together!
+            </p>
+            <a href={cv} download>
+              <Button>Download CV</Button>
+            </a>
           </div>
         </div>
       </section>

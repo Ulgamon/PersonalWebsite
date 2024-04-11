@@ -1,4 +1,4 @@
-import AnimatedSwitch from "../animated-switch/AnimatedSwitch";
+import AnimatedSwitch from "../animated-switch/AnimatedSwitch.tsx";
 import Logo from "../logo/Logo";
 import {
   Sheet,
@@ -8,10 +8,10 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import { IoMenu } from "react-icons/io5";
-import BigNavLink from "../big-nav-link.tsx/BigNavLink";
-import useShowNavbar from "@/hooks/useShowNavbar";
+import BigNavLink from "../big-nav-link.tsx/BigNavLink.tsx";
+import useShowNavbar from "@/hooks/useShowNavbar.tsx";
 import { animated, useTransition } from "@react-spring/web";
-import SheetNavLink from "../sheet-nav-link/SheetNavLink";
+import SheetNavLink from "../sheet-nav-link/SheetNavLink.tsx";
 import Footer from "../footer/Footer";
 
 interface IAppOutlet {

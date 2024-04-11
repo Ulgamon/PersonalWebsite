@@ -1,15 +1,15 @@
-import AppOutlet from "@/components/app-outlet/AppOutlet";
+import AppOutlet from "@/components/app-outlet/AppOutlet.tsx";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { useTheme } from "@/context/theme-provider";
-import light from "../assets/lightbg.jpg";
-import dark from "../assets/darkbg.jpg";
-import ShowBlogs from "@/components/blogs/ShowBlogs";
+} from "@/components/ui/breadcrumb.tsx";
+import { useTheme } from "@/context/theme-provider.tsx";
+import light from "../assets/lightbg.webp";
+import dark from "../assets/darkbg.webp";
+import ShowBlogs from "@/components/blogs/ShowBlogs.tsx";
 import { useTransition, animated } from "@react-spring/web";
 import { Link } from "react-router-dom";
 

@@ -1,11 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./App.css";
-import { ThemeProvider } from "./context/theme-provider";
-import Home from "./pages/Home";
-import Blogs from "./pages/Blogs";
-import Blog from "./pages/Blog";
-import ScrollToTop from "./helpers/ScrollToTop";
-import NotFound from "./pages/NotFound";
+import { lazy, Suspense } from "react";
+import { ThemeProvider } from "./context/theme-provider.tsx";
+const Home = lazy(() => import("./pages/Home.tsx"));
+const Blogs = lazy(() => import("./pages/Blogs.tsx"));
+const Blog = lazy(() => import("./pages/Blog.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+import ScrollToTop from "./helpers/ScrollToTop.tsx";
+import Loading from "./pages/Loading.tsx";
 
 function App() {
   return (
@@ -14,11 +15,39 @@ function App() {
         <ScrollToTop>
           <Routes>
             <Route path="/">
-              <Route index element={<Home />} />
-              <Route path="blog" element={<Blogs />} />
-              <Route path="blog/:blogId" element={<Blog />} />
+              <Route
+                index
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <Home />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="blog"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <Blogs />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="blog/:blogId"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <Blog />
+                  </Suspense>
+                }
+              />
             </Route>
-            <Route path="*" element={<NotFound />} />
+            <Route
+              path="*"
+              element={
+                <Suspense fallback={<Loading />}>
+                  <NotFound />
+                </Suspense>
+              }
+            />
           </Routes>
         </ScrollToTop>
       </BrowserRouter>

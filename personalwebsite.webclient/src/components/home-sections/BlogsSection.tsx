@@ -5,22 +5,22 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../ui/card.tsx";
 import { useEffect, useState } from "react";
 import {
   Client,
   IClient,
   PaginateBlogPostsDto,
   ReturnBlogPostsDto,
-} from "@/helpers/clients";
-import { apiUrl, returnDateTime } from "@/helpers/constants";
-import { Skeleton } from "../ui/skeleton";
-import { Label } from "@radix-ui/react-label";
+} from "@/helpers/clients.ts";
+import { apiUrl, returnDateTime } from "@/helpers/constants.ts";
+import { Skeleton } from "../ui/skeleton.tsx";
+import { Label } from "../ui/label.tsx";
 import { IoWarningOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
+import { Button } from "../ui/button.tsx";
 import { animated } from "@react-spring/web";
-import useImageScale from "@/hooks/useImageScale";
+import useImageScale from "@/hooks/useImageScale.tsx";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
@@ -32,11 +32,11 @@ const BlogsSection = () => {
     >
       <section id="blogs" className="my-10 mb-16">
         <h3 className="text-3xl sm:text-5xl font-bold text-center">My Blog</h3>
-        <p className="text-center text-lg my-5">Most recent blog posts.</p>
+        <p className="text-center my-5">Most recent blog posts.</p>
         <BlogsList />
-        <Button className="mx-auto my-5 block">
-          <Link to={"/blog"}>See More</Link>
-        </Button>
+        <Link to={"/blog"}>
+          <Button className="mx-auto my-5 block">See More</Button>
+        </Link>
       </section>
     </Element>
   );
@@ -123,6 +123,7 @@ const BlogsCard = ({ data }: BlogsCardProps) => {
             <img
               src={data.imgUrl}
               className="w-full aspect-video object-cover"
+              alt="blog post background image"
             />
           </animated.div>
         </div>

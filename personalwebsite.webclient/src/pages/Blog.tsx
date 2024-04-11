@@ -1,33 +1,40 @@
-import AppOutlet from "@/components/app-outlet/AppOutlet";
-import Search from "@/components/search/Search";
-import { Badge } from "@/components/ui/badge";
+import AppOutlet from "@/components/app-outlet/AppOutlet.tsx";
+import Search from "@/components/search/Search.tsx";
+import { Badge } from "@/components/ui/badge.tsx";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Client, IClient, ReturnBlogPostDto } from "@/helpers/clients";
-import { apiUrl, returnDateTime } from "@/helpers/constants";
-import { useEffect, useState } from "react";
+} from "@/components/ui/breadcrumb.tsx";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card.tsx";
+import { Label } from "@/components/ui/label.tsx";
+import { Skeleton } from "@/components/ui/skeleton.tsx";
+import { Client, IClient, ReturnBlogPostDto } from "@/helpers/clients.ts";
+import { apiUrl, returnDateTime } from "@/helpers/constants.ts";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { CiCalendarDate } from "react-icons/ci";
 import { IoWarningOutline } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
-import BlogComments from "@/components/blog-comments/BlogComments";
-import { Prism as ReactSyntaxHighlighter } from "react-syntax-highlighter";
+const BlogComments = lazy(
+  () => import("@/components/blog-comments/BlogComments.tsx")
+);
+import { PrismAsyncLight as ReactSyntaxHighlighter } from "react-syntax-highlighter";
 import {
   coldarkCold,
   coldarkDark,
 } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { useTheme } from "@/context/theme-provider";
-import { Button } from "@/components/ui/button";
+import { useTheme } from "@/context/theme-provider.tsx";
+import { Button } from "@/components/ui/button.tsx";
 import { FaRegCopy } from "react-icons/fa";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { FaCheck } from "react-icons/fa6";
@@ -39,8 +46,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+} from "@/components/ui/dialog.tsx";
+import { Input } from "@/components/ui/input.tsx";
 
 const Blog = () => {
   const [data, setData] = useState<ReturnBlogPostDto>({
@@ -102,7 +109,7 @@ const Blog = () => {
         >
           <div className="w-full text-white p-5 mx-auto">
             <div className="w-fit mx-auto">
-              <Card className="rounded-md">
+              <Card className="rounded-xl mb-16">
                 <CardHeader className="py-3">
                   <CardTitle>
                     <h1 className="font-bold text-themeOrange dark:text-themeBlue text-3xl md:text-6xl">
@@ -145,7 +152,9 @@ const Blog = () => {
               publishedDate={data.publishedDate || ""}
             />
           )}
-          <BlogComments blogId={parseInt(blogId || "")} />
+          <Suspense>
+            <BlogComments blogId={parseInt(blogId || "")} />
+          </Suspense>
         </div>
       </div>
     </AppOutlet>

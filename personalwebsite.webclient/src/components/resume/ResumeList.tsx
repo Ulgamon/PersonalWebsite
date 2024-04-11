@@ -1,5 +1,5 @@
-import { resumeData } from "../../helpers/data";
-import ResumeCard from "./ResumeCard";
+import { resumeData } from "../../helpers/data.ts";
+import ResumeCard from "./ResumeCard.tsx";
 
 const ResumeList = () => {
   return (

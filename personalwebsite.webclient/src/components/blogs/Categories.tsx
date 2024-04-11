@@ -1,10 +1,10 @@
-import { Client, IClient, PaginateCategoriesDto } from "@/helpers/clients";
-import { Label } from "@radix-ui/react-label";
+import { Client, IClient, PaginateCategoriesDto } from "@/helpers/clients.ts";
+import { Label } from "../ui/label.tsx";
 import { useEffect, useState } from "react";
 import { IoWarningOutline } from "react-icons/io5";
-import { Skeleton } from "../ui/skeleton";
-import { apiUrl } from "@/helpers/constants";
-import { Button } from "../ui/button";
+import { Skeleton } from "../ui/skeleton.tsx";
+import { apiUrl } from "@/helpers/constants.ts";
+import { Button } from "../ui/button.tsx";
 
 const Categories = () => {
   const [data, setData] = useState<PaginateCategoriesDto>({

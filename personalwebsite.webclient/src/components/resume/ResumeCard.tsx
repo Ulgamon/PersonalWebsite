@@ -1,4 +1,4 @@
-import { ResumeItem } from "@/helpers/data";
+import { ResumeItem } from "@/helpers/data.ts";
 import {
   Card,
   CardHeader,
@@ -6,9 +6,9 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "../ui/card";
-import { Button } from "../ui/button";
-import useImageScale from "@/hooks/useImageScale";
+} from "../ui/card.tsx";
+import { Button } from "../ui/button.tsx";
+import useImageScale from "@/hooks/useImageScale.tsx";
 import { animated } from "@react-spring/web";
 
 const ResumeCard = ({

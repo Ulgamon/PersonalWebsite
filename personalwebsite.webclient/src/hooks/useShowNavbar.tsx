@@ -4,13 +4,11 @@ const useShowNavbar = () => {
   const scrollRef = useRef(0);
 
   useEffect(() => {
-    const scrollListener: EventListener = window.addEventListener(
-      "scroll",
-      () => {
-        setShouldShow(window.scrollY > 500 ? true : false);
-        scrollRef.current = window.scrollY;
-      }
-    );
+    const scrollListener = () => {
+      setShouldShow(window.scrollY > 500 ? true : false);
+      scrollRef.current = window.scrollY;
+    };
+    window.addEventListener("scroll", scrollListener);
 
     return () => {
       window.removeEventListener("scroll", scrollListener);

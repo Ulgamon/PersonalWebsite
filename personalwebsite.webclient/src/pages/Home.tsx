@@ -1,11 +1,11 @@
-import AppOutlet from "@/components/app-outlet/AppOutlet";
-import AboutSection from "@/components/home-sections/AboutSection";
-import BlogsSection from "@/components/home-sections/BlogsSection";
-import ContactSection from "@/components/home-sections/ContactSection";
-import HeroSection from "@/components/home-sections/HeroSection";
-import ProjectsSection from "@/components/home-sections/ProjectsSection";
-import ResumeSection from "@/components/home-sections/ResumeSection";
-import SkillsSection from "@/components/home-sections/SkillsSection";
+import AppOutlet from "@/components/app-outlet/AppOutlet.tsx";
+import AboutSection from "@/components/home-sections/AboutSection.tsx";
+import BlogsSection from "@/components/home-sections/BlogsSection.tsx";
+import ContactSection from "@/components/home-sections/ContactSection.tsx";
+import HeroSection from "@/components/home-sections/HeroSection.tsx";
+import ProjectsSection from "@/components/home-sections/ProjectsSection.tsx";
+import ResumeSection from "@/components/home-sections/ResumeSection.tsx";
+import SkillsSection from "@/components/home-sections/SkillsSection.tsx";
 
 const Home = () => {
   return (

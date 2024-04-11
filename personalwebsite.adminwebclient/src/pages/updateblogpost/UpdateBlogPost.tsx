@@ -58,7 +58,6 @@ function UpdateBlogPost() {
       const client: IClient = new Client(apiUrl, {
         async fetch(url: RequestInfo, init: RequestInit) {
           const accessToken = getCookie();
-          init.headers = {} as { [key: string]: string };
           init.headers["Authorization"] = `Bearer ${accessToken}`;
 
           return fetch(url, init);
@@ -102,7 +101,6 @@ function UpdateBlogPost() {
       const client: IClient = new Client(apiUrl, {
         async fetch(url: RequestInfo, init: RequestInit) {
           const accessToken = getCookie();
-          init.headers = {} as { [key: string]: string };
           init.headers["Authorization"] = `Bearer ${accessToken}`;
 
           return fetch(url, init);
@@ -191,7 +189,6 @@ function UpdateBlogPost() {
     const client: IClient = new Client(apiUrl, {
       async fetch(url: RequestInfo, init: RequestInit) {
         const accessToken = getCookie();
-        init.headers = {} as { [key: string]: string };
         init.headers["Authorization"] = `Bearer ${accessToken}`;
 
         return fetch(url, init);

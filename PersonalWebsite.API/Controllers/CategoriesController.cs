@@ -52,7 +52,7 @@ namespace PersonalWebsite.API.Controllers
                     return BadRequest("Out of range page and/or size parameters.");
 
                 var categories = await _context.Categories
-                    .Include(e => e.BlogPosts)
+                    .Include(e => e.BlogPosts.Where(bp => bp.Published == true))
                     .OrderByDescending(e => e.Id)
                     .Skip(howManyToSkip)
                     .Take(size)

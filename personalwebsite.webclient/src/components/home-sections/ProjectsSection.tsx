@@ -6,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../ui/card.tsx";
 import { useEffect, useState } from "react";
 import {
   Client,
@@ -14,15 +14,19 @@ import {
   IClient,
   PaginateBlogPostsDto,
   ReturnBlogPostsDto,
-} from "@/helpers/clients";
-import { apiUrl, projectCategoryId, returnDateTime } from "@/helpers/constants";
-import { Skeleton } from "../ui/skeleton";
-import { Label } from "@radix-ui/react-label";
+} from "@/helpers/clients.ts";
+import {
+  apiUrl,
+  projectCategoryId,
+  returnDateTime,
+} from "@/helpers/constants.ts";
+import { Skeleton } from "../ui/skeleton.tsx";
+import { Label } from "../ui/label.tsx";
 import { IoWarningOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
+import { Button } from "../ui/button.tsx";
 import { animated } from "@react-spring/web";
-import useImageScale from "@/hooks/useImageScale";
+import useImageScale from "@/hooks/useImageScale.tsx";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
@@ -34,12 +38,12 @@ const ProjectsSection = () => {
         <h3 className="text-3xl sm:text-5xl font-bold text-center">
           My Projects
         </h3>
-        <p className="text-center text-lg my-5">Most recent projects.</p>
+        <p className="text-center my-5">Most recent projects.</p>
       </section>
       <ProjectList />
-      <Button className="mx-auto my-5 block">
-        <Link to={"/blog"}>See More</Link>
-      </Button>
+      <Link to={"/blog"}>
+        <Button className="mx-auto my-5 block">See More</Button>
+      </Link>
     </Element>
   );
 };
@@ -134,6 +138,7 @@ const ProjectCard = ({ data }: ProjectCardProps) => {
             <img
               src={data.imgUrl}
               className="w-full aspect-video object-cover"
+              alt="project blog backgtound image"
             />
           </animated.div>
         </div>

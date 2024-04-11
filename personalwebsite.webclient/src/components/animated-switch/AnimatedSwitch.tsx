@@ -1,5 +1,5 @@
 import { IoMoon, IoSunny } from "react-icons/io5";
-import { useTheme } from "@/context/theme-provider";
+import { useTheme } from "@/context/theme-provider.tsx";
 import {
   useSpring,
   animated,
@@ -30,7 +30,7 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
     ref: transitionApi,
     from: { scale: 0 },
     enter: { scale: 1.0 },
-    leave: { scale: 0 },  
+    leave: { scale: 0 },
     onChange: () => {
       setIsInAnimation(true);
     },

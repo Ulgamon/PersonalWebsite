@@ -1,6 +1,6 @@
-import useImageScale from "@/hooks/useImageScale";
-import { Button } from "../ui/button";
-import { Card, CardContent } from "../ui/card";
+import useImageScale from "@/hooks/useImageScale.tsx";
+import { Button } from "../ui/button.tsx";
+import { Card, CardContent } from "../ui/card.tsx";
 import { animated } from "@react-spring/web";
 
 interface IContactLinkProps {

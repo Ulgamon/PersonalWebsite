@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { Button } from "../ui/button";
+import { Button } from "../ui/button.tsx";
 import { CiCalendarDate, CiSearch } from "react-icons/ci";
 import {
   CommandDialog,
@@ -8,31 +8,31 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "../ui/command";
+} from "../ui/command.tsx";
 import {
   Client,
   GetSearchDto,
   IClient,
   PaginateBlogPostsDto,
   ReturnBlogPostsDto,
-} from "@/helpers/clients";
+} from "@/helpers/clients.ts";
 import { Link } from "react-router-dom";
 import {
   apiUrl,
   highlightMatchingMdText,
   highlightMatchingTitle,
   returnDateTime,
-} from "@/helpers/constants";
+} from "@/helpers/constants.ts";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { IoWarningOutline } from "react-icons/io5";
-import { Label } from "../ui/label";
+import { Label } from "../ui/label.tsx";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../ui/card.tsx";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";

@@ -1,5 +1,5 @@
-import CS50 from "../assets/education/CS50.png"
-import freeCodeCamp from "../assets/education/freecodecamp.png"
+import CS50 from "../assets/education/CS50.webp"
+import freeCodeCamp from "../assets/education/freecodecamp.webp"
 
 export interface ResumeItem {
   image: string;

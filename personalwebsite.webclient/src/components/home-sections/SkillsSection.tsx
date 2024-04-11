@@ -1,5 +1,5 @@
 import { Element } from "react-scroll";
-import { Card, CardContent } from "../ui/card";
+import { Card, CardContent } from "../ui/card.tsx";
 import {
   SiDotnet,
   SiCsharp,

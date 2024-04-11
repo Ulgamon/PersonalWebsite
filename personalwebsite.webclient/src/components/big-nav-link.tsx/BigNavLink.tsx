@@ -1,4 +1,4 @@
-import { AnimateLink } from "@/helpers/constants";
+import { AnimateLink } from "@/helpers/constants.ts";
 import { useTransition, animated } from "@react-spring/web";
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";

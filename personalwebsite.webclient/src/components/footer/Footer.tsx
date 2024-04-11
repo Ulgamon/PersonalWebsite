@@ -1,6 +1,6 @@
 import { Link } from "react-scroll";
 import { NavLink } from "react-router-dom";
-import { Button } from "../ui/button";
+import { Button } from "../ui/button.tsx";
 import {
   IoArrowForward,
   IoLogoGithub,
@@ -23,7 +23,7 @@ const Footer = () => {
             <FooterNavLink to="resume" text="resume" />
             <FooterNavLink to="skills" text="skills" />
             <FooterNavLink to="projects" text="projects" />
-            <FooterNavLink to="blog" text="blog" />
+            <FooterNavLink to="blogs" text="blog" />
             <FooterNavLink to="contact" text="contact" />
           </li>
           <li className="flex justify-center">
@@ -55,16 +55,23 @@ const FooterNavLink = ({ to, text }: FooterNavLinkProps) => {
   const location = useLocation();
 
   return (
-    <Button className="text-sm p-0 flex mx-2 uppercase" variant="link">
-      <IoArrowForward className="me-0.5" />
+    <>
       {location.pathname !== "/" ? (
-        <NavLink to={"/#" + text}>{text}</NavLink>
+        <NavLink to={"/#" + text}>
+          <Button className="text-sm p-0 flex mx-2 uppercase" variant="link">
+            <IoArrowForward className="me-0.5" />
+            {text}{" "}
+          </Button>
+        </NavLink>
       ) : (
         <Link to={to} offset={-90}>
-          {text}
+          <Button className="text-sm p-0 flex mx-2 uppercase" variant="link">
+            <IoArrowForward className="me-0.5" />
+            {text}{" "}
+          </Button>
         </Link>
       )}
-    </Button>
+    </>
   );
 };
 

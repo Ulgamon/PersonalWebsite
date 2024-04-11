@@ -5,22 +5,21 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Label } from "../ui/label";
+} from "../ui/card.tsx";
+import { Label } from "../ui/label.tsx";
 import { useEffect, useState } from "react";
 import {
   Client,
   IClient,
   PaginateCommentsDto,
   ReturnCommentsDto,
-} from "@/helpers/clients";
-import { apiUrl, returnDateTime, returnTime } from "@/helpers/constants";
+} from "@/helpers/clients.ts";
+import { apiUrl, returnDateTime, returnTime } from "@/helpers/constants.ts";
 import { CiCalendarDate } from "react-icons/ci";
 import { LuCornerDownRight, LuWatch } from "react-icons/lu";
-import { Button } from "../ui/button";
+import { Button } from "../ui/button.tsx";
 import { HiOutlineReply } from "react-icons/hi";
-import CommentForm from "./CommentForm";
-import { Skeleton } from "../ui/skeleton";
+import CommentForm from "./CommentForm.tsx";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaRegCommentAlt } from "react-icons/fa";
 

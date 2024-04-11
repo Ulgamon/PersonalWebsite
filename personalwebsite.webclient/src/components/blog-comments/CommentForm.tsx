@@ -1,13 +1,13 @@
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { Button } from "../ui/button";
-import { Card, CardContent } from "../ui/card";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
+import { Button } from "../ui/button.tsx";
+import { Card, CardContent } from "../ui/card.tsx";
+import { Input } from "../ui/input.tsx";
+import { Label } from "../ui/label.tsx";
+import { Textarea } from "../ui/textarea.tsx";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import useInput from "@/hooks/useInput";
-import { Client, CreateCommentDto, IClient } from "@/helpers/clients";
-import { apiUrl } from "@/helpers/constants";
+import useInput from "@/hooks/useInput.tsx";
+import { Client, CreateCommentDto, IClient } from "@/helpers/clients.ts";
+import { apiUrl } from "@/helpers/constants.ts";
 import { IoWarningOutline } from "react-icons/io5";
 import { animated, useSpring } from "@react-spring/web";
 

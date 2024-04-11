@@ -6,8 +6,8 @@ import {
   PaginateCategoriesDto,
   ReturnBlogPostsDto,
   ReturnCategoriesDto,
-} from "@/helpers/clients";
-import { apiUrl, returnDateTime } from "@/helpers/constants";
+} from "@/helpers/clients.ts";
+import { apiUrl, returnDateTime } from "@/helpers/constants.ts";
 import { useEffect, useState } from "react";
 import {
   Card,
@@ -15,27 +15,27 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../ui/card.tsx";
 import { Link } from "react-router-dom";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../ui/skeleton.tsx";
 import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
-} from "../ui/pagination";
-import { Label } from "../ui/label";
+} from "../ui/pagination.tsx";
+import { Label } from "../ui/label.tsx";
 import { IoWarningOutline } from "react-icons/io5";
-import { Button } from "../ui/button";
+import { Button } from "../ui/button.tsx";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import Search from "../search/Search";
+import Search from "../search/Search.tsx";
 import { CiCalendarDate } from "react-icons/ci";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
-import useImageScale from "@/hooks/useImageScale";
+import useImageScale from "@/hooks/useImageScale.tsx";
 import { animated } from "@react-spring/web";
-import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group.tsx";
 
 const ShowBlogs = () => {
   const [data, setData] = useState<PaginateBlogPostsDto>({
@@ -257,7 +257,7 @@ const BlogCard = ({
               <img
                 className="w-full h-full aspect-video md:aspect-[4/3] object-cover"
                 src={imgUrl}
-                alt={title}
+                alt="blog background image"
               />
             </animated.div>
           </div>
@@ -268,6 +268,7 @@ const BlogCard = ({
             <CardContent className="text-sm w-52 sm:w-full">
               <Markdown
                 className="w-full"
+                disallowedElements={["img", "a", "code"]}
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw]}
               >

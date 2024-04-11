@@ -5,12 +5,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../ui/card.tsx";
 import { FormEvent, useState } from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
+import { Label } from "../ui/label.tsx";
+import { Input } from "../ui/input.tsx";
+import { Textarea } from "../ui/textarea.tsx";
+import { Button } from "../ui/button.tsx";
 import {
   IoMailOpenOutline,
   IoWarningOutline,
@@ -23,7 +23,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Element } from "react-scroll";
 import Lottie from "lottie-react";
 import animation from "../../assets/animations/Check.json";
-import ContactLink from "../contact-link/ContactLink";
+import ContactLink from "../contact-link/ContactLink.tsx";
 
 const URL = "https://formsubmit.co/ajax/ilicjustin@gmail.com";
 
