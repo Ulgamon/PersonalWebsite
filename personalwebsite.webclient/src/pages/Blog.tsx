@@ -112,7 +112,7 @@ const Blog = () => {
               <Card className="rounded-xl mb-16">
                 <CardHeader className="py-3">
                   <CardTitle>
-                    <h1 className="font-bold text-themeOrange dark:text-themeBlue text-3xl md:text-6xl">
+                    <h1 className="font-bold text-themeOrange dark:text-themeBlue text-3xl mt-2 md:text-6xl">
                       {data.title}
                     </h1>
                   </CardTitle>
