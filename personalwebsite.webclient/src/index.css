@@ -81,7 +81,7 @@ html {
 
 @font-face {
   font-family: "CafeDeParis";
-  src: url("/fonts/CafeDeParisSans.ttf") format("truetype");
+  src: url("./fonts/CafeDeParisSans.ttf") format("truetype");
   font-style: normal;
 }
 
@@ -89,22 +89,12 @@ html {
   font-family: "CafeDeParis";
 }
 
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
+@font-face {
+  font-family: "Sansation";
+  src: url("./fonts/Sansation/Sansation-Regular.ttf") format("truetype");
+  font-style: normal;
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
+.font-Sansation {
+  font-family: "Sansation";
 }

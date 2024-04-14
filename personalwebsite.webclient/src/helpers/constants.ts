@@ -27,11 +27,11 @@ export const returnDateTime = (date: string | undefined): string => {
   if (date === undefined) return "something went wrong";
   const dateTime = new Date(date);
   const currentDate = Date.now();
-  if (dateTime.getTime() > currentDate - oneMinute) return "one minute ago";
+  if (dateTime.getTime() > currentDate - oneMinute) return "1 minute ago";
   else if (dateTime.getTime() > currentDate - fiveMinutes)
-    return "five minutes ago";
+    return "5 minutes ago";
   else if (dateTime.getTime() > currentDate - tenMinutes)
-    return "ten minutes ago";
+    return "10 minutes ago";
   else if (dateTime.getTime() > currentDate - hourInMs) return "one hour ago";
   else if (dateTime.getTime() > currentDate - dayInMs)
     return "less than 24 hours";

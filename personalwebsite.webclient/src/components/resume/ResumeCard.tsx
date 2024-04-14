@@ -28,11 +28,13 @@ const ResumeCard = ({
     >
       <div className="overflow-clip">
         <animated.div className="aspect-video" style={{ scale: scale }}>
-          <img
-            className="w-full aspect-video"
-            src={image}
-            alt="Description image of the institution."
-          />
+          <a href={link} target="_blank">
+            <img
+              className="w-full aspect-video"
+              src={image}
+              alt="Description image of the institution."
+            />
+          </a>
         </animated.div>
       </div>
       <CardHeader>

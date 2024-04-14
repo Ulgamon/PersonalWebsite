@@ -26,7 +26,7 @@ const AppOutlet = ({ children }: IAppOutlet) => {
     leave: { y: -100 },
   });
   return (
-    <main className="w-full mx-auto min-h-screen absolute z-50 text-slate-900 dark:text-neutral-200">
+    <main className="w-full mx-auto min-h-screen absolute z-50 text-slate-900 dark:text-neutral-200 font-Sansation">
       <nav className="w-full relative z-50 pb-3">
         <div className="max-w-screen-customMaxWidth mx-auto flex justify-between sm:justify-around content-center">
           <Logo />

@@ -87,7 +87,7 @@ const BlogsList = () => {
   }
 
   return (
-    <ul className="grid md:grid-cols-3 gap-5 mx-1 md:mx-16">
+    <ul className="grid md:grid-cols-3 gap-2 mx-1 md:mx-16">
       {isLoading ? (
         <>
           <BlogsSkeleton />

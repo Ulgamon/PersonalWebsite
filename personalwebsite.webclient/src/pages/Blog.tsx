@@ -107,9 +107,9 @@ const Blog = () => {
           }}
           className="w-full flex justify-center items-end mx-auto h-[calc(100vh-4rem)] text-black text-4xl m-0 dark:text-white"
         >
-          <div className="w-full text-white p-5 mx-auto">
+          <div className="w-full text-white mx-auto">
             <div className="w-fit mx-auto">
-              <Card className="rounded-xl mb-16">
+              <Card className="rounded-xl border-b-0 rounded-b-none pb-10 pt-5 px-5">
                 <CardHeader className="py-3">
                   <CardTitle>
                     <h1 className="font-bold text-themeOrange dark:text-themeBlue text-3xl mt-2 md:text-6xl">

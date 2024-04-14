@@ -79,7 +79,7 @@ const SkillsCard = ({ className, text, children }: ISkillsCardProps) => {
       <Card className={"px-0 " + className}>
         <CardContent>
           <div className="text-7xl flex justify-center mt-7">{children}</div>
-          <div className="px-0 flex w-fit mt-2 mx-auto text-sm font-semibold text-black dark:text-white">
+          <div className="px-0 flex w-fit mt-2 mx-auto text-sm text-black dark:text-white">
             {text}
           </div>
         </CardContent>

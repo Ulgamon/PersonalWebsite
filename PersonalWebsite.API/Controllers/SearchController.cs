@@ -92,10 +92,7 @@ namespace PersonalWebsite.API.Controllers
                         HasPrev = hasPrev,
                         NumberOfElements = blogsCount,
                     });
-                if (blogs.Count >= 10)
-                {
-                    blogs = blogs.Skip(howManyToSkip).Take(size).ToList();
-                }
+                blogs = blogs.Skip(howManyToSkip).Take(size).ToList();
 
                 PaginateBlogPostsDto result = new PaginateBlogPostsDto
                 {

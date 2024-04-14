@@ -44,7 +44,7 @@ const SheetNavLink = ({ to, children }: ISheetNavLinkProps) => {
     return (
       <Link
         className={
-          "font-semibold w-full flex relative z-50 cursor-pointer py-2 ps-4 my-1 rounded-xl"
+          "font-Sansation w-full flex relative z-50 cursor-pointer py-2 ps-4 my-1 rounded-xl"
         }
         to={to}
         smooth={true}

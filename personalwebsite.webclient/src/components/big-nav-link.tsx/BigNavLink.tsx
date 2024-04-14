@@ -44,7 +44,7 @@ const BigNavLink = ({ to, children }: IBigNavLinkProps) => {
   if (location.pathname === "/") {
     return (
       <Link
-        className={"font-semibold relative cursor-pointer mx-3"}
+        className={"relative cursor-pointer mx-3"}
         activeClass=" text-themeOrange dark:text-themeBlue"
         to={to}
         smooth={true}
@@ -73,7 +73,7 @@ const BigNavLink = ({ to, children }: IBigNavLinkProps) => {
   return (
     <NavLink
       to={"/"}
-      className={"font-semibold relative cursor-pointer mx-3"}
+      className={"relative cursor-pointer mx-3"}
       onMouseEnter={mouseEnterHandler}
       onMouseLeave={mouseLeaveHandler}
     >

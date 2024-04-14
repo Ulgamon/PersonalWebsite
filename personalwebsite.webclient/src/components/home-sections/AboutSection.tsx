@@ -1,4 +1,4 @@
-import imgUri from "../../assets/tempimg.webp";
+import imgUri from "../../assets/final.webp";
 import cv from "../../assets/CV.pdf";
 import { Button } from "../ui/button.tsx";
 import { Element } from "react-scroll";
@@ -8,18 +8,18 @@ const AboutSection = () => {
     <Element name="about">
       <section
         id="about"
-        className="min-h-screen max-w-screen-customMaxWidth w-full pt-10"
+        className="min-h-screen max-w-screen-customMaxWidth mx-auto w-full pt-10"
       >
         <div className="flex w-full mx-auto content-center justify-center">
           <img
-            className="max-h-[600px] hidden md:block m-5"
+            className="max-w-[400px] hidden lg:block m-5"
             src={imgUri}
             alt="picture of me"
           />
           <div className="m-5">
             <h3 className="text-3xl sm:text-5xl my-4 font-bold">About Me</h3>
             <p className="max-w-[500px] my-4">
-              Welcome to my personal website! I'm Justin Ilic, a full stack
+              Welcome to my personal website! I'm Justin Ilić, a full stack
               developer based in Serbia. I have a deep love for playing guitar,
               basketball, programming, and calisthenics.
             </p>
