@@ -72,7 +72,7 @@ const SheetNavLink = ({ to, children }: ISheetNavLinkProps) => {
 
   return (
     <NavLink
-      to={"/"}
+      to={"/#" + to}
       className={
         "font-semibold w-full relative cursor-pointer py-2 ps-4 block my-1 rounded-xl"
       }

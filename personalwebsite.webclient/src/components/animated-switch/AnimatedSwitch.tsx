@@ -58,6 +58,7 @@ const AnimatedSwitch = ({ className }: AnimatedSwitchProps) => {
         className
       }
       onClick={clickHandler}
+      aria-label="button for changing between light and dark theme"
     >
       <animated.div style={props} className="h-6 w-min rounded-md mx-2">
         <div className="bg-white dark:bg-slate-900 shadow-lg m-0 p-0.5 px-1 rounded-md">

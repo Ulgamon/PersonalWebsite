@@ -12,7 +12,7 @@ const AboutSection = () => {
       >
         <div className="flex w-full mx-auto content-center justify-center">
           <img
-            className="max-w-[400px] hidden lg:block m-5"
+            className="w-[400px] hidden lg:block m-5"
             src={imgUri}
             alt="picture of me"
           />

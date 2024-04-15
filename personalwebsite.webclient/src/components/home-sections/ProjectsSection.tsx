@@ -42,7 +42,7 @@ const ProjectsSection = () => {
       </section>
       <ProjectList />
       <Link to={"/blog"}>
-        <Button className="mx-auto my-5 block">See More</Button>
+        <Button className="mx-auto my-5 block">More Projects</Button>
       </Link>
     </Element>
   );

@@ -104,6 +104,7 @@ const HeroSection = () => {
           </h2>
           <Link
             to="projects"
+            href="/#projects"
             smooth={true}
             spy={true}
             offset={-90}

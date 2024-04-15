@@ -35,7 +35,7 @@ const BlogsSection = () => {
         <p className="text-center my-5">Most recent blog posts.</p>
         <BlogsList />
         <Link to={"/blog"}>
-          <Button className="mx-auto my-5 block">See More</Button>
+          <Button className="mx-auto my-5 block">More Posts</Button>
         </Link>
       </section>
     </Element>

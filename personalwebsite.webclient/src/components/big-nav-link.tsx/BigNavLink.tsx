@@ -47,6 +47,7 @@ const BigNavLink = ({ to, children }: IBigNavLinkProps) => {
         className={"relative cursor-pointer mx-3"}
         activeClass=" text-themeOrange dark:text-themeBlue"
         to={to}
+        href={"/#" + to}
         smooth={true}
         spy={true}
         offset={-90}
@@ -72,7 +73,7 @@ const BigNavLink = ({ to, children }: IBigNavLinkProps) => {
 
   return (
     <NavLink
-      to={"/"}
+      to={"/#" + to}
       className={"relative cursor-pointer mx-3"}
       onMouseEnter={mouseEnterHandler}
       onMouseLeave={mouseLeaveHandler}

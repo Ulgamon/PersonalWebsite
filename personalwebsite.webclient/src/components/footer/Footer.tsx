@@ -64,10 +64,10 @@ const FooterNavLink = ({ to, text }: FooterNavLinkProps) => {
           </Button>
         </NavLink>
       ) : (
-        <Link to={to} offset={-90}>
+        <Link to={to} offset={-90} href={"/#" + to}>
           <Button className="text-sm p-0 flex mx-2 uppercase" variant="link">
             <IoArrowForward className="me-0.5" />
-            {text}{" "}
+            {text}
           </Button>
         </Link>
       )}
@@ -82,7 +82,7 @@ interface ISMIcons {
 const SMIcons = ({ children, to }: ISMIcons) => {
   const { scale, handleMouseEnter, handleMouseLeave } = useImageScale();
   return (
-    <a className="text-5xl mx-3" href={to}>
+    <a className="text-5xl mx-3" href={to} aria-label={to}>
       <animated.div
         style={{ scale }}
         onMouseEnter={handleMouseEnter}

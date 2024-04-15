@@ -7,7 +7,6 @@ import {
   CardContent,
   CardFooter,
 } from "../ui/card.tsx";
-import { Button } from "../ui/button.tsx";
 import useImageScale from "@/hooks/useImageScale.tsx";
 import { animated } from "@react-spring/web";
 
@@ -32,7 +31,7 @@ const ResumeCard = ({
             <img
               className="w-full aspect-video"
               src={image}
-              alt="Description image of the institution."
+              alt={institution}
             />
           </a>
         </animated.div>
@@ -47,17 +46,7 @@ const ResumeCard = ({
       <CardContent>
         <p>{description}</p>
       </CardContent>
-      <CardFooter>
-        {link ? (
-          <Button className="mx-auto" variant="link">
-            <a href={link} target="_blank">
-              See Certificate
-            </a>
-          </Button>
-        ) : (
-          ""
-        )}
-      </CardFooter>
+      <CardFooter />
     </Card>
   );
 };
