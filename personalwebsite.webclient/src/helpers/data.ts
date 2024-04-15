@@ -15,8 +15,8 @@ export const resumeData: ResumeItem[] = [
     image: CS50,
     duration: "Dec 2023 – Apr 2024",
     title: "CS50 SQL",
-    institution: "Cambridge, Massachusetts",
-    description: "A course for learning SQL.",
+    institution: "Harvard University",
+    description: "A course for learning relational databases.",
     link: "https://certificates.cs50.io/eda33862-03ec-4d52-bdde-9a4686ba9fe1.pdf?size=letter",
   },
   {
@@ -24,15 +24,15 @@ export const resumeData: ResumeItem[] = [
     duration: "Feb 2023 – March 2024",
     title: "Front End Development Libraries",
     institution: "freeCodeCamp",
-    description: "A course for learning Frontend Libraries like React.",
+    description: "A course for learning React, jQuery, SCSS, and Bootstrap.",
     link: "https://www.freecodecamp.org/certification/Ulgamon/front-end-development-libraries",
   },
   {
     image: CS50,
     duration: "Dec 2022 – Dec 2023",
     title: "CS50x",
-    institution: "Cambridge, Massachusetts",
-    description: "A course for learning Computeer Science.",
+    institution: "Harvard University",
+    description: "A course for learning how to think algorithmically and solve problems efficiently.",
     link: "https://certificates.cs50.io/b5ca7ada-0fd7-4fce-9b65-47af82a48413.pdf?size=letter",
   },
   {
@@ -40,7 +40,7 @@ export const resumeData: ResumeItem[] = [
     duration: "Jan 2023 – Nov 2023",
     title: "Responsive Web Design",
     institution: "freeCodeCamp",
-    description: "A course for learning Responsive Web Design.",
+    description: "A course for learning HTML5 and CSS3.",
     link: "https://www.freecodecamp.org/certification/Ulgamon/responsive-web-design",
   },
   {

@@ -1,5 +1,5 @@
 import imgUri from "../../assets/final.webp";
-import cv from "../../assets/CV.pdf";
+import cv from "../../assets/Justin_Ilić.pdf";
 import { Button } from "../ui/button.tsx";
 import { Element } from "react-scroll";
 
@@ -19,7 +19,7 @@ const AboutSection = () => {
           <div className="m-5">
             <h3 className="text-3xl sm:text-5xl my-4 font-bold">About Me</h3>
             <p className="max-w-[500px] my-4">
-              Welcome to my personal website! I'm Justin Ilić, a full stack
+              Welcome to my personal website! I'm Justin Ilić, a 22 year old full stack
               developer based in Serbia. I have a deep love for playing guitar,
               basketball, programming, and calisthenics.
             </p>

@@ -1,5 +1,5 @@
 import ResumeList from "../resume/ResumeList.tsx";
-import cv from "../../assets/CV.pdf";
+import cv from "../../assets/Justin_Ilić.pdf";
 import { Element } from "react-scroll";
 import { Button } from "../ui/button.tsx";
 

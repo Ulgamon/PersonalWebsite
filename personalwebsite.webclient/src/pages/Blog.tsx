@@ -109,7 +109,7 @@ const Blog = () => {
         >
           <div className="w-full text-white mx-auto">
             <div className="w-fit mx-auto">
-              <Card className="rounded-xl border-b-0 rounded-b-none pb-10 pt-5 px-5">
+              <Card className="rounded-xl border-b-0 shadow-none rounded-b-none pb-10 pt-5 px-5">
                 <CardHeader className="py-3">
                   <CardTitle>
                     <h1 className="font-bold text-themeOrange dark:text-themeBlue text-3xl mt-2 md:text-6xl">
@@ -204,7 +204,7 @@ const BlogData = ({
                       PreTag="div"
                       children={String(children).replace(/\n$/, "")}
                       language={match[1]}
-                      className="rounded-md"
+                      className="rounded-md text-xs md:text-base"
                       style={theme === "light" ? coldarkCold : coldarkDark}
                     />
                   </>

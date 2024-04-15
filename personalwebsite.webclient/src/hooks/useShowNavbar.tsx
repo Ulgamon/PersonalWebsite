@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 const useShowNavbar = () => {
-  const [shouldShow, setShouldShow] = useState(false);
-  const scrollRef = useRef(0);
+  const [shouldShow, setShouldShow] = useState<boolean>(false);
+
+  const scrollRef: React.MutableRefObject<number> = useRef<number>(0);
 
   useEffect(() => {
     const scrollListener = () => {
@@ -14,6 +15,7 @@ const useShowNavbar = () => {
       window.removeEventListener("scroll", scrollListener);
     };
   });
+  
   return shouldShow;
 };
 
