@@ -55,7 +55,7 @@ const AppOutlet = ({ children }: IAppOutlet) => {
           </ul>
           <AnimatedSwitch className="hidden lg:block mt-3 mx-3" />
           <Sheet>
-            <SheetTrigger asChild>
+            <SheetTrigger asChild role="menu">
               <IoMenu className="flex lg:hidden text-4xl mt-3 me-4" />
             </SheetTrigger>
             <SheetContent side="right">
@@ -126,7 +126,7 @@ const AppOutlet = ({ children }: IAppOutlet) => {
                 </ul>
                 <AnimatedSwitch className="hidden lg:block m-3" />
                 <Sheet>
-                  <SheetTrigger asChild>
+                  <SheetTrigger asChild role="menu">
                     <IoMenu className="flex lg:hidden text-4xl mt-3.5 me-4" />
                   </SheetTrigger>
                   <SheetContent side="right">

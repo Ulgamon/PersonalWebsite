@@ -26,7 +26,7 @@ const ResumeCard = ({
       onMouseLeave={handleMouseLeave}
     >
       <div className="overflow-clip">
-        <animated.div className="aspect-video" style={{ scale: scale }}>
+        <animated.div className="aspect-video w-full" style={{ scale: scale }}>
           <a href={link} target="_blank">
             <img
               className="w-full aspect-video"
