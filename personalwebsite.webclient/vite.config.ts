@@ -9,9 +9,12 @@ export default defineConfig({
     react(),
     VitePWA({
       manifest: {
+        name: "Justin Ilić - Blog",
+        short_name: "Justin Ilić - Blog",
+        theme_color: "#22c55e",
         icons: [
           {
-            src: "/profile.ico",
+            src: "/profilepwa.png",
             sizes: "512x512",
             type: "image/svg+xml",
             purpose: "any maskable",

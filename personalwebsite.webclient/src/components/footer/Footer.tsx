@@ -57,7 +57,7 @@ const FooterNavLink = ({ to, text }: FooterNavLinkProps) => {
   return (
     <>
       {location.pathname !== "/" ? (
-        <NavLink to={"/#" + text}>
+        <NavLink to={"/#" + to}>
           <Button className="text-sm p-0 flex mx-2 uppercase" variant="link">
             <IoArrowForward className="me-0.5" />
             {text}{" "}
