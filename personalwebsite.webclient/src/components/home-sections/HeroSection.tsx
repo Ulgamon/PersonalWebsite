@@ -92,7 +92,7 @@ const HeroSection = () => {
         id="home"
         className="h-[calc(100vh-4rem)] max-w-screen-customMaxWidth flex justify-center items-center mx-auto relative w-full overflow-hidden"
       >
-        <animated.div style={textProps} className="px-5 lg:px-0">
+        <animated.div style={textProps} className="px-5 lg:mx-5 lg:px-0">
           <h1 className="dark:text-themeBlue rounded-xl text-themeOrange text-xl md:text-2xl">
             Hello!
           </h1>
@@ -118,7 +118,7 @@ const HeroSection = () => {
 
         <animated.div
           style={imageProps}
-          className="lg:block hidden w-[600px] ms-5"
+          className="lg:block hidden w-[620px] lg:mx-5"
         >
           {transition((style, show) => (
             <animated.div style={style}>
