@@ -212,7 +212,7 @@ const ShowBlogs = () => {
             </h4>
             <ToggleGroup
               type="multiple"
-              className="flex flex-col my-2 ms-1 items-start"
+              className="flex flex-wrap my-2 ms-1 items-start"
             >
               {fetchedCategories.categories &&
                 fetchedCategories.categories.map((el) => (
